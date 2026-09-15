@@ -62,3 +62,11 @@ With one peer, there is no peer dispersion from which to form a minimum-to-maxim
 ## Reflection
 
 The peer comparison does not prove Asbury is fairly valued. It transfers the market's valuation of two similar but imperfect companies to Asbury's reported EPS. Differences in expected growth, brand and geographic mix, scale, risk, capital structure, unusual GAAP earnings, and earnings durability can justify different P/E multiples. I would use this result as a market cross-check alongside a DCF, while keeping the peer qualifications visible.
+
+## AI use and educational disclaimer
+
+This work continued from my Lab 06 Codex context. I used Codex in VS Code to help structure the standard-library Python calculation, organize the source-supported peer comparison, and check the output against the case checkpoints. I am responsible for running the file, reviewing the sources, and verifying that the calculations and explanations match my understanding.
+
+I am not a licensed financial professional. This document is for educational purposes only and is not investment advice.
+
+Any remaining errors are my own.
