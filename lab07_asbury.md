@@ -35,7 +35,7 @@ One calculation by hand:
 
 > AutoNation P/E = $169.84 / $16.92 = 10.037825×
 
-Run the complete calculation from the course folder with:
+Run the complete calculation after opening the `Lab-07-Asbury` folder in VS Code:
 
 ```bash
 python3 lab07_asbury_pe.py
