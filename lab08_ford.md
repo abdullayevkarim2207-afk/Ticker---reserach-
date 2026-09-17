@@ -102,6 +102,10 @@ I can defend the Week 3 DCF sensitivity range of **$12.39–$19.71**, subject to
 
 AI helped research candidate sources, structure the calculator, and identify the valuation-perimeter criticism. I wrote the peer policy in my own words, reviewed Ford's, GM's, and PACCAR's filing evidence, verified all three September 10 prices on Nasdaq, ran both calculator commands, and recorded my own prediction, judgment, and conditional call.
 
+## Educational disclaimer
+
+This analysis was prepared for FIN43900 course work and is for educational purposes only. It is not investment advice. Any remaining errors are my own.
+
 ## GitHub checkout
 
 - [Lab 08 report](https://github.com/abdullayevkarim2207-afk/Lab-8-/blob/main/lab08_ford.md)
