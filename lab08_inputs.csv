@@ -1,0 +1,4 @@
+company,ticker,role,decision,price_date,closing_price,currency,fiscal_year_end,annual_reported_diluted_eps,earnings_publication_date,price_source,eps_source
+Ford Motor Company,F,target,target,2026-09-10,13.88,USD,2025-12-31,-2.06,2026-02-10,https://www.nasdaq.com/market-activity/stocks/f/historical,https://www.sec.gov/Archives/edgar/data/37996/000003799626000015/f-20251231.htm
+General Motors Company,GM,peer,use,2026-09-10,86.12,USD,2025-12-31,3.27,2026-01-27,https://www.nasdaq.com/market-activity/stocks/gm/historical,https://www.sec.gov/Archives/edgar/data/1467858/000146785826000013/gm-20251231.htm
+PACCAR Inc,PCAR,peer,qualify,2026-09-10,122.57,USD,2025-12-31,4.51,2026-01-27,https://www.nasdaq.com/market-activity/stocks/pcar/historical,https://www.sec.gov/Archives/edgar/data/75362/000119312526057025/pcar-20251231.htm
