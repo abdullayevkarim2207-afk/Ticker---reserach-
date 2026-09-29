@@ -178,5 +178,5 @@ This is a question, not a recommendation.
 
 ## Checkout — GitHub links
 
-- [Lab 10 written report](https://github.com/abdullayevkarim2207-afk/Lab-10-/blob/main/lab10_ford.md)
-- [Lab 10 Python model](https://github.com/abdullayevkarim2207-afk/Lab-10-/blob/main/lab10_ford_proforma.py)
+- [Lab 10 written report](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab10_ford.md)
+- [Lab 10 Python model](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab10_ford_proforma.py)
