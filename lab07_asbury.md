@@ -70,3 +70,8 @@ This work continued from my Lab 06 Codex context. I used Codex in VS Code to hel
 I am not a licensed financial professional. This document is for educational purposes only and is not investment advice.
 
 Any remaining errors are my own.
+
+## GitHub checkout
+
+- [Lab 07 report](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab07_asbury.md)
+- [P/E calculator](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab07_asbury_pe.py)

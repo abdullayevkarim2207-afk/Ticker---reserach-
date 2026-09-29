@@ -31,3 +31,8 @@ Compare the base value per share with $13.90. If it is outside 0.5×–2× the m
 **Watch–defer. Initiate if** Ford reports evidence that makes Company adjusted free cash flow durable and the valuation remains above $13.90 across a reasonable range of WACC and terminal growth; **otherwise defer. Monitor:** Ford Pro operating margin and warranty/recall costs next quarter.
 
 The reverse-DCF shift is the growth assumption required to reproduce the market price while holding the other model inputs fixed. It is not proof that Ford is mispriced.
+
+## GitHub checkout
+
+- [Lab 06 report](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab06_ford.md)
+- [DCF model](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/dcf.py)

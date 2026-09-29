@@ -108,6 +108,6 @@ This analysis was prepared for FIN43900 course work and is for educational purpo
 
 ## GitHub checkout
 
-- [Lab 08 report](https://github.com/abdullayevkarim2207-afk/Lab-8-/blob/main/lab08_ford.md)
-- [P/E calculator](https://github.com/abdullayevkarim2207-afk/Lab-8-/blob/main/lab08_ford_pe.py)
-- [Input and source table](https://github.com/abdullayevkarim2207-afk/Lab-8-/blob/main/lab08_inputs.csv)
+- [Lab 08 report](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab08_ford.md)
+- [P/E calculator](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab08_ford_pe.py)
+- [Input and source table](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/lab08_inputs.csv)
