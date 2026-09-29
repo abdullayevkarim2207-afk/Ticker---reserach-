@@ -194,6 +194,6 @@ exchange, and submitting accurate files.
 
 ## Checkout — GitHub links
 
-- [Lab 11 report](https://github.com/abdullayevkarim2207-afk/Lab-10-/blob/main/lab11_ford.md)
-- [Lab 11 sensitivity code](https://github.com/abdullayevkarim2207-afk/Lab-10-/blob/main/lab11_ford_sensitivity.py)
-- [Preserved Lab 10 model](https://github.com/abdullayevkarim2207-afk/Lab-10-/blob/main/lab10_ford_proforma.py)
+- [Lab 11 report](https://github.com/abdullayevkarim2207-afk/Lab-11/blob/main/lab11_ford.md)
+- [Lab 11 sensitivity code](https://github.com/abdullayevkarim2207-afk/Lab-11/blob/main/lab11_ford_sensitivity.py)
+- [Preserved Lab 10 model](https://github.com/abdullayevkarim2207-afk/Lab-11/blob/main/lab10_ford_proforma.py)
