@@ -106,10 +106,10 @@ defensible valuation range for a committee with no current position.
 - **Technical/reproducibility:** a negative cash flow or model dependency is
   omitted, as demonstrated by the corrected FY2026 FCFE treatment.
 
-### Open-ended challenge — AI countercase pending independent student check
+### Open-ended challenge — AI countercase and independent student check
 
-AI proposed the following boundary case; it is not accepted project evidence
-until the student independently reruns or recalculates it with AI closed.
+AI proposed the following boundary case. The student then closed AI and
+independently checked the upside arithmetic.
 
 | Item | Current case | AI-proposed changed case |
 |---|---:|---:|
@@ -118,13 +118,25 @@ until the student independently reruns or recalculates it with AI closed.
 | Corrected signed-FCFE value/share | $10.00 | $14.146 |
 | Saved comparison price | $12.86 | $12.86 |
 | Implied upside | –22.2% | 10.0% |
-| Provisional decision effect | Watch/defer | Potential initiate boundary only if the student adopts a 10% margin-of-safety rule and independently supports durable margins |
+| Provisional decision effect | Watch/defer | Watch/defer unchanged because the student requires a 15% margin of safety |
 
 This is decision-relevant rather than merely possible only if primary evidence
 supports the higher margin path and the FCFF/Ford Credit perimeter is also
-resolved. The student must independently verify the input path and arithmetic,
-then write the monitoring owner, smallest committee action, and reversal
-threshold without AI assistance.
+resolved.
+
+#### Student-authored disposition after independent arithmetic check
+
+- **Independent result:** My calculation shows a 10% upside, but it is still
+  below my required 15% margin of safety.
+- **Disposition:** I qualify the AI countercase. The 10% upside is positive,
+  but it is not enough for me to change my recommendation.
+- **Committee action now:** Keep Ford on watch and wait before taking any
+  position.
+- **Monitoring owner:** The analyst covering Ford.
+- **Reversal threshold:** Consider initiating a position if the reconciled,
+  date-matched valuation reaches at least $14.79 and the Ford Credit/FCFF issue
+  is resolved. If the value falls to $12.86 or below, recommend not initiating
+  a position.
 
 ### Must-fix before final submission
 
@@ -152,7 +164,7 @@ the committee action?
 | OpenAI Codex (version exposed by interface, if any, should be added by student) | 2026-09-29 | Sensitivity implementation and evidence formatting | One-at-a-time growth and margin tests | Student signed arithmetic check and base restoration | Accepted with qualification | Identified gross margin as larger driver over tested ranges; action unchanged |
 | OpenAI Codex (version exposed by interface, if any, should be added by student) | 2026-10-05 | Interpreted Week 7 and Project 1 requirements | Readiness checklist and FCFF/FCFE gap | Checked against local course architecture and templates | Accepted | Prioritized FCFF/Ford Credit perimeter as must-fix |
 | OpenAI Codex (version exposed by interface, if any, should be added by student) | 2026-10-07 | Prepared readiness files and ran local smoke checks | README, visible output, working manifest, and validation record | Outputs rerun locally; human cold run and access checks explicitly left pending | Accepted as working draft | No change to provisional watch/defer action |
-| OpenAI Codex (version exposed by interface, if any, should be added by student) | 2026-10-07 | Proposed strongest changed-assumption countercase | Parallel gross-margin shift that would produce 10% modeled upside to the saved price | **Pending student rerun or independent arithmetic with AI closed** | Pending; do not cite as accepted evidence yet | Potential initiate boundary; current action remains watch/defer |
+| OpenAI Codex (version exposed by interface, if any, should be added by student) | 2026-10-07 | Proposed strongest changed-assumption countercase | Parallel gross-margin shift that would produce 10% modeled upside to the saved price | Student independently calculated the 10% upside and the $14.79 value required for a 15% margin of safety | Qualified because 10% did not meet the student's threshold | Watch/defer unchanged; initiate only after the stated threshold and FCFF/Ford Credit conditions are met |
 
 ## Limitations, monitoring, and kill/escalation rules
 
