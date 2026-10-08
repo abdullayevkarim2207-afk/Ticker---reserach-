@@ -1,0 +1,91 @@
+FIN 43900 - Ungraded Project Readiness Feedback
+Project 1: Ford Motor Company
+Prepared: October 7, 2026 ET
+
+REPOSITORY
+https://github.com/abdullayevkarim2207-afk/Ticker---reserach-
+Readiness evidence commit reviewed: fdf7748
+Public access was verified while logged out.
+
+CURRENT DECISION
+Watch/defer for a buy-side committee with no current Ford position. Do not
+initiate until the FCFF valuation perimeter, Ford Credit treatment, and
+enterprise-to-equity bridge are reconciled and compared with a date-matched
+market price.
+
+MECHANICAL MANIFEST AUDIT
+The supplied checker ran successfully against the 12-row working manifest.
+It reported these incomplete final-submission surfaces:
+
+- Research-Evolution.pdf
+- Decision memo or deck
+- Video 1 and Transcript Video 1
+- Video 2 and Transcript Video 2
+- Video 3 and Transcript Video 3
+
+README-ONLY HUMAN COLD RUN
+Tester: Peer (name omitted)
+Operating system: Windows 11; terminal shell not recorded
+Python version: 3.13.1
+Commit tested: 12bbf96
+Start time: 9:10 p.m. on October 7, 2026 ET
+First failure: No failure
+Resolution: Not applicable
+Elapsed time to visible output: 13 minutes
+Visible output reached: Yes
+Observed result: DCF $15.01/share; corrected signed-FCFE $10.00/share;
+balance-sheet checks passed; manifest audit ran successfully; watch/defer
+remained the recommendation.
+
+HIGHEST-RISK CLAIM AND TEST
+Claim: Normalized operating margins and a consistent Ford Credit treatment can
+support a defensible valuation range.
+
+The linked five-year statements balance in every forecast year. A deliberate
+$100 million FY2028 cash imbalance is rejected with:
+ValueError: FY2028E balance-sheet gap: 100.0
+
+A signed-cash-flow audit also found that the original $10.41 FCFE result
+excluded negative FY2026 FCFE. Preserving that outflow corrected the base
+diagnostic value to approximately $10.00 per share.
+
+THREE FAILURE MODES
+Finance convention: Ford Credit assets, earnings, cash, and debt may be treated
+inconsistently between FCFF and the enterprise-to-equity bridge.
+
+Data: Unusual FY2025 items may be normalized too aggressively, overstating
+sustainable gross margin and cash flow.
+
+Technical/reproducibility: A negative cash flow or dependency may be omitted,
+as demonstrated by the signed-FCFE correction.
+
+COUNTERCASE AND STUDENT DISPOSITION
+An AI-proposed higher-margin case produced $14.146 per share, or 10% upside to
+the saved $12.86 market price. The student independently checked the arithmetic
+and qualified the countercase because 10% is below the student's required 15%
+margin of safety.
+
+Committee action now: Keep Ford on watch and wait before taking any position.
+Monitoring owner: The analyst covering Ford.
+Reversal threshold: Consider initiating only if the reconciled, date-matched
+valuation reaches at least $14.79 and the Ford Credit/FCFF issue is resolved.
+If value is $12.86 or below, recommend not initiating.
+
+MUST-FIX ITEMS
+1. Confirm unchanged Edition A and the Brightspace receipt.
+2. Resolve the Ford Credit/FCFF valuation perimeter with the instructor or TA.
+3. Build the required five-year FCFF forecast and complete bridge.
+4. Produce a date-consistent low/base/high valuation range and final action.
+5. Repeat the cold run if the final frozen setup or execution path changes.
+6. Create Research Evolution, memo/deck, frozen validation PDF, videos, and
+   corrected transcripts.
+7. Freeze final evidence and rerun the manifest audit.
+
+CRITERION-SPECIFIC RISK PROBE REQUESTED
+Does the proposed treatment of Ford Credit produce an acceptable FCFF valuation
+perimeter and enterprise-to-equity bridge for Project 1, or must the model
+separate Ford Credit differently before the valuation range can support the
+committee action?
+
+The complete working evidence is preserved in
+docs/validation-and-ai-use.md in the repository.
