@@ -6,9 +6,10 @@
 - **Current provisional action:** watch/defer.
 - **Reason action is provisional:** the Project 1 FCFF perimeter and complete
   enterprise-to-equity bridge are unresolved.
-- **Repository baseline inspected:** commit
-  `bda6296e7885f0fce1bbff55cd5533c4ab2e50e6`, plus the disclosed working-tree
-  readiness files dated October 7, 2026.
+- **Repository baseline inspected:** Week 7 readiness packet commit
+  `415a9eddf699caec942d6008cf25ffc9e69d30a4`, which preserves the prior
+  `bda6296e7885f0fce1bbff55cd5533c4ab2e50e6` project baseline plus the
+  disclosed readiness files dated October 7, 2026.
 - **Historical boundary:** Ford FY2025 Form 10-K, supplemented by Q2 2026 Form
   10-Q where identified.
 - **Saved price:** $12.86 at 9:55 a.m. EDT on September 24, 2026.
@@ -86,6 +87,8 @@ The first AI-assisted local setup failure was
 `ModuleNotFoundError: No module named 'pandas'`; running the README's dependency
 installation resolved it. This is a local smoke-test record, **not** the
 required human README-only cold run, so the human record above remains pending.
+The repository URL returned HTTP 200 in a logged-out access check on October 7,
+2026 ET; access must be confirmed again after the final submission is frozen.
 
 ### Highest-risk claim
 
