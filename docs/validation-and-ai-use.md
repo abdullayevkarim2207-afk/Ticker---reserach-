@@ -54,21 +54,23 @@
 The missing pre-run repository commit is preserved as a limitation; it must not
 be backfilled as though it had been recorded contemporaneously.
 
-## README-only cold-run record — human completion required
+## README-only cold-run record
 
 | Field | Result |
 |---|---|
-| Tester | Pending |
-| Repository commit tested | Pending |
-| Start time | Pending |
-| First failure | Pending |
-| Resolution or limitation | Pending |
-| Time to visible output | Pending |
-| Visible output reached | Pending |
+| Tester | Peer (name intentionally omitted) |
+| Operating system | Windows 11; terminal shell not recorded |
+| Python version | 3.13.1 |
+| Repository commit tested | `12bbf96` |
+| Start time | 9:10 p.m. on October 7, 2026 ET |
+| First failure | No failure |
+| Resolution or limitation | Not applicable; terminal shell was not recorded |
+| Time to visible output | 13 minutes |
+| Visible output reached | Yes |
+| Result observed | DCF $15.01/share; corrected signed-FCFE $10.00/share; balance-sheet checks passed; manifest audit ran successfully; watch/defer remained the recommendation |
 
-An AI-assisted local smoke test is not represented as the required human cold
-run. A partner must follow only `README.md` without coaching and complete this
-record.
+The peer followed only `README.md` without coaching. The student's separate
+guided learning run is not represented as the required human cold run.
 
 ## Project readiness audit — October 7, 2026
 
@@ -130,7 +132,8 @@ threshold without AI assistance.
 2. Resolve the Ford Credit/FCFF valuation perimeter with the instructor or TA.
 3. Build the required five-year FCFF forecast and complete bridge.
 4. Produce a date-consistent low/base/high valuation range and final action rule.
-5. Complete a human README-only cold run and preserve first failure/time.
+5. Preserve this human README-only cold run and repeat it if the final frozen
+   commit materially changes the setup or execution path.
 6. Create Research Evolution, decision memo/deck, frozen validation PDF,
    videos, corrected transcripts, and final access confirmations.
 7. Commit/freeze the final evidence and rerun the manifest audit.
