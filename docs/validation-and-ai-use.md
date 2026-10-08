@@ -7,7 +7,7 @@
 - **Reason action is provisional:** the Project 1 FCFF perimeter and complete
   enterprise-to-equity bridge are unresolved.
 - **Repository baseline inspected:** Week 7 readiness packet commit
-  `415a9eddf699caec942d6008cf25ffc9e69d30a4`, which preserves the prior
+  `415a9ed80968ca5f7b72c3a814a0a5755d598122`, which preserves the prior
   `bda6296e7885f0fce1bbff55cd5533c4ab2e50e6` project baseline plus the
   disclosed readiness files dated October 7, 2026.
 - **Historical boundary:** Ford FY2025 Form 10-K, supplemented by Q2 2026 Form

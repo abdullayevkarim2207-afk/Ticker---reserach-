@@ -1,6 +1,6 @@
 item,required,location_or_url,title,duration_or_as_of,timestamp_index,access_checked,frozen_or_commit_id,notes
 Research-Evolution.pdf,yes,,,,,,,Missing; unchanged Edition A and Edition B must be assembled
-Repository,yes,https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/,Ford Project 1 working repository,2026-10-07,,public access verified logged out 2026-10-07 ET,415a9eddf699caec942d6008cf25ffc9e69d30a4,Week 7 readiness packet commit; confirm again when final files are frozen
+Repository,yes,https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/,Ford Project 1 working repository,2026-10-07,,public access verified logged out 2026-10-07 ET,415a9ed80968ca5f7b72c3a814a0a5755d598122,Week 7 readiness packet commit; confirm again when final files are frozen
 Visible executed output,yes,visible_output.md,Ford Project 1 Readiness Output,2026-10-07,,checked locally,working tree 2026-10-07,Must be committed and frozen before final submission
 Decision memo or deck,yes,,,,,,,Missing final decision memo or deck
 Validation-and-AI-Use.pdf,yes,docs/validation-and-ai-use.md,Validation and AI Use,2026-10-07,,checked locally,working tree 2026-10-07,Working Markdown exists; frozen PDF still required
