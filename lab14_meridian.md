@@ -5,6 +5,20 @@
 **What does each simple portfolio earn and risk — and does any of them meet the
 Meridian mandate?**
 
+## Decision context
+
+- **Decision user:** Meridian Foundation Reserve CIO.
+- **Horizon:** Seven years, with annual rebalancing.
+- **Benchmark:** 60% global equity index fund and 40% investment-grade bond
+  fund.
+- **Objective:** CPI + 4%; using the labelled 2.5% CPI estimate gives a 6.5%
+  classroom objective.
+- **Relevant hard constraints:** Long-only; at least 3.0% in reserve-eligible
+  assets; at least 90% redeemable within five business days; and no
+  non-exempt issuer above 8%.
+- **Input boundary:** The returns, volatilities, and correlations are
+  course-authored annual training values, not market estimates.
+
 The reusable standard-library risk engine is in [`portfolio.py`](portfolio.py).
 Run it from the repository root:
 
@@ -58,6 +72,9 @@ Input error: Correlation for Investment-grade bond fund / Global equity index fu
 
 The partner's original code was not changed.
 
+My partner also ran my `portfolio.py` and confirmed that it reproduced the
+required portfolio results.
+
 ## How portfolio volatility is computed
 
 `build_covariance_matrix` converts every correlation into a covariance:
@@ -75,6 +92,13 @@ variance = sum(weight(i) × weight(j) × covariance(i, j))
 Finally, `portfolio_volatility` takes the square root. Including the
 off-diagonal terms is essential: they capture how the sleeves move together.
 Leaving them out incorrectly produces a 9.90% benchmark volatility.
+
+### Quiz response
+
+`portfolio_variance` uses two loops because it must include both the risk of
+each sleeve and how every pair of sleeves moves together. Using only the
+diagonal terms would discard the cross-asset covariances and the effects of
+diversification, which could make the calculated portfolio risk inaccurate.
 
 ## Benchmark calculation by hand
 
