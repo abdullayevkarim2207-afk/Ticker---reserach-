@@ -96,6 +96,17 @@ CANDIDATES = {
         "Acme Corp bonds": 0,
         "Acme Corp stock": 0,
     },
+    # Lab 14 candidate: the client's own 40% IG bond / 60% equity benchmark.
+    "E": {
+        "Cash": 0,
+        "Treasury bills": 0,
+        "Treasury 10-year note": 0,
+        "Global equity index fund": 60,
+        "Investment-grade bond fund": 40,
+        "Private real estate fund": 0,
+        "Acme Corp bonds": 0,
+        "Acme Corp stock": 0,
+    },
 }
 
 RESERVE_SIZE_USD_MILLIONS = 100

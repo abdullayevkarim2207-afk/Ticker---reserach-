@@ -26,6 +26,8 @@ python3 -m pip install -r requirements.txt
 python3 dcf.py
 python3 lab10_ford_proforma.py
 python3 lab12_signed_fcfe_check.py
+python3 portfolio.py
+python3 mandate.py
 python3 project_audit.py project-submission-manifest-template.csv
 ```
 
@@ -59,6 +61,10 @@ The command should stop with an FY2028 balance-sheet-gap error.
 - `lab11_ford_sensitivity.py` and `lab11_ford.md`: locked changed-input test and
   one-at-a-time sensitivity evidence.
 - `lab12_signed_fcfe_check.py`: signed-FCFE correction and rerun.
+- `mandate.py` and `lab13_meridian.md`: Lab 13 portfolio-mandate checker,
+  known-answer proof, attack portfolio, CIO question, and IPS reflection.
+- `portfolio.py` and `lab14_meridian.md`: Lab 14 covariance risk engine, three
+  baseline portfolios, changed-input proof, and benchmark mandate test.
 - `visible_output.md`: frozen, human-readable readiness output.
 - `docs/validation-and-ai-use.md`: working validation and AI-use record.
 - `project-submission-manifest-template.csv`: working 12-row manifest.
