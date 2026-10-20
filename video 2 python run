@@ -1,0 +1,172 @@
+(base) karim2207@Abdullayevs-MacBook-Pro-2 Ticker---reserach--main %  source /Users/karim2207/Downloads/Ticker---reserach--main/.ve
+nv/bin/activate
+(.venv) (base) karim2207@Abdullayevs-MacBook-Pro-2 Ticker---reserach--main % cd "/Users/karim2207/Downloads/Ticker---reserach--main"
+(.venv) (base) karim2207@Abdullayevs-MacBook-Pro-2 Ticker---reserach--main % python3 project1_app.py
+FORD MOTOR COMPANY - PROJECT 1 DECISION APPLICATION
+User: buy-side committee with no current Ford position
+Horizon: Three-year buy-side decision horizon; five explicit forecast years
+Valuation date / price: 2026-09-24 09:55 EDT / $12.86
+Currency / share basis: USD / FY2025 diluted weighted-average shares (3,979 million)
+Perimeter: industrial FCFF plus Ford Credit equity; Ford Credit debt excluded from industrial net debt
+Exclusions: preliminary proxy DCF and FCFE diagnostic are not final methods; no precedent transactions are used because control, synergy, and timing are not sufficiently comparable
+
+VALIDATION: PASS
+- FY2025 opening balance sheet and revenue reconcile to filing inputs
+- Five forecast balance sheets balance and cash ties to the cash roll-forward
+- FCFF shares revenue growth, capex, depreciation, PP&E, and share drivers with the pro-forma
+- WACC build: cost of equity 11.00%; after-tax debt 4.50%; calculated 10.025%; selected 10.0%
+
+VALUATION AND COMPLETE BRIDGE
+Case      Industrial EV       Cash       Debt      NCI   Credit equity   Equity/share     Upside     TV/EV
+----------------------------------------------------------------------------------------------------------
+Low            32,348.8   28,684.0   21,919.0     28.0        11,843.2         $12.80      -0.5%     75.7%
+Base           59,903.9   28,684.0   21,919.0     28.0        14,804.0         $20.47      59.2%     79.0%
+High          108,190.3   28,684.0   21,919.0     28.0        17,764.8         $33.35     159.3%     84.0%
+Pension/OPEB bridge adjustment: $0 incremental; modeled in operating liabilities/cash flows, with funded pension plans fully funded in aggregate at FY2025.
+
+COMMITTEE ACTION: WATCH/DEFER
+Rule: initiate only with >=15% base upside and no low-case downside.
+Named downside: margin recovery stalls amid warranty/tariff pressure; low value falls below market, implying DO NOT INITIATE in that state.
+
+WACC / TERMINAL-GROWTH SENSITIVITY ($/share; base margin path, Credit at 1.0x book)
+WACC \ g      2.0%      3.0%      4.0%
+    9.0%     21.00     23.20     26.28
+   10.0%     18.88     20.47     22.59
+   11.0%     17.23     18.43     19.96
+
+REVERSE DCF: market price implies a parallel industrial EBIT-margin shift of -1.54%, producing a 2026-2030 path of 1.46%/1.96%/2.46%/2.76%/2.96%, holding 10% WACC, 3% terminal growth, and Credit at 1.0x book.
+PEER CROSS-CHECK: GM industrial EV/adjusted-EBIT implies $13.78/share for Ford; Ford reported P/E is not meaningful because FY2025 EPS is negative.
+
+Forecast check detail: 5 years; maximum balance gap 0.000000.
+(.venv) (base) karim2207@Abdullayevs-MacBook-Pro-2 Ticker---reserach--main % python3 lab10_ford_proforma.py
+
+INCOME STATEMENT
+USD millions                  FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+-----------------------------------------------------------------------------------------
+Revenue                     191,012.3    195,787.6    200,682.3    205,699.4    209,813.4
+Cost of sales               163,315.6    167,202.7    171,182.0    175,255.9    178,761.0
+Gross profit                 27,696.8     28,585.0     29,500.3     30,443.5     31,052.4
+SG&A                         11,078.7     11,434.0     11,800.1     12,177.4     12,421.0
+Ford Credit expense          11,269.7     11,551.5     11,840.3     12,136.3     12,379.0
+Operating income              5,348.3      5,599.5      5,859.9      6,129.8      6,252.4
+Company interest expense      1,249.4      1,124.0      1,095.5      1,067.0      1,038.5
+Other income                  1,910.1      1,957.9      2,006.8      2,057.0      2,098.1
+Pretax income                 6,009.1      6,433.4      6,771.3      7,119.9      7,312.1
+Tax                           1,261.9      1,351.0      1,422.0      1,495.2      1,535.5
+Net income                    4,747.2      5,082.4      5,349.3      5,624.7      5,776.6
+
+BALANCE SHEET
+USD millions                    FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+-------------------------------------------------------------------------------------------
+Cash                           19,159.7     19,569.5     20,466.1     21,818.1     23,405.6
+Marketable securities          15,131.0     15,131.0     15,131.0     15,131.0     15,131.0
+Ford Credit finance assets    141,901.4    144,739.4    147,634.2    150,586.9    153,598.6
+Trade receivables              15,706.0     16,098.6     16,501.1     16,913.6     17,251.9
+Inventory                      15,213.0     15,575.0     15,945.7     16,325.2     16,651.7
+Net PP&E                       40,203.3     42,364.7     44,315.4     46,095.5     47,737.3
+Other assets                   44,454.7     45,566.0     46,705.2     47,872.8     48,830.3
+Total assets                  291,769.0    299,044.2    306,698.6    314,743.0    322,606.4
+Payables                       24,161.8     24,736.8     25,325.6     25,928.3     26,446.8
+Other liabilities              65,315.7     66,948.6     68,622.3     70,337.9     71,744.6
+Company debt                   19,719.0     19,219.0     18,719.0     18,219.0     17,719.0
+Ford Credit debt              144,245.3    147,130.2    150,072.9    153,074.3    156,135.8
+Revolver                            0.0          0.0          0.0          0.0          0.0
+Equity                         38,327.2     41,009.6     43,958.9     47,183.6     50,560.1
+Total liabilities & equity    291,769.0    299,044.2    306,698.6    314,743.0    322,606.4
+
+CASH FLOW / FCFE
+USD millions          FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+---------------------------------------------------------------------------------
+Net income            4,747.2      5,082.4      5,349.3      5,624.7      5,776.6
+Depreciation          7,084.7      7,638.6      8,049.3      8,419.9      8,758.1
+Capital spending     10,000.0      9,800.0     10,000.0     10,200.0     10,400.0
+FCFE                 -1,796.3      2,809.8      3,296.5      3,752.0      3,987.5
+Dividends             2,400.0      2,400.0      2,400.0      2,400.0      2,400.0
+Revolver draw             0.0          0.0          0.0          0.0          0.0
+
+CHECKS
+                                      FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+Assets - liabilities - equity             0.0         -0.0         -0.0          0.0          0.0
+Cash pool at/above floor                 PASS         PASS         PASS         PASS         PASS
+FY2026E: negative FCFE; excluded from value
+
+VALUATION
+Present value of positive explicit FCFE: $9,837.5 million
+Present value of terminal value: $31,568.2 million
+Equity value: $41,405.7 million
+Shares: 3,979.0 million
+Value per share: $10.41
+(.venv) (base) karim2207@Abdullayevs-MacBook-Pro-2 Ticker---reserach--main % python3 lab10_ford_proforma.py --break-check
+
+INCOME STATEMENT
+USD millions                  FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+-----------------------------------------------------------------------------------------
+Revenue                     191,012.3    195,787.6    200,682.3    205,699.4    209,813.4
+Cost of sales               163,315.6    167,202.7    171,182.0    175,255.9    178,761.0
+Gross profit                 27,696.8     28,585.0     29,500.3     30,443.5     31,052.4
+SG&A                         11,078.7     11,434.0     11,800.1     12,177.4     12,421.0
+Ford Credit expense          11,269.7     11,551.5     11,840.3     12,136.3     12,379.0
+Operating income              5,348.3      5,599.5      5,859.9      6,129.8      6,252.4
+Company interest expense      1,249.4      1,124.0      1,095.5      1,067.0      1,038.5
+Other income                  1,910.1      1,957.9      2,006.8      2,057.0      2,098.1
+Pretax income                 6,009.1      6,433.4      6,771.3      7,119.9      7,312.1
+Tax                           1,261.9      1,351.0      1,422.0      1,495.2      1,535.5
+Net income                    4,747.2      5,082.4      5,349.3      5,624.7      5,776.6
+
+BALANCE SHEET
+USD millions                    FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+-------------------------------------------------------------------------------------------
+Cash                           19,159.7     19,569.5     20,566.1     21,818.1     23,405.6
+Marketable securities          15,131.0     15,131.0     15,131.0     15,131.0     15,131.0
+Ford Credit finance assets    141,901.4    144,739.4    147,634.2    150,586.9    153,598.6
+Trade receivables              15,706.0     16,098.6     16,501.1     16,913.6     17,251.9
+Inventory                      15,213.0     15,575.0     15,945.7     16,325.2     16,651.7
+Net PP&E                       40,203.3     42,364.7     44,315.4     46,095.5     47,737.3
+Other assets                   44,454.7     45,566.0     46,705.2     47,872.8     48,830.3
+Total assets                  291,769.0    299,044.2    306,698.6    314,743.0    322,606.4
+Payables                       24,161.8     24,736.8     25,325.6     25,928.3     26,446.8
+Other liabilities              65,315.7     66,948.6     68,622.3     70,337.9     71,744.6
+Company debt                   19,719.0     19,219.0     18,719.0     18,219.0     17,719.0
+Ford Credit debt              144,245.3    147,130.2    150,072.9    153,074.3    156,135.8
+Revolver                            0.0          0.0          0.0          0.0          0.0
+Equity                         38,327.2     41,009.6     43,958.9     47,183.6     50,560.1
+Total liabilities & equity    291,769.0    299,044.2    306,698.6    314,743.0    322,606.4
+
+CASH FLOW / FCFE
+USD millions          FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+---------------------------------------------------------------------------------
+Net income            4,747.2      5,082.4      5,349.3      5,624.7      5,776.6
+Depreciation          7,084.7      7,638.6      8,049.3      8,419.9      8,758.1
+Capital spending     10,000.0      9,800.0     10,000.0     10,200.0     10,400.0
+FCFE                 -1,796.3      2,809.8      3,296.5      3,752.0      3,987.5
+Dividends             2,400.0      2,400.0      2,400.0      2,400.0      2,400.0
+Revolver draw             0.0          0.0          0.0          0.0          0.0
+
+CHECKS
+                                      FY2026E      FY2027E      FY2028E      FY2029E      FY2030E
+Assets - liabilities - equity             0.0         -0.0        100.0          0.0          0.0
+Cash pool at/above floor                 PASS         PASS         PASS         PASS         PASS
+Traceback (most recent call last):
+  File "/Users/karim2207/Downloads/Ticker---reserach--main/lab10_ford_proforma.py", line 399, in <module>
+    main()
+    ~~~~^^
+  File "/Users/karim2207/Downloads/Ticker---reserach--main/lab10_ford_proforma.py", line 394, in main
+    assert_balanced(forecasts)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/karim2207/Downloads/Ticker---reserach--main/lab10_ford_proforma.py", line 241, in assert_balanced
+    raise ValueError(f"FY{int(row['year'])}E balance-sheet gap: {gap:.1f}")
+ValueError: FY2028E balance-sheet gap: 100.0
+(.venv) (base) karim2207@Abdullayevs-MacBook-Pro-2 Ticker---reserach--main % python3 lab12_signed_fcfe_check.py
+LAB 12 — SIGNED-FCFE AUDIT
+Amounts are USD millions except value per share.
+Driver / case                  FY2030 operating income     FY2030 FCFE     Value/share       Max gap
+----------------------------------------------------------------------------------------------------
+Revenue growth — Lower                         5,865.2         3,419.4            8.47      0.000000
+Revenue growth — Base                          6,252.4         3,987.5           10.00      0.000000
+Revenue growth — Higher                        6,628.0         4,634.8           11.66      0.000000
+Gross margin — Lower                           4,615.9         2,697.6            6.41      0.000000
+Gross margin — Base                            6,252.4         3,987.5           10.00      0.000000
+Gross margin — Higher                          7,133.7         4,682.1           12.11      0.000000
+
+VALUE-PER-SHARE SPANS
+Revenue growth: $3.19
