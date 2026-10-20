@@ -46,6 +46,18 @@ Run all checks with:
 python -m unittest discover -s tests -v
 ```
 
+## Partner swap proof
+
+The partner's `portfolio.py` reproduced the same required values for all three
+portfolios. On a temporary copy, changing the IG-to-equity correlation from
+`0.25` to `1.30` produced this refusal before any portfolio was calculated:
+
+```text
+Input error: Correlation for Investment-grade bond fund / Global equity index fund is 1.3; it must be between -1 and 1.
+```
+
+The partner's original code was not changed.
+
 ## How portfolio volatility is computed
 
 `build_covariance_matrix` converts every correlation into a covariance:
