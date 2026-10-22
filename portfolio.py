@@ -6,7 +6,13 @@ Run from the repository root with: python portfolio.py
 
 from __future__ import annotations
 
+import csv
+from datetime import date
+from io import StringIO
 from math import sqrt
+from pathlib import Path
+from statistics import correlation, mean, stdev
+from typing import IO, Iterator
 
 
 # Editable inputs: course-authored training values, not market estimates.
@@ -153,9 +159,12 @@ def portfolio_volatility(
     return sqrt(portfolio_variance(weights, covariance))
 
 
-def reserve_eligible_weight(weights: dict[str, float]) -> float:
-    """Return the combined bills and Treasury 10-year note weight."""
-    return sum(weights[name] for name in RESERVE_ELIGIBLE)
+def reserve_eligible_weight(
+    weights: dict[str, float], reserve_eligible: set[str] | None = None
+) -> float:
+    """Return the combined weight of the selected reserve-eligible assets."""
+    eligible = RESERVE_ELIGIBLE if reserve_eligible is None else reserve_eligible
+    return sum(weights.get(name, 0.0) for name in eligible)
 
 
 def meets_objective(portfolio_return: float, objective_return: float) -> bool:
@@ -172,6 +181,153 @@ def build_portfolios(
         "Equal weight": equal_weights(sleeves),
         "Inverse volatility": inverse_volatility_weights(sleeves),
     }
+
+
+def _weight_combinations(asset_count: int, units: int) -> Iterator[tuple[int, ...]]:
+    """Yield every long-only integer combination whose units sum to the total."""
+    if asset_count == 1:
+        yield (units,)
+        return
+    for first in range(units + 1):
+        for remainder in _weight_combinations(asset_count - 1, units - first):
+            yield (first, *remainder)
+
+
+def search_lowest_risk_mix(
+    sleeves: dict[str, dict[str, float]],
+    correlations: dict[str, dict[str, float]],
+    objective_return: float,
+    reserve_eligible: set[str],
+    reserve_minimum: float,
+    step: float = 0.05,
+) -> dict[str, float] | None:
+    """Return the least-volatile feasible long-only mix, or ``None``.
+
+    The search evaluates every fully invested mix on the requested weight grid.
+    Expected return and reserve weight must each meet their minimum.
+    """
+    validate_inputs(sleeves, correlations)
+    if not 0.0 < step <= 1.0:
+        raise ValueError("The search step must be greater than 0 and at most 1.")
+    units = round(1.0 / step)
+    if abs(units * step - 1.0) > 1e-10:
+        raise ValueError("The search step must divide 100% into equal units.")
+    if not 0.0 <= reserve_minimum <= 1.0:
+        raise ValueError("The reserve minimum must be between 0% and 100%.")
+    unknown = reserve_eligible - set(sleeves)
+    if unknown:
+        raise ValueError(f"Unknown reserve-eligible assets: {sorted(unknown)}")
+
+    names = list(sleeves)
+    covariance = build_covariance_matrix(sleeves, correlations)
+    best_weights: dict[str, float] | None = None
+    best_volatility = float("inf")
+
+    for combination in _weight_combinations(len(names), units):
+        weights = {
+            name: unit_count / units
+            for name, unit_count in zip(names, combination)
+        }
+        if expected_return(weights, sleeves) + 1e-12 < objective_return:
+            continue
+        if (
+            reserve_eligible_weight(weights, reserve_eligible) + 1e-12
+            < reserve_minimum
+        ):
+            continue
+        volatility = portfolio_volatility(weights, covariance)
+        if volatility < best_volatility - 1e-12:
+            best_weights = weights
+            best_volatility = volatility
+
+    return best_weights
+
+
+def _read_price_csv(source: str | Path | IO[str] | IO[bytes]) -> str:
+    """Read a price CSV path or uploaded file into text."""
+    if hasattr(source, "read"):
+        content = source.read()
+        if hasattr(source, "seek"):
+            source.seek(0)
+        return content.decode("utf-8-sig") if isinstance(content, bytes) else content
+    return Path(source).read_text(encoding="utf-8-sig")
+
+
+def estimate_from_price_csv(
+    source: str | Path | IO[str] | IO[bytes], last_36_months: bool = False
+) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, float]]]:
+    """Estimate annualized inputs from oldest-first monthly adjusted prices.
+
+    Arithmetic monthly means are multiplied by 12; sample monthly standard
+    deviations are multiplied by square root of 12. If requested, the final 36
+    monthly returns (37 prices) are used. These historical estimates are not
+    forecasts.
+    """
+    reader = csv.DictReader(StringIO(_read_price_csv(source)))
+    if not reader.fieldnames or len(reader.fieldnames) < 2:
+        raise ValueError("CSV must have a date first and at least one ticker.")
+    if reader.fieldnames[0].strip().lower() != "date":
+        raise ValueError("The first CSV column must be Date.")
+    tickers = reader.fieldnames[1:]
+    if len(set(tickers)) != len(tickers):
+        raise ValueError("Ticker columns must have unique names.")
+
+    dates: list[date] = []
+    prices = {ticker: [] for ticker in tickers}
+    for row_number, row in enumerate(reader, start=2):
+        try:
+            dates.append(date.fromisoformat(row[reader.fieldnames[0]].strip()))
+            for ticker in tickers:
+                price = float(row[ticker])
+                if price <= 0.0:
+                    raise ValueError
+                prices[ticker].append(price)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(
+                f"CSV row {row_number} must contain an ISO date and positive prices."
+            ) from exc
+
+    if len(dates) < 3:
+        raise ValueError("CSV must contain at least three monthly price rows.")
+    if any(later <= earlier for earlier, later in zip(dates, dates[1:])):
+        raise ValueError("CSV dates must be unique and oldest first.")
+
+    monthly_returns = {
+        ticker: [
+            current / previous - 1.0
+            for previous, current in zip(values, values[1:])
+        ]
+        for ticker, values in prices.items()
+    }
+    if last_36_months:
+        if len(dates) < 37:
+            raise ValueError("Last-36 analysis requires at least 37 monthly prices.")
+        monthly_returns = {
+            ticker: values[-36:] for ticker, values in monthly_returns.items()
+        }
+
+    sleeves = {
+        ticker: {
+            "expected_return": mean(returns) * 12.0,
+            "volatility": stdev(returns) * sqrt(12.0),
+        }
+        for ticker, returns in monthly_returns.items()
+    }
+    correlations = {
+        row_ticker: {
+            column_ticker: (
+                1.0
+                if row_ticker == column_ticker
+                else correlation(
+                    monthly_returns[row_ticker], monthly_returns[column_ticker]
+                )
+            )
+            for column_ticker in tickers
+        }
+        for row_ticker in tickers
+    }
+    validate_inputs(sleeves, correlations)
+    return sleeves, correlations
 
 
 def print_portfolio(
