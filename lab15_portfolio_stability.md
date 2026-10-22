@@ -90,7 +90,7 @@ The app computes arithmetic mean monthly return × 12, sample monthly standard
 deviation × √12, and correlations from the same monthly returns. These are
 historical estimates, not forecasts.
 
-| Window | Return estimates: BIL / IEF / LQD / VT | Lowest-risk mix: BIL / IEF / LQD / VT | Mix return | Volatility | Reserve |
+| Window | Return estimates: SGOV / VGIT / BND / VT | Lowest-risk mix: SGOV / VGIT / BND / VT | Mix return | Volatility | Reserve |
 |---|---:|---:|---:|---:|---:|
 | All 60 monthly returns | 3.72 / -0.29 / -0.42 / 11.90% | 65 / 0 / 0 / 35 | 6.58% | 5.29% | 65% |
 | Last 36 monthly returns | 4.44 / 3.52 / 4.10 / 20.25% | 85 / 0 / 0 / 15 | 6.81% | 1.79% | 85% |
