@@ -8,6 +8,8 @@ answer survive a one-point change in one estimate?**
 The app is in [`app.py`](app.py), and all calculations are imported from
 [`portfolio.py`](portfolio.py). Run it from the repository root:
 
+**Live app:** [Portfolio Stability Decision](https://karim-portfolio-stability.streamlit.app/)
+
 ```bash
 streamlit run app.py
 ```
