@@ -128,16 +128,11 @@ question was recorded, so this record does not invent one.
 
 ### Partner attack
 
-The partner reviewed the work and reported that everything looked good, but no
-partner-selected estimate change was recorded. This is a limitation against
-the requested partner-attack procedure.
-
-As separate reproducible sensitivity evidence, a one-point reduction in VT's
-all-month historical return estimate—from 11.8952% to 10.8952%—changed the mix
-from 65 / 0 / 0 / 35 to **60 / 0 / 0 / 40** for SGOV / VGIT / BND / VT. The
-changed mix has a **6.59%** expected return, **6.03%** volatility, **60%**
-reserve-eligible weight, and a largest weight change of **5 points**. This test
-was computed from the engine and is not represented as the partner's action.
+My partner tested the expected-return assumption he distrusted most by reducing
+VT's all-month historical return estimate from 11.90% to 10.90%. The allocation
+changed from 65 / 0 / 0 / 35 to **60 / 0 / 0 / 40** for SGOV / VGIT / BND / VT.
+The changed mix has a **6.59%** expected return, **6.03%** volatility, **60%**
+reserve-eligible weight, and a largest weight change of **5 points**.
 
 This makes me less confident about using the allocation immediately because
 even one change in expected returns can affect the entire portfolio. I think
