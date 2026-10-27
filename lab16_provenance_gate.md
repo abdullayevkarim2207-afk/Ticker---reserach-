@@ -91,6 +91,6 @@ revision, and the required 15 April comparison.
 ## AI-use disclosure
 
 OpenAI Codex assisted with implementing and testing the filter and organizing
-this written record. The student remains responsible for reading and
+this written record. I am the student remains responsible for reading and
 explaining the code, completing the in-class partner exercise, and submitting
 the GitHub links through Brightspace.
