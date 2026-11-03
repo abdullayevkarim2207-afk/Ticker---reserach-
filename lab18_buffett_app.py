@@ -69,6 +69,19 @@ PAGE_CSS = """
     }
 
     html, body, [class*="css"] { font-family: "DM Sans", sans-serif; }
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"], [data-testid="stBottom"],
+    [data-testid="stBottomBlockContainer"], footer {
+        background: #050816 !important;
+    }
+    [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stStatusWidget"] {
+        color: var(--text) !important;
+        background: rgba(5, 8, 22, .96) !important;
+        border-bottom-color: var(--line) !important;
+    }
+    [data-testid="stDecoration"] {
+        background: linear-gradient(90deg, var(--cyan), var(--violet), var(--lime)) !important;
+    }
     .stApp {
         color: var(--text);
         background:
@@ -191,7 +204,11 @@ PAGE_CSS = """
     .stTabs [aria-selected="true"] { background: rgba(104,225,255,.09); }
     .stTabs [data-baseweb="tab"] p { color: #8296b9 !important; font: 700 .72rem/1 "Space Mono", monospace; }
     .stTabs [aria-selected="true"] p { color: var(--cyan) !important; }
-    div[data-testid="stDataFrame"] { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+    div[data-testid="stDataFrame"] {
+        border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+        background: #071024 !important;
+    }
+    .vega-embed, .vega-embed canvas, .vega-embed svg { background: transparent !important; }
     [data-testid="stExpander"] { border-color: var(--line) !important; background: rgba(8,17,36,.55); }
     [data-testid="stTextArea"] textarea {
         min-height: 410px; color: #dfeaff; background: #071024; border-color: rgba(104,225,255,.25);
