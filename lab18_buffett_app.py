@@ -76,7 +76,7 @@ PAGE_CSS = """
         --warning: #ffd166;
     }
 
-    html, body, [class*="css"] { font-family: "DM Sans", sans-serif; }
+    html, body, [class*="css"] { font-family: "DM Sans", sans-serif; font-size: 18px; }
     html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"],
     [data-testid="stMainBlockContainer"], [data-testid="stBottom"],
     [data-testid="stBottomBlockContainer"], footer {
@@ -110,7 +110,7 @@ PAGE_CSS = """
     }
     [data-testid="stSidebar"] > div { padding-top: 1.2rem; }
     [data-testid="stSidebar"] h2, [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] label { color: var(--text) !important; }
+    [data-testid="stSidebar"] label { color: var(--text) !important; font-size: 1rem !important; }
     [data-testid="stSidebar"] input {
         color: var(--text) !important;
         background: rgba(4,10,24,.9) !important;
@@ -165,7 +165,7 @@ PAGE_CSS = """
     .hero-kicker { color: var(--cyan); font: 700 .7rem/1 "Space Mono", monospace; letter-spacing: .18em; }
     .hero h1 { margin: .55rem 0 .4rem; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -.055em; line-height: 1.02; }
     .hero h1 span { color: var(--lime); }
-    .hero p { max-width: 830px; margin: 0; color: #a9bad7; font-size: .98rem; }
+    .hero p { max-width: 830px; margin: 0; color: #a9bad7; font-size: 1.08rem; }
     .hero-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; }
     .chip {
         padding: .36rem .62rem; border: 1px solid rgba(104,225,255,.2); border-radius: 999px;
@@ -178,11 +178,11 @@ PAGE_CSS = """
         min-height: 112px; padding: 1rem 1.05rem; border: 1px solid var(--line); border-radius: 16px;
         background: linear-gradient(145deg, rgba(15,28,56,.82), rgba(8,16,34,.78));
     }
-    .metric-label { color: var(--muted); font: 700 .65rem/1.2 "Space Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .metric-label { color: var(--muted); font: 700 .75rem/1.2 "Space Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
     .metric-value { margin-top: .55rem; color: var(--text); font-size: 1.55rem; font-weight: 750; letter-spacing: -.03em; }
-    .metric-note { margin-top: .2rem; color: #7286aa; font-size: .72rem; }
+    .metric-note { margin-top: .2rem; color: #8fa2c4; font-size: .84rem; }
 
-    .section-label { margin: .45rem 0 .85rem; color: var(--muted); font: 700 .68rem/1 "Space Mono", monospace; letter-spacing: .15em; text-transform: uppercase; }
+    .section-label { margin: .45rem 0 .85rem; color: var(--muted); font: 700 .8rem/1 "Space Mono", monospace; letter-spacing: .15em; text-transform: uppercase; }
     .panel {
         padding: 1.15rem 1.2rem; border: 1px solid var(--line); border-radius: 16px;
         background: var(--panel); box-shadow: 0 15px 40px rgba(0,0,0,.18);
@@ -195,7 +195,7 @@ PAGE_CSS = """
     .check-card.pass .check-status { color: var(--lime); }
     .check-card.fail .check-status { color: var(--danger); }
     .check-card.unknown .check-status { color: var(--warning); }
-    .check-name { margin-top: .8rem; color: #e7eefb; font-size: .93rem; font-weight: 600; line-height: 1.35; }
+    .check-name { margin-top: .8rem; color: #e7eefb; font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
 
     .audit-pass, .audit-fail, .decision-card, .empty-state {
         padding: 1rem 1.1rem; border-radius: 14px; margin: .8rem 0;
@@ -215,7 +215,10 @@ PAGE_CSS = """
     div[data-testid="stDataFrame"] {
         border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
         background: #071024 !important;
+        font-size: 18px !important;
     }
+    .decision-card { font-size: 1rem; line-height: 1.55; }
+    [data-testid="stCaptionContainer"] { font-size: .9rem !important; }
     .vega-embed, .vega-embed canvas, .vega-embed svg { background: transparent !important; }
     [data-testid="stExpander"] { border-color: var(--line) !important; background: rgba(8,17,36,.55); }
     [data-testid="stTextArea"] textarea {
@@ -533,6 +536,7 @@ def styled_panel(analysis: dict) -> pd.io.formats.style.Styler:
                 "background-color": "#0b1530",
                 "color": "#dfeaff",
                 "border-color": "#26385d",
+                "font-size": "18px",
             }
         )
         .set_table_styles(
@@ -543,6 +547,7 @@ def styled_panel(analysis: dict) -> pd.io.formats.style.Styler:
                         ("background-color", "#111d3a"),
                         ("color", "#68e1ff"),
                         ("border-color", "#26385d"),
+                        ("font-size", "18px"),
                     ],
                 }
             ]
