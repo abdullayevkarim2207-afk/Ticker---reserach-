@@ -16,7 +16,12 @@ SKILL_SCRIPTS = (
 )
 sys.path.insert(0, str(SKILL_SCRIPTS))
 
-from buffett_10k import analyze_companyfacts, audit_memo_numbers, render_analysis
+from buffett_10k import (
+    analyze_companyfacts,
+    audit_memo_numbers,
+    compute_graham_checks,
+    render_analysis,
+)
 
 
 DATES = [
@@ -51,6 +56,9 @@ COST_VALUES = {
         6_435,
     ],
     "StockholdersEquity": [20_642, 25_058, 23_622, 29_164, 35_803],
+    "Liabilities": [43_515, 43_914, 46_299, 47_829, 53_346],
+    "AssetsCurrent": [32_696, 35_879, 34_246, 38_861, 43_209],
+    "LiabilitiesCurrent": [32_060, 33_583, 35_464, 37_733, 40_764],
 }
 
 
@@ -83,7 +91,12 @@ def companyfacts(
     facts = {}
     for tag, tag_values in values.items():
         actual_tag = revenue_tag if tag == "revenue" else tag
-        if actual_tag == "StockholdersEquity":
+        if actual_tag in {
+            "StockholdersEquity",
+            "Liabilities",
+            "AssetsCurrent",
+            "LiabilitiesCurrent",
+        }:
             rows = [
                 instant_fact(end, value, f"{2022 + index + 1}-10-10")
                 for index, ((_, end), value) in enumerate(zip(DATES, tag_values))
@@ -122,6 +135,38 @@ class BuffettLabTests(unittest.TestCase):
                 "owner_earnings_positive_every_year": "pass",
                 "owner_earnings_grew": "pass",
             },
+        )
+        self.assertEqual(
+            [round(row["current_ratio"]["value"], 2) for row in rows],
+            [1.02, 1.07, 0.97, 1.03, 1.06],
+        )
+        self.assertEqual(
+            [round(row["liabilities_to_equity"]["value"], 2) for row in rows],
+            [2.11, 1.75, 1.96, 1.64, 1.49],
+        )
+        self.assertEqual(
+            analysis["panel_checks"],
+            {
+                "Buffett": analysis["checks"],
+                "Graham": {
+                    "current_ratio_latest": "fail",
+                    "net_income_positive_every_year": "pass",
+                    "net_income_grew": "pass",
+                },
+                "Burry": {
+                    "cash_flow_covers_net_income_every_year": "pass",
+                    "liabilities_no_more_than_twice_equity_latest": "pass",
+                },
+            },
+        )
+        self.assertEqual(
+            compute_graham_checks(rows, current_ratio_threshold=1.0)[
+                "current_ratio_latest"
+            ],
+            "pass",
+        )
+        self.assertEqual(
+            analysis["graham_probe_checks"]["current_ratio_latest"], "pass"
         )
 
     def test_latest_filing_wins_for_same_period(self) -> None:
@@ -166,6 +211,17 @@ class BuffettLabTests(unittest.TestCase):
         self.assertEqual(
             audit_memo_numbers(clean_memo + " Hand-entered ROE was 40.0%.", output),
             ["40.0%"],
+        )
+
+    def test_all_cost_panel_memos_pass_one_number_audit(self) -> None:
+        analysis = analyze_companyfacts("COST", self.cost_facts)
+        repo = Path(__file__).resolve().parents[1]
+        memos = [
+            (repo / f"lab19_{investor}_memo_COST.md").read_text(encoding="utf-8")
+            for investor in ("buffett", "graham", "burry")
+        ]
+        self.assertEqual(
+            audit_memo_numbers("\n".join(memos), render_analysis(analysis)), []
         )
 
 

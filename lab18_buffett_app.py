@@ -1,4 +1,4 @@
-"""Futuristic Streamlit interface for FIN 43900 Lab 18."""
+"""Streamlit legend panel for FIN 43900 Lab 19."""
 
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ if str(SKILL_SCRIPTS) not in sys.path:
 from buffett_10k import (  # noqa: E402
     CHECK_LABELS,
     EdgarError,
+    INVESTOR_CHECK_LABELS,
     METRIC_LABELS,
     analyze_ticker,
     audit_memo_numbers,
@@ -31,12 +32,12 @@ from buffett_10k import (  # noqa: E402
 
 DECISIONS = {
     "COST": (
-        "I trust the COST verdict as a consistent screen because all three checks "
-        "are reproduced from tagged 10-K facts, but it is not a complete investment decision."
+        "Only with the condition that it remains a first-pass screen: COST's split is "
+        "caused by Graham's liquidity threshold, and price and qualitative risks remain outside it."
     ),
-    "JPM": (
-        "I do not trust an owner-earnings verdict on JPM because the required capital-spending "
-        "fact is not found, so both owner-earnings checks remain not known."
+    "NVDA": (
+        "Only with the condition that every fail and not-known result is investigated in the "
+        "10-K: NVDA's Burry cash-coverage failure is a prompt for research, not an automatic rejection."
     ),
 }
 
@@ -46,8 +47,13 @@ METRIC_ORDER = (
     "operating_cash_flow",
     "capital_spending",
     "equity",
+    "liabilities",
+    "current_assets",
+    "current_liabilities",
     "roe",
     "owner_earnings",
+    "current_ratio",
+    "liabilities_to_equity",
 )
 
 PAGE_CSS = """
@@ -259,15 +265,71 @@ def chart_frame(analysis: dict) -> pd.DataFrame:
     return pd.DataFrame.from_records(records)
 
 
-def load_memo(ticker: str) -> str:
-    path = REPO_ROOT / f"lab18_buffett_memo_{ticker}.md"
+def verdict_for(checks: dict[str, str]) -> str:
+    """Map coded checks to a consistent panel verdict without hiding gaps."""
+    statuses = list(checks.values())
+    if statuses and all(status == "pass" for status in statuses):
+        return "OWN"
+    if any(status == "not known" for status in statuses):
+        return "WATCH — EVIDENCE GAP"
+    return "WATCH"
+
+
+def generated_memo(analysis: dict, investor: str) -> str:
+    """Create a concise memo using only values present in rendered evidence."""
+    ticker = analysis["ticker"]
+    rows = analysis["rows"]
+    checks = analysis["panel_checks"][investor]
+    passed = sum(status == "pass" for status in checks.values())
+    total = len(checks)
+    verdict = verdict_for(checks)
+
+    if investor == "Buffett":
+        first_owner = format_cell(rows[0]["owner_earnings"], "owner_earnings").split(" [")[0]
+        last_owner = format_cell(rows[-1]["owner_earnings"], "owner_earnings").split(" [")[0]
+        latest_roe = format_cell(rows[-1]["roe"], "roe").split(" [")[0]
+        body = (
+            f"The coded screen passes {passed} of {total} checks. Latest ROE is "
+            f"{latest_roe}; owner earnings move from {first_owner} to {last_owner}. "
+            "The evidence supports business quality, but this is not a price judgment."
+        )
+    elif investor == "Graham":
+        ratio = format_cell(rows[-1]["current_ratio"], "current_ratio").split(" [")[0]
+        first_income = format_cell(rows[0]["net_income"], "net_income").split(" [")[0]
+        last_income = format_cell(rows[-1]["net_income"], "net_income").split(" [")[0]
+        body = (
+            f"The coded screen passes {passed} of {total} checks. The latest current "
+            f"ratio is {ratio}; net income moves from {first_income} to {last_income}. "
+            "I keep the 2.0 current-ratio threshold because this defensive screen is meant "
+            "to demand a substantial liquidity cushion. The 1.0 probe result is "
+            f"{analysis['graham_probe_checks']['current_ratio_latest']}."
+        )
+    else:
+        leverage = format_cell(
+            rows[-1]["liabilities_to_equity"], "liabilities_to_equity"
+        ).split(" [")[0]
+        latest_cash = format_cell(
+            rows[-1]["operating_cash_flow"], "operating_cash_flow"
+        ).split(" [")[0]
+        latest_income = format_cell(rows[-1]["net_income"], "net_income").split(" [")[0]
+        body = (
+            f"The coded screen passes {passed} of {total} checks. Latest liabilities "
+            f"to equity are {leverage}; latest operating cash flow is {latest_cash}, "
+            f"and latest net income is {latest_income}. The every-year cash-coverage "
+            f"check is {checks['cash_flow_covers_net_income_every_year']}."
+        )
+    return f"### {investor} — {verdict}\n\n{body}"
+
+
+def load_memo(ticker: str, investor: str, analysis: dict) -> str:
+    path = REPO_ROOT / f"lab19_{investor.lower()}_memo_{ticker}.md"
     if path.exists():
         return path.read_text(encoding="utf-8")
-    return (
-        f"# Buffett-style memo — {ticker}\n\n"
-        "No saved memo was found. Run the `buffett-10k` skill for this ticker, "
-        "then save its evidence-bounded memo in the repository root.\n"
-    )
+    if investor == "Buffett":
+        legacy = REPO_ROOT / f"lab18_buffett_memo_{ticker}.md"
+        if legacy.exists():
+            return legacy.read_text(encoding="utf-8")
+    return generated_memo(analysis, investor)
 
 
 def evidence_gap_count(analysis: dict) -> int:
@@ -291,8 +353,8 @@ def render_sidebar() -> tuple[str, str, bool]:
         st.markdown(
             """
             <div class="brand-lockup">
-                <div class="brand-kicker">FIN 43900 · LAB 18</div>
-                <div class="brand-title">OWNER<span>//</span>OS</div>
+                <div class="brand-kicker">FIN 43900 · LAB 19</div>
+                <div class="brand-title">LEGEND<span>//</span>PANEL</div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -301,7 +363,7 @@ def render_sidebar() -> tuple[str, str, bool]:
             "Ticker symbol",
             value="COST",
             max_chars=10,
-            help="Try COST for the known answer or JPM for the missing-data probe.",
+            help="Try COST for the known answer or NVDA for the largest VT holding.",
         ).strip().upper()
 
         environment_agent = os.environ.get("SEC_USER_AGENT", "")
@@ -324,8 +386,8 @@ def render_sidebar() -> tuple[str, str, bool]:
             <div class="workflow">
                 <div class="workflow-title">MISSION SEQUENCE</div>
                 <div class="workflow-step"><span class="step-no">01</span><span>Fetch keyless SEC company facts</span></div>
-                <div class="workflow-step"><span class="step-no">02</span><span>Compute five-year evidence in code</span></div>
-                <div class="workflow-step"><span class="step-no">03</span><span>Audit every memo number</span></div>
+                <div class="workflow-step"><span class="step-no">02</span><span>Run Buffett, Graham, and Burry checks</span></div>
+                <div class="workflow-step"><span class="step-no">03</span><span>Audit all three memos together</span></div>
             </div>
             """,
             unsafe_allow_html=True,
@@ -344,7 +406,7 @@ def render_hero(analysis: dict | None = None) -> None:
         f"""
         <section class="hero">
             <div class="hero-kicker">{target} // 10-K COMPUTE LAYER</div>
-            <h1>Buffett business <span>signal</span></h1>
+            <h1>Three legends, <span>one fact set</span></h1>
             <p>{company_line}. Data from SEC EDGAR; built with AI help, a learning demonstration, not investment advice.</p>
             <div class="hero-chips">
                 <span class="chip"><strong>01</strong> CODED NUMBERS</span>
@@ -358,7 +420,12 @@ def render_hero(analysis: dict | None = None) -> None:
 
 
 def render_summary(analysis: dict) -> None:
-    checks_passed = sum(status == "pass" for status in analysis["checks"].values())
+    all_checks = [
+        status
+        for checks in analysis["panel_checks"].values()
+        for status in checks.values()
+    ]
+    checks_passed = sum(status == "pass" for status in all_checks)
     gaps = evidence_gap_count(analysis)
     years = len(analysis["rows"])
     owner_value = escape(latest_owner_earnings(analysis))
@@ -366,7 +433,7 @@ def render_summary(analysis: dict) -> None:
         f"""
         <div class="metric-grid">
             <div class="metric-card"><div class="metric-label">Audit window</div><div class="metric-value">{years} years</div><div class="metric-note">latest fiscal-year ends</div></div>
-            <div class="metric-card"><div class="metric-label">Checks passed</div><div class="metric-value">{checks_passed} / 3</div><div class="metric-note">computed, not judged</div></div>
+            <div class="metric-card"><div class="metric-label">Panel checks passed</div><div class="metric-value">{checks_passed} / {len(all_checks)}</div><div class="metric-note">computed, not judged</div></div>
             <div class="metric-card"><div class="metric-label">Latest owner earnings</div><div class="metric-value">{owner_value}</div><div class="metric-note">operating cash flow − capex</div></div>
             <div class="metric-card"><div class="metric-label">Evidence gaps</div><div class="metric-value">{gaps}</div><div class="metric-note">explicitly preserved</div></div>
         </div>
@@ -431,6 +498,41 @@ def render_checks(analysis: dict) -> None:
             )
 
 
+def panel_frame(analysis: dict) -> pd.DataFrame:
+    """Build investor-by-check rows and retain the two required ratio values."""
+    records = []
+    latest = analysis["rows"][-1]
+    for investor, labels in INVESTOR_CHECK_LABELS.items():
+        for key, label in labels.items():
+            status = analysis["panel_checks"][investor][key]
+            result = status
+            if investor == "Graham" and key == "current_ratio_latest":
+                cell = latest["current_ratio"]
+                if cell["status"] == "ok":
+                    result = f"{status} ({cell['value']:.2f})"
+            if investor == "Burry" and key == "liabilities_no_more_than_twice_equity_latest":
+                cell = latest["liabilities_to_equity"]
+                if cell["status"] == "ok":
+                    result = f"{status} ({cell['value']:.2f})"
+            records.append({"Investor": investor, "Check": label, analysis["ticker"]: result})
+    return pd.DataFrame.from_records(records)
+
+
+def render_panel(analysis: dict) -> None:
+    st.markdown('<div class="section-label">Investor × check panel</div>', unsafe_allow_html=True)
+    st.dataframe(panel_frame(analysis), hide_index=True, use_container_width=True)
+    verdict_columns = st.columns(3)
+    for column, investor in zip(verdict_columns, INVESTOR_CHECK_LABELS):
+        checks = analysis["panel_checks"][investor]
+        passed = sum(status == "pass" for status in checks.values())
+        with column:
+            st.markdown(
+                f'<div class="decision-card"><strong>{escape(investor.upper())}</strong><br>'
+                f'{passed} of {len(checks)} · {escape(verdict_for(checks))}</div>',
+                unsafe_allow_html=True,
+            )
+
+
 def render_empty_state() -> None:
     st.markdown(
         """
@@ -459,6 +561,7 @@ def render_empty_state() -> None:
 
 
 def render_overview(analysis: dict) -> None:
+    render_panel(analysis)
     st.markdown('<div class="section-label">Performance signal</div>', unsafe_allow_html=True)
     render_chart(analysis)
     st.markdown('<div class="section-label">Buffett checks · computed in code</div>', unsafe_allow_html=True)
@@ -480,45 +583,37 @@ def render_evidence(analysis: dict) -> None:
 
 def render_memo_audit(analysis: dict) -> None:
     ticker = analysis["ticker"]
-    left, right = st.columns([1.65, 1])
-    with left:
-        st.markdown('<div class="section-label">Evidence-bounded memo</div>', unsafe_allow_html=True)
-        memo = st.text_area(
-            "Edit the memo to test the number-origin gate",
-            value=load_memo(ticker),
-            height=440,
-            key=f"memo_{ticker}",
-            help="Try adding 40.0% to COST. The audit should flag it immediately.",
-        )
-    with right:
-        st.markdown('<div class="section-label">Number-origin gate</div>', unsafe_allow_html=True)
-        flagged = audit_memo_numbers(memo, render_analysis(analysis))
-        if flagged:
-            items = ", ".join(f"<code>{escape(item)}</code>" for item in flagged)
-            st.markdown(
-                f'<div class="audit-fail"><strong>REJECTED</strong><br>Numbers not printed by the script: {items}</div>',
-                unsafe_allow_html=True,
+    st.markdown('<div class="section-label">Three evidence-bounded memos</div>', unsafe_allow_html=True)
+    columns = st.columns(3)
+    memos = []
+    for column, investor in zip(columns, INVESTOR_CHECK_LABELS):
+        with column:
+            memo = st.text_area(
+                f"{investor} memo",
+                value=load_memo(ticker, investor, analysis),
+                height=430,
+                key=f"memo_{investor}_{ticker}",
             )
-            st.error("Numbers not printed by the script: " + ", ".join(flagged))
-        else:
-            st.markdown(
-                '<div class="audit-pass"><strong>VERIFIED</strong><br>Every numeric claim appears in the script output.</div>',
-                unsafe_allow_html=True,
-            )
-        decision = escape(DECISIONS.get(ticker, "Not recorded for this ticker."))
+            memos.append(memo)
+
+    st.markdown('<div class="section-label">Number-origin gate · all memos</div>', unsafe_allow_html=True)
+    flagged = audit_memo_numbers("\n".join(memos), render_analysis(analysis))
+    if flagged:
+        items = ", ".join(f"<code>{escape(item)}</code>" for item in flagged)
         st.markdown(
-            f'<div class="decision-card"><strong>TRUST DECISION</strong><br>{decision}</div>',
+            f'<div class="audit-fail"><strong>REJECTED</strong><br>Numbers not printed by the script: {items}</div>',
             unsafe_allow_html=True,
         )
+    else:
         st.markdown(
-            """
-            <div class="panel">
-                <div class="metric-label">Boundary</div>
-                <p style="color:#a9bad7;font-size:.84rem;margin:.65rem 0 0">This memo judges the business, not its stock price. No valuation or forecast data is permitted.</p>
-            </div>
-            """,
+            '<div class="audit-pass"><strong>VERIFIED</strong><br>Every numeric claim across all three memos appears in the script output.</div>',
             unsafe_allow_html=True,
         )
+    decision = escape(DECISIONS.get(ticker, "Only with the condition that every evidence gap remains not known and the panel is a screen, not an investment decision."))
+    st.markdown(
+        f'<div class="decision-card"><strong>TRUST DECISION</strong><br>{decision}</div>',
+        unsafe_allow_html=True,
+    )
 
 
 def render_method() -> None:
@@ -531,7 +626,9 @@ def render_method() -> None:
                 <div class="metric-label">Formulas</div>
                 <p><code>ROE = net income ÷ year-end equity</code></p>
                 <p><code>Owner earnings = operating cash flow − capital spending</code></p>
-                <p style="color:#8fa2c4;font-size:.84rem">The code tests ROE ≥ 15% every year, positive owner earnings every year, and first-to-last owner-earnings growth.</p>
+                <p><code>Current ratio = current assets ÷ current liabilities</code></p>
+                <p><code>Leverage = liabilities ÷ equity</code></p>
+                <p style="color:#8fa2c4;font-size:.84rem">All eight panel checks are computed from the same five-year fact set.</p>
             </div>
             """,
             unsafe_allow_html=True,
@@ -557,13 +654,16 @@ def render_method() -> None:
         | Operating cash flow | `NetCashProvidedByUsedInOperatingActivities` |
         | Capital spending | `PaymentsToAcquirePropertyPlantAndEquipment`, then `PaymentsToAcquireProductiveAssets` |
         | Equity | `StockholdersEquity` |
+        | Liabilities | `Liabilities` |
+        | Current assets | `AssetsCurrent` |
+        | Current liabilities | `LiabilitiesCurrent` |
         """
     )
 
 
 def main() -> None:
     st.set_page_config(
-        page_title="OWNER//OS · Buffett 10-K",
+        page_title="LEGEND//PANEL · 10-K",
         page_icon="◈",
         layout="wide",
         initial_sidebar_state="expanded",

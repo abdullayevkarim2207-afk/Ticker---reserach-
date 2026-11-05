@@ -33,6 +33,9 @@ METRIC_TAGS = {
         "PaymentsToAcquireProductiveAssets",
     ],
     "equity": ["StockholdersEquity"],
+    "liabilities": ["Liabilities"],
+    "current_assets": ["AssetsCurrent"],
+    "current_liabilities": ["LiabilitiesCurrent"],
 }
 
 METRIC_LABELS = {
@@ -41,14 +44,40 @@ METRIC_LABELS = {
     "operating_cash_flow": "Operating cash flow",
     "capital_spending": "Capital spending",
     "equity": "Equity",
+    "liabilities": "Liabilities",
+    "current_assets": "Current assets",
+    "current_liabilities": "Current liabilities",
     "roe": "ROE",
     "owner_earnings": "Owner earnings",
+    "current_ratio": "Current ratio",
+    "liabilities_to_equity": "Liabilities / equity",
 }
 
 CHECK_LABELS = {
     "roe_15_every_year": "ROE of 15% or more every year",
     "owner_earnings_positive_every_year": "Owner earnings positive every year",
     "owner_earnings_grew": "Owner earnings grew, first year to last",
+}
+
+GRAHAM_CHECK_LABELS = {
+    "current_ratio_latest": "Current ratio of 2 or more, latest year",
+    "net_income_positive_every_year": "Net income positive every year",
+    "net_income_grew": "Net income grew, first year to last",
+}
+
+BURRY_CHECK_LABELS = {
+    "cash_flow_covers_net_income_every_year": (
+        "Operating cash flow at least net income every year"
+    ),
+    "liabilities_no_more_than_twice_equity_latest": (
+        "Liabilities no more than twice equity, latest year"
+    ),
+}
+
+INVESTOR_CHECK_LABELS = {
+    "Buffett": CHECK_LABELS,
+    "Graham": GRAHAM_CHECK_LABELS,
+    "Burry": BURRY_CHECK_LABELS,
 }
 
 NUMBER_RE = re.compile(r"(?<![\d,])(?:\$\s*)?-?\d[\d,]*(?:\.\d+)?%?")
@@ -173,7 +202,14 @@ def _flow_metric(
 
 
 def _equity_metric(companyfacts: dict[str, Any], fiscal_end: str) -> dict[str, Any]:
-    tag = METRIC_TAGS["equity"][0]
+    return _instant_metric(companyfacts, "equity", fiscal_end)
+
+
+def _instant_metric(
+    companyfacts: dict[str, Any], metric: str, fiscal_end: str
+) -> dict[str, Any]:
+    """Select a year-end balance-sheet fact with the metric's tag priority."""
+    tag = METRIC_TAGS[metric][0]
     fact = _latest_filed(_instant_facts(companyfacts, tag, fiscal_end))
     if fact is None:
         return _missing([tag])
@@ -225,6 +261,29 @@ def _computed_metrics(row: dict[str, Any]) -> None:
             operating_cash_flow["value"] - capital_spending["value"], owner_tag
         )
 
+    current_assets = row["current_assets"]
+    current_liabilities = row["current_liabilities"]
+    current_ratio_tag = "AssetsCurrent / LiabilitiesCurrent"
+    if current_assets["status"] != "ok" or current_liabilities["status"] != "ok":
+        row["current_ratio"] = _missing([current_ratio_tag])
+    elif current_liabilities["value"] <= 0:
+        row["current_ratio"] = _missing([current_ratio_tag], status="not known")
+    else:
+        row["current_ratio"] = _reported(
+            current_assets["value"] / current_liabilities["value"], current_ratio_tag
+        )
+
+    liabilities = row["liabilities"]
+    leverage_tag = "Liabilities / StockholdersEquity"
+    if liabilities["status"] != "ok" or equity["status"] != "ok":
+        row["liabilities_to_equity"] = _missing([leverage_tag])
+    elif equity["value"] <= 0:
+        row["liabilities_to_equity"] = _missing([leverage_tag], status="not known")
+    else:
+        row["liabilities_to_equity"] = _reported(
+            liabilities["value"] / equity["value"], leverage_tag
+        )
+
 
 def _check_all(rows: list[dict[str, Any]], metric: str, predicate: Any) -> str:
     values = [row[metric] for row in rows]
@@ -251,6 +310,60 @@ def compute_checks(rows: list[dict[str, Any]]) -> dict[str, str]:
     }
 
 
+def compute_graham_checks(
+    rows: list[dict[str, Any]], current_ratio_threshold: float = 2.0
+) -> dict[str, str]:
+    """Turn Graham's three course rules into pass, fail, or not known."""
+    latest_ratio = "not known"
+    if rows:
+        latest = rows[-1]["current_ratio"]
+        if latest["status"] == "ok":
+            latest_ratio = (
+                "pass" if latest["value"] >= current_ratio_threshold else "fail"
+            )
+
+    income_growth = "not known"
+    if rows:
+        first = rows[0]["net_income"]
+        last = rows[-1]["net_income"]
+        if first["status"] == "ok" and last["status"] == "ok":
+            income_growth = "pass" if last["value"] > first["value"] else "fail"
+
+    return {
+        "current_ratio_latest": latest_ratio,
+        "net_income_positive_every_year": _check_all(
+            rows, "net_income", lambda value: value > 0.0
+        ),
+        "net_income_grew": income_growth,
+    }
+
+
+def compute_burry_checks(rows: list[dict[str, Any]]) -> dict[str, str]:
+    """Turn Burry's two course rules into pass, fail, or not known."""
+    cash_coverage = "not known"
+    if rows:
+        pairs = [
+            (row["operating_cash_flow"], row["net_income"]) for row in rows
+        ]
+        if all(cash["status"] == "ok" and income["status"] == "ok" for cash, income in pairs):
+            cash_coverage = (
+                "pass"
+                if all(cash["value"] >= income["value"] for cash, income in pairs)
+                else "fail"
+            )
+
+    leverage = "not known"
+    if rows:
+        latest = rows[-1]["liabilities_to_equity"]
+        if latest["status"] == "ok":
+            leverage = "pass" if latest["value"] <= 2.0 else "fail"
+
+    return {
+        "cash_flow_covers_net_income_every_year": cash_coverage,
+        "liabilities_no_more_than_twice_equity_latest": leverage,
+    }
+
+
 def analyze_companyfacts(ticker: str, companyfacts: dict[str, Any]) -> dict[str, Any]:
     """Turn SEC company facts into five tagged rows and deterministic checks."""
     rows: list[dict[str, Any]] = []
@@ -263,9 +376,19 @@ def analyze_companyfacts(ticker: str, companyfacts: dict[str, Any]) -> dict[str,
             "capital_spending",
         ):
             row[metric] = _flow_metric(companyfacts, metric, fiscal_end)
-        row["equity"] = _equity_metric(companyfacts, fiscal_end)
+        for metric in (
+            "equity",
+            "liabilities",
+            "current_assets",
+            "current_liabilities",
+        ):
+            row[metric] = _instant_metric(companyfacts, metric, fiscal_end)
         _computed_metrics(row)
         rows.append(row)
+
+    buffett_checks = compute_checks(rows)
+    graham_checks = compute_graham_checks(rows)
+    burry_checks = compute_burry_checks(rows)
 
     return {
         "ticker": ticker.strip().upper(),
@@ -273,7 +396,17 @@ def analyze_companyfacts(ticker: str, companyfacts: dict[str, Any]) -> dict[str,
         "unit": "USD millions",
         "source": "SEC EDGAR company facts; 10-K only",
         "rows": rows,
-        "checks": compute_checks(rows),
+        "checks": buffett_checks,
+        "panel_checks": {
+            "Buffett": buffett_checks,
+            "Graham": graham_checks,
+            "Burry": burry_checks,
+        },
+        "graham_current_ratio_threshold": 2.0,
+        "graham_probe_threshold": 1.0,
+        "graham_probe_checks": compute_graham_checks(
+            rows, current_ratio_threshold=1.0
+        ),
     }
 
 
@@ -302,6 +435,8 @@ def format_cell(cell: dict[str, Any], metric: str) -> str:
         return f"{cell['status']} [XBRL: {cell['tag']}]"
     if metric == "roe":
         value = f"{cell['value']:.1f}%"
+    elif metric in {"current_ratio", "liabilities_to_equity"}:
+        value = f"{cell['value']:.2f}"
     else:
         value = _format_millions(float(cell["value"]))
     return f"{value} [XBRL: {cell['tag']}]"
@@ -321,8 +456,13 @@ def render_analysis(analysis: dict[str, Any]) -> str:
         "operating_cash_flow",
         "capital_spending",
         "equity",
+        "liabilities",
+        "current_assets",
+        "current_liabilities",
         "roe",
         "owner_earnings",
+        "current_ratio",
+        "liabilities_to_equity",
     )
     for row in analysis["rows"]:
         lines.append(f"Fiscal year end: {row['fiscal_year_end']}")
@@ -332,6 +472,33 @@ def render_analysis(analysis: dict[str, Any]) -> str:
     lines.append("Buffett checks (computed in code):")
     for check, label in CHECK_LABELS.items():
         lines.append(f"  {label}: {analysis['checks'][check]}")
+    lines.append(
+        "  Passed: "
+        f"{sum(status == 'pass' for status in analysis['checks'].values())} "
+        f"of {len(analysis['checks'])}"
+    )
+    lines.append("")
+    lines.append("Graham checks (computed in code; current-ratio threshold 2.0):")
+    for check, label in GRAHAM_CHECK_LABELS.items():
+        lines.append(f"  {label}: {analysis['panel_checks']['Graham'][check]}")
+    lines.append(
+        "  Passed: "
+        f"{sum(status == 'pass' for status in analysis['panel_checks']['Graham'].values())} "
+        f"of {len(analysis['panel_checks']['Graham'])}"
+    )
+    lines.append(
+        "  Threshold probe at 1.0, latest-year current ratio: "
+        f"{analysis['graham_probe_checks']['current_ratio_latest']}"
+    )
+    lines.append("")
+    lines.append("Burry checks (computed in code):")
+    for check, label in BURRY_CHECK_LABELS.items():
+        lines.append(f"  {label}: {analysis['panel_checks']['Burry'][check]}")
+    lines.append(
+        "  Passed: "
+        f"{sum(status == 'pass' for status in analysis['panel_checks']['Burry'].values())} "
+        f"of {len(analysis['panel_checks']['Burry'])}"
+    )
     return "\n".join(lines).rstrip() + "\n"
 
 
