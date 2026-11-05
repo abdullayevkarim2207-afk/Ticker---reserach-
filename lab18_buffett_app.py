@@ -41,6 +41,8 @@ DECISIONS = {
     ),
 }
 
+DEFAULT_SEC_USER_AGENT = "FIN43900 Lab19 student@example.edu"
+
 METRIC_ORDER = (
     "revenue",
     "net_income",
@@ -366,19 +368,11 @@ def render_sidebar() -> tuple[str, str, bool]:
             help="Try COST for the known answer or NVDA for the largest VT holding.",
         ).strip().upper()
 
-        environment_agent = os.environ.get("SEC_USER_AGENT", "")
-        if environment_agent:
-            user_agent = environment_agent
-            st.markdown(
-                '<div class="connection"><span class="pulse"></span>SEC identity connected</div>',
-                unsafe_allow_html=True,
-            )
-        else:
-            user_agent = st.text_input(
-                "SEC identity · name and email",
-                type="password",
-                help="Sent to the SEC for this session and never written to the repository.",
-            )
+        user_agent = os.environ.get("SEC_USER_AGENT", DEFAULT_SEC_USER_AGENT)
+        st.markdown(
+            '<div class="connection"><span class="pulse"></span>SEC access configured automatically</div>',
+            unsafe_allow_html=True,
+        )
 
         run = st.button("Run 10-K analysis →", type="primary", use_container_width=True)
         st.markdown(

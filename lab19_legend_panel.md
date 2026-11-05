@@ -19,7 +19,7 @@ They agree when the same filed evidence clears each investor's coded rule, but t
 - Burry skill: [`.codex/skills/burry-10k/SKILL.md`](.codex/skills/burry-10k/SKILL.md)
 - Tests: [`tests/test_lab18_buffett.py`](tests/test_lab18_buffett.py)
 
-The SEC identity belongs only in the terminal environment and is not saved in Git:
+The app supplies a non-personal course identifier automatically, so no identity field is required. An optional SEC identity override belongs only in the terminal environment and is never saved in Git:
 
 ```bash
 export SEC_USER_AGENT="Your Name your_school_email@example.edu"
