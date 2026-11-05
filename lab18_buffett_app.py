@@ -518,9 +518,48 @@ def panel_frame(analysis: dict) -> pd.DataFrame:
     return pd.DataFrame.from_records(records)
 
 
+def styled_panel(analysis: dict) -> pd.io.formats.style.Styler:
+    """Apply a low-glare dark theme while keeping pass/fail text explicit."""
+    frame = panel_frame(analysis)
+
+    def result_color(value: object) -> str:
+        text = str(value).lower()
+        if text.startswith("pass"):
+            return "color: #b7f36b; font-weight: 700;"
+        if text.startswith("fail"):
+            return "color: #ff8fa6; font-weight: 700;"
+        if text.startswith("not known"):
+            return "color: #ffd166; font-weight: 700;"
+        return "color: #f4f8ff;"
+
+    return (
+        frame.style
+        .map(result_color, subset=[analysis["ticker"]])
+        .set_properties(
+            **{
+                "background-color": "#0b1530",
+                "color": "#dfeaff",
+                "border-color": "#26385d",
+            }
+        )
+        .set_table_styles(
+            [
+                {
+                    "selector": "th",
+                    "props": [
+                        ("background-color", "#111d3a"),
+                        ("color", "#68e1ff"),
+                        ("border-color", "#26385d"),
+                    ],
+                }
+            ]
+        )
+    )
+
+
 def render_panel(analysis: dict) -> None:
     st.markdown('<div class="section-label">Investor × check panel</div>', unsafe_allow_html=True)
-    st.dataframe(panel_frame(analysis), hide_index=True, use_container_width=True)
+    st.dataframe(styled_panel(analysis), hide_index=True, use_container_width=True)
     verdict_columns = st.columns(3)
     for column, investor in zip(verdict_columns, INVESTOR_CHECK_LABELS):
         checks = analysis["panel_checks"][investor]
