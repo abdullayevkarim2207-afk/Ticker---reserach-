@@ -525,16 +525,15 @@ def styled_panel(analysis: dict) -> pd.io.formats.style.Styler:
     def result_color(value: object) -> str:
         text = str(value).lower()
         if text.startswith("pass"):
-            return "color: #b7f36b; font-weight: 700;"
+            return "color: #b7f36b !important; font-weight: 800;"
         if text.startswith("fail"):
-            return "color: #ff8fa6; font-weight: 700;"
+            return "color: #ff5f7d !important; font-weight: 800;"
         if text.startswith("not known"):
-            return "color: #ffd166; font-weight: 700;"
+            return "color: #ffd166 !important; font-weight: 800;"
         return "color: #f4f8ff;"
 
     return (
         frame.style
-        .map(result_color, subset=[analysis["ticker"]])
         .set_properties(
             **{
                 "background-color": "#0b1530",
@@ -554,6 +553,7 @@ def styled_panel(analysis: dict) -> pd.io.formats.style.Styler:
                 }
             ]
         )
+        .map(result_color, subset=[analysis["ticker"]])
     )
 
 
