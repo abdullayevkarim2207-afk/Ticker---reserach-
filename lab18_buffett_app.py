@@ -538,7 +538,7 @@ def render_empty_state() -> None:
         """
         <div class="empty-state">
             <h3>Ready for evidence</h3>
-            <p>Use COST to reproduce the known answer or JPM to test honest missing-data behavior. The app downloads public SEC facts only after you press Run.</p>
+            <p>Use COST to reproduce the known answer or NVDA for the largest-company run from VT. The app downloads public SEC facts only after you press Run.</p>
         </div>
         """,
         unsafe_allow_html=True,

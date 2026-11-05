@@ -86,6 +86,16 @@ The NVDA result is **Buffett 3 of 3, Graham 3 of 3, and Burry 1 of 2**. There ar
 
 **Only with a condition: I would use the panel as a first-pass Project 2 screen only when every fail and `not known` result is investigated in the filing and no verdict is treated as a substitute for valuation.**
 
+## My partner explanation
+
+In Lab 19, I noticed that Buffett, Graham, and Burry can have different opinions about the same company. For example, Buffett passes Costco because its ROE and owner earnings are strong, while Graham has concerns about its current ratio of 1.06. Burry also passes Costco based on its cash flow and liabilities.
+
+The Graham code checks the current ratio, net income, and earnings growth. If data is missing, it says `not known` instead of guessing.
+
+For NVIDIA, Buffett and Graham passed all three checks, but Burry found an issue with cash flow. I also found it interesting that Costco failed Graham's current-ratio test at 2.0 but passed when the threshold changed to 1.0, showing how much the rules matter.
+
+Overall, I think having multiple AI agents is useful because they look at companies differently. I would use this panel for Project 2 as a starting point, but I would still check the 10-K for any issues and consider valuation before making a final decision.
+
 ## A panel of AI agents — learn and reflect
 
 A panel of AI agents is a set of specialized roles that examine a shared evidence set under different instructions or rules. Here, the data do not change between investors: the code selects one set of 10-K facts, and Buffett, Graham, and Burry apply different definitions of business quality, defensive strength, and accounting quality. Their disagreement comes from different checks and thresholds, not from giving each persona different facts.
