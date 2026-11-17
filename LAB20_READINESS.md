@@ -47,15 +47,15 @@ information.
 | Field | Partner record |
 |---|---|
 | Repository URL | `https://github.com/abdullayevkarim2207-afk/Ticker---reserach-` |
-| Commit tested | Main branch; exact pre-fix hash not reported by partner |
-| Command copied from README | `git clone ...`; `cd Ticker---reserach-`; `python3 project2_run.py` |
+| Commit tested | `8c9e7cb` from the main branch |
+| Command copied from corrected README | `git clone ... Ticker-research-cold-run`; `cd Ticker-research-cold-run`; `py project2_run.py` |
 | First failure, exactly as observed | `fatal: destination path 'Ticker---reserach-' already exists and is not an empty directory.` |
 | Second failure | Windows reported that Python was not found when `python3` was used |
-| Elapsed time to result | No result yet; failures were reported immediately |
-| Result location | No result produced before the README fix |
-| Observed decision | Not reached before the README fix |
+| Elapsed time to result | Not explicitly timed; clone and decision completed in one terminal run |
+| Result location | Windows PowerShell terminal output |
+| Observed decision | Tightly bounded pilot; do not adopt or allocate client capital yet |
 | Fix pushed | README now uses a fresh clone destination and Windows `py` command |
-| Rerun after fix | Pending partner rerun of the corrected README |
+| Rerun after fix | Successful; all three cases, the decision, and reversal trigger printed |
 
 ## Changed input - required AI-closed student record
 
@@ -131,9 +131,11 @@ points.**
 
 ## Reflection
 
-1. **What the local cold path found that I could not see:** the calculations
-   were aligned, but the decision memo was not located at the exact Lab 20 path.
-   The partner's independent observation remains pending.
+1. **What the partner cold run found that I could not see:** the original
+   README assumed the macOS/Linux `python3` command and did not protect a
+   Windows user from an existing clone-folder collision. The corrected README
+   uses the Windows `py` launcher and a fresh destination name; the partner's
+   rerun then reached the full decision output.
 2. **What I will not touch before the deadline:** after the final prediction,
    partner rerun, and evidence freeze, I will not change `prices.csv`, the
    mandate thresholds, the 5-point grid, or the decision rule.
