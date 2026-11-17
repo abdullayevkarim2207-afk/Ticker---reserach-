@@ -57,8 +57,10 @@ python3 -m unittest tests.test_portfolio tests.test_project2_run -v
 ```
 
 The app opens on the saved `prices.csv` inputs. Move the expected-return,
-objective, reserve, or historical-window control and read the mandate,
-stability, and committee verdicts below the two result panels.
+objective, reserve, stability-limit, or historical-window control; compare the
+equal-weight, inverse-volatility, 60/40, and constrained portfolios; then read
+the mandate, scenario-stability, and committee verdicts. The data card and
+risk/return map keep the source, method, and trade-offs visible on the page.
 
 ## Mandate and method
 

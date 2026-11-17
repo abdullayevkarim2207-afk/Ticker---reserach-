@@ -96,9 +96,15 @@ pilot because the original stability issue still exists.
 - **Expected return:** 6.99%
 - **Volatility:** 6.03%
 - **Mandate verdict:** PASS
-- **Selected test:** PASS; largest displayed move 0 points, within the
-  10-point limit
+- **Selected test:** PASS; corrected frozen-baseline comparison shows a
+  5-point move in SGOV and VT, within the 10-point limit
 - **Committee decision:** PAPER PILOT ONLY
+
+**Interface correction after the run:** The first interface view displayed a
+0-point move because both comparison panels reused the edited 6.80% objective.
+The dashboard now freezes the baseline at the saved 6.50% objective and shows
+the actual 5-point allocation move. The prediction and observed allocations
+were not changed.
 
 ### Outcome
 

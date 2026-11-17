@@ -25,6 +25,18 @@ class Project2AppTests(unittest.TestCase):
         self.assertIn("Largest move: **20 points**", app.error[0].value)
         self.assertIn("above the 10-point limit", app.error[0].value)
 
+    def test_higher_objective_compares_against_frozen_baseline(self) -> None:
+        app = AppTest.from_file(APP_FILE, default_timeout=10).run()
+        objective_control = next(
+            control
+            for control in app.number_input
+            if control.label == "Objective expected return (%)"
+        )
+        objective_control.set_value(6.8).run()
+        self.assertFalse(app.exception)
+        self.assertIn("**Selected test: PASS**", app.info[0].value)
+        self.assertIn("Largest move: **5 points**", app.info[0].value)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,16 +1,21 @@
 """Streamlit interface for the reusable portfolio engine."""
 
+import csv
 from copy import deepcopy
 from io import BytesIO
 from pathlib import Path
 
+import altair as alt
+import pandas as pd
 import streamlit as st
 
 from portfolio import (
     OBJECTIVE_RETURN,
     build_covariance_matrix,
+    equal_weights,
     estimate_from_price_csv,
     expected_return,
+    inverse_volatility_weights,
     portfolio_volatility,
     reserve_eligible_weight,
     search_lowest_risk_mix,
@@ -169,6 +174,61 @@ st.markdown(
         line-height: 1.5;
     }
 
+    .decision-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin: 0 0 1.4rem;
+    }
+
+    .decision-item {
+        padding: 0.9rem 1rem;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: 0 7px 20px rgba(16, 36, 62, 0.05);
+    }
+
+    .decision-item small {
+        display: block;
+        margin-bottom: 0.25rem;
+        color: var(--muted);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .decision-item strong { color: var(--ink); font-size: 0.95rem; }
+
+    .rule-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.45rem;
+        margin-top: 0.8rem;
+    }
+
+    .rule-chip {
+        padding: 0.5rem 0.6rem;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #f8fbff;
+        color: var(--muted);
+        font-size: 0.72rem;
+        line-height: 1.35;
+    }
+
+    .rule-chip b { display: block; color: var(--ink); font-size: 0.78rem; }
+    .rule-chip.pass b { color: var(--green); }
+    .rule-chip.fail b { color: var(--red); }
+
+    .portfolio-note {
+        min-height: 2.6rem;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+    }
+
     [data-testid="stVerticalBlockBorderWrapper"] {
         border-color: var(--line) !important;
         border-radius: 18px !important;
@@ -230,6 +290,8 @@ st.markdown(
         [data-testid="stAppViewContainer"] > .main .block-container { padding: 1rem; }
         .hero { padding: 1.55rem; border-radius: 19px; }
         .hero h1 { font-size: 2rem; }
+        .decision-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .rule-grid { grid-template-columns: 1fr; }
     }
     </style>
     """,
@@ -255,10 +317,123 @@ st.markdown(
 )
 
 PRICE_FILE = Path(__file__).with_name("prices.csv")
-STABILITY_LIMIT = 0.10
+DEFAULT_RESERVE_MINIMUM = 0.03
+DEFAULT_STABILITY_LIMIT = 0.10
+ASSET_COLORS = {
+    "SGOV": "#175cd3",
+    "VGIT": "#61a0ff",
+    "BND": "#b7791f",
+    "VT": "#1f9d68",
+}
+
+
+def data_card(source: Path | bytes) -> tuple[str, str, int]:
+    """Return first date, last date, and saved price-row count."""
+    text = (
+        source.decode("utf-8-sig")
+        if isinstance(source, bytes)
+        else source.read_text(encoding="utf-8-sig")
+    )
+    rows = list(csv.DictReader(text.splitlines()))
+    if not rows:
+        raise ValueError("The price file has no observations.")
+    date_field = next(
+        (field for field in rows[0] if field.strip().lower() == "date"), None
+    )
+    if date_field is None:
+        raise ValueError("The first CSV column must be Date.")
+    return rows[0][date_field], rows[-1][date_field], len(rows)
+
+
+def show_allocation_bar(mix: dict[str, float]) -> None:
+    """Render one compact allocation bar and legend."""
+    segments = "".join(
+        f'<span class="allocation-segment" style="width:{weight * 100:.0f}%;'
+        f'background:{ASSET_COLORS.get(asset, "#8091a5")}"></span>'
+        for asset, weight in mix.items()
+        if weight > 0
+    )
+    legend = "".join(
+        f'<span class="legend-item"><span class="legend-dot" '
+        f'style="background:{ASSET_COLORS.get(asset, "#8091a5")}"></span>'
+        f'{asset} {weight:.0%}</span>'
+        for asset, weight in mix.items()
+    )
+    st.markdown(
+        f'<div class="allocation-bar">{segments}</div>'
+        f'<div class="legend-row">{legend}</div>',
+        unsafe_allow_html=True,
+    )
+
+
+def portfolio_metrics(
+    mix: dict[str, float],
+    sleeves: dict[str, dict[str, float]],
+    correlations: dict[str, dict[str, float]],
+    reserve_assets: set[str],
+) -> dict[str, float]:
+    covariance = build_covariance_matrix(sleeves, correlations)
+    return {
+        "return": expected_return(mix, sleeves),
+        "volatility": portfolio_volatility(mix, covariance),
+        "reserve": reserve_eligible_weight(mix, reserve_assets),
+    }
+
+
+def benchmark_mix(sleeves: dict[str, dict[str, float]]) -> dict[str, float] | None:
+    """Return the documented 40% BND / 60% VT benchmark when available."""
+    if not {"BND", "VT"}.issubset(sleeves):
+        return None
+    weights = {asset: 0.0 for asset in sleeves}
+    weights["BND"] = 0.40
+    weights["VT"] = 0.60
+    return weights
+
+
+def show_portfolio(
+    heading: str,
+    note: str,
+    mix: dict[str, float] | None,
+    sleeves: dict[str, dict[str, float]],
+    correlations: dict[str, dict[str, float]],
+    reserve_assets: set[str],
+    objective: float,
+    reserve_minimum: float,
+) -> dict[str, float] | None:
+    """Render a transparent allocation card with component mandate checks."""
+    with st.container(border=True):
+        st.markdown(f"### {heading}")
+        st.markdown(f'<div class="portfolio-note">{note}</div>', unsafe_allow_html=True)
+        if mix is None:
+            st.markdown("**Unavailable:** this portfolio cannot be formed from the uploaded tickers.")
+            return None
+        result = portfolio_metrics(mix, sleeves, correlations, reserve_assets)
+        show_allocation_bar(mix)
+        metrics = st.columns(3)
+        metrics[0].metric("Expected return", f"{result['return']:.2%}")
+        metrics[1].metric("Volatility", f"{result['volatility']:.2%}")
+        metrics[2].metric("Reserve weight", f"{result['reserve']:.0%}")
+        return_passes = result["return"] + 1e-12 >= objective
+        reserve_passes = result["reserve"] + 1e-12 >= reserve_minimum
+        overall = return_passes and reserve_passes
+        st.markdown(
+            '<div class="rule-grid">'
+            f'<div class="rule-chip {"pass" if return_passes else "fail"}">'
+            f'<b>RETURN · {"PASS" if return_passes else "FAIL"}</b>'
+            f'{result["return"]:.2%} / {objective:.2%}</div>'
+            f'<div class="rule-chip {"pass" if reserve_passes else "fail"}">'
+            f'<b>RESERVE · {"PASS" if reserve_passes else "FAIL"}</b>'
+            f'{result["reserve"]:.0%} / {reserve_minimum:.0%}</div>'
+            f'<div class="rule-chip {"pass" if overall else "fail"}">'
+            f'<b>MANDATE · {"PASS" if overall else "FAIL"}</b>'
+            'Long-only, fully invested</div></div>',
+            unsafe_allow_html=True,
+        )
+        return result
+
 
 st.sidebar.header("Mandate and data")
-st.sidebar.caption("Change one control at a time, then read the verdict at the bottom.")
+st.sidebar.caption("Move one control, then follow its effect through the dashboard.")
 objective_percent = st.sidebar.number_input(
     "Objective expected return (%)",
     min_value=-100.0,
@@ -270,7 +445,14 @@ reserve_percent = st.sidebar.number_input(
     "Minimum reserve-eligible weight (%)",
     min_value=0.0,
     max_value=100.0,
-    value=3.0,
+    value=DEFAULT_RESERVE_MINIMUM * 100.0,
+    step=1.0,
+)
+stability_limit_percent = st.sidebar.number_input(
+    "Maximum acceptable allocation move (points)",
+    min_value=0.0,
+    max_value=100.0,
+    value=DEFAULT_STABILITY_LIMIT * 100.0,
     step=1.0,
 )
 uploaded_file = st.sidebar.file_uploader("Upload monthly prices.csv", type="csv")
@@ -278,6 +460,7 @@ last_36 = st.sidebar.toggle("Use only the last 36 monthly returns", value=False)
 
 try:
     if uploaded_file is None:
+        source_input: Path | bytes = PRICE_FILE
         loaded_sleeves, loaded_correlations = estimate_from_price_csv(
             PRICE_FILE, last_36_months=False
         )
@@ -285,46 +468,78 @@ try:
             PRICE_FILE, last_36_months=last_36
         )
         source_label = "saved prices.csv"
-        horizon_label = (
-            "historical estimate from the last 36 monthly returns"
-            if last_36
-            else "historical estimate from all monthly returns"
-        )
-        default_reserve = {"SGOV", "VGIT"}
         widget_source = f"saved-{'36' if last_36 else 'all'}"
     else:
         uploaded_bytes = uploaded_file.getvalue()
+        source_input = uploaded_bytes
         loaded_sleeves, loaded_correlations = estimate_from_price_csv(
             BytesIO(uploaded_bytes), last_36_months=False
         )
         active_sleeves, active_correlations = estimate_from_price_csv(
             BytesIO(uploaded_bytes), last_36_months=last_36
         )
-        source_label = f"{uploaded_file.name}"
-        horizon_label = (
-            "historical estimate from the last 36 monthly returns"
-            if last_36
-            else "historical estimate from all monthly returns"
-        )
-        default_reserve = {"BIL", "IEF", "SGOV", "VGIT"} & set(active_sleeves)
+        source_label = uploaded_file.name
         widget_source = f"csv-{uploaded_file.name}-{'36' if last_36 else 'all'}"
+
+    first_date, last_date, price_rows = data_card(source_input)
+    default_reserve = {"BIL", "IEF", "SGOV", "VGIT"} & set(active_sleeves)
+    baseline_reserve = {"BIL", "IEF", "SGOV", "VGIT"} & set(loaded_sleeves)
+    baseline_sleeves = deepcopy(loaded_sleeves)
+    baseline_correlations = deepcopy(loaded_correlations)
+    saved_mix = search_lowest_risk_mix(
+        baseline_sleeves,
+        baseline_correlations,
+        OBJECTIVE_RETURN,
+        baseline_reserve,
+        DEFAULT_RESERVE_MINIMUM,
+    )
+
+    st.markdown(
+        """
+        <div class="decision-strip">
+          <div class="decision-item"><small>Decision</small><strong>Paper pilot only</strong></div>
+          <div class="decision-item"><small>Capital</small><strong>No client allocation</strong></div>
+          <div class="decision-item"><small>Key risk</small><strong>Window instability</strong></div>
+          <div class="decision-item"><small>Reversal rule</small><strong>&gt;10-point move</strong></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    data_columns = st.columns(4)
+    data_columns[0].metric("Input mode", "Uploaded CSV" if uploaded_file else "Saved CSV")
+    data_columns[1].metric("Asset sleeves", len(active_sleeves))
+    data_columns[2].metric("Price observations", price_rows)
+    data_columns[3].metric("Estimation window", "Last 36 returns" if last_36 else "All returns")
+    with st.expander("Data card and method"):
+        st.markdown(
+            f"**Source:** {source_label}  \n"
+            f"**First observation:** {first_date}  \n"
+            f"**Last observation:** {last_date}  \n"
+            f"**Coverage:** {price_rows} monthly price rows / {price_rows - 1} returns  \n"
+            "**Method:** arithmetic monthly returns; annual expected return is "
+            "monthly mean × 12; annual volatility is sample monthly standard "
+            "deviation × √12; correlations are estimated from the same window."
+        )
+        st.caption("Historical estimates are inputs to a classroom decision system, not forecasts.")
 
     st.markdown(
         '<div class="section-label"><span>1</span> Adjust assumptions</div>',
         unsafe_allow_html=True,
     )
     st.subheader("Expected-return inputs")
+    horizon_label = "last 36 monthly returns" if last_36 else "all saved monthly returns"
     st.markdown(
         f'<div class="source-note"><strong>Source:</strong> {source_label}. '
-        f"These values are a {horizon_label}, not a forecast. Change one box "
-        "to test how sensitive the allocation is.</div>",
+        f"The displayed estimates use {horizon_label}. Change one field at a "
+        "time so the scenario remains explainable.</div>",
         unsafe_allow_html=True,
     )
     return_columns = st.columns(len(active_sleeves))
     for column, (asset, inputs) in zip(return_columns, active_sleeves.items()):
         with column:
             edited_return = st.number_input(
-                asset,
+                f"{asset} expected return (%)",
                 min_value=-100.0,
                 max_value=100.0,
                 value=inputs["expected_return"] * 100.0,
@@ -335,7 +550,7 @@ try:
             inputs["expected_return"] = edited_return / 100.0
 
     st.subheader("Reserve eligibility")
-    st.caption("Checked assets count toward the minimum reserve requirement.")
+    st.caption("Checked sleeves count toward the minimum reserve requirement.")
     reserve_columns = st.columns(len(active_sleeves))
     selected_reserve: set[str] = set()
     for column, asset in zip(reserve_columns, active_sleeves):
@@ -349,13 +564,7 @@ try:
 
     objective = objective_percent / 100.0
     reserve_minimum = reserve_percent / 100.0
-    loaded_mix = search_lowest_risk_mix(
-        loaded_sleeves,
-        loaded_correlations,
-        objective,
-        selected_reserve,
-        reserve_minimum,
-    )
+    stability_limit = stability_limit_percent / 100.0
     active_mix = search_lowest_risk_mix(
         active_sleeves,
         active_correlations,
@@ -363,124 +572,182 @@ try:
         selected_reserve,
         reserve_minimum,
     )
-
-    asset_colors = {
-        "SGOV": "#175cd3",
-        "VGIT": "#61a0ff",
-        "BND": "#b7791f",
-        "VT": "#1f9d68",
+    comparison_portfolios = {
+        "Equal weight": equal_weights(active_sleeves),
+        "Inverse volatility": inverse_volatility_weights(active_sleeves),
+        "60/40 benchmark": benchmark_mix(active_sleeves),
+        "Constrained mix": active_mix,
     }
-
-    def show_allocation_bar(mix: dict[str, float]) -> None:
-        segments = "".join(
-            f'<span class="allocation-segment" style="width:{weight * 100:.0f}%;'
-            f'background:{asset_colors.get(asset, "#8091a5")}"></span>'
-            for asset, weight in mix.items()
-            if weight > 0
-        )
-        legend = "".join(
-            f'<span class="legend-item"><span class="legend-dot" '
-            f'style="background:{asset_colors.get(asset, "#8091a5")}"></span>'
-            f'{asset} {weight:.0%}</span>'
-            for asset, weight in mix.items()
-        )
-        st.markdown(
-            f'<div class="allocation-bar">{segments}</div><div class="legend-row">{legend}</div>',
-            unsafe_allow_html=True,
-        )
-
-    def show_answer(
-        heading: str,
-        mix: dict[str, float] | None,
-        sleeves: dict[str, dict[str, float]],
-        correlations: dict[str, dict[str, float]],
-    ) -> None:
-        with st.container(border=True):
-            st.markdown(f"### {heading}")
-            if mix is None:
-                st.error("No mix meets the objective.")
-                return
-            covariance = build_covariance_matrix(sleeves, correlations)
-            show_allocation_bar(mix)
-            st.table(
-                {
-                    "Asset": list(mix),
-                    "Weight": [f"{weight:.0%}" for weight in mix.values()],
-                }
-            )
-            metric_columns = st.columns(3)
-            metric_columns[0].metric(
-                "Expected return", f"{expected_return(mix, sleeves):.2%}"
-            )
-            metric_columns[1].metric(
-                "Volatility", f"{portfolio_volatility(mix, covariance):.2%}"
-            )
-            metric_columns[2].metric(
-                "Reserve weight",
-                f"{reserve_eligible_weight(mix, selected_reserve):.0%}",
-            )
 
     st.markdown(
         '<div class="section-label"><span>2</span> Compare allocations</div>',
         unsafe_allow_html=True,
     )
-    st.subheader("Current controls vs. saved baseline")
-    st.caption("The left panel reacts to your controls. The right panel stays anchored to all saved months.")
-    result_columns = st.columns(2)
-    with result_columns[0]:
-        show_answer("Current controls", active_mix, active_sleeves, active_correlations)
-    with result_columns[1]:
-        show_answer(
-            "Inputs as loaded (all months for CSV)",
-            loaded_mix,
-            loaded_sleeves,
-            loaded_correlations,
+    st.subheader("Four transparent portfolio choices")
+    st.caption("The first three are reference portfolios. The fourth is the engine's lowest-volatility feasible mix.")
+    portfolio_results: dict[str, dict[str, float] | None] = {}
+    first_row = st.columns(2)
+    with first_row[0]:
+        portfolio_results["Equal weight"] = show_portfolio(
+            "Baseline 1 · Equal weight",
+            "A simple 25% allocation to each saved sleeve.",
+            comparison_portfolios["Equal weight"], active_sleeves, active_correlations,
+            selected_reserve, objective, reserve_minimum,
+        )
+    with first_row[1]:
+        portfolio_results["Inverse volatility"] = show_portfolio(
+            "Baseline 2 · Inverse volatility",
+            "A transparent risk-scaling rule with no return optimization.",
+            comparison_portfolios["Inverse volatility"], active_sleeves, active_correlations,
+            selected_reserve, objective, reserve_minimum,
+        )
+    second_row = st.columns(2)
+    with second_row[0]:
+        portfolio_results["60/40 benchmark"] = show_portfolio(
+            "Benchmark · 60% VT / 40% BND",
+            "The documented equity/bond reference allocation.",
+            comparison_portfolios["60/40 benchmark"], active_sleeves, active_correlations,
+            selected_reserve, objective, reserve_minimum,
+        )
+    with second_row[1]:
+        portfolio_results["Constrained mix"] = show_portfolio(
+            "Proposed · Constrained lowest risk",
+            "Searches the 5-point grid for the lowest-volatility feasible mix.",
+            comparison_portfolios["Constrained mix"], active_sleeves, active_correlations,
+            selected_reserve, objective, reserve_minimum,
         )
 
-    if active_mix is not None and loaded_mix is not None:
+    chart_rows = []
+    for name, result in portfolio_results.items():
+        if result is None:
+            continue
+        mandate = (
+            "Pass"
+            if result["return"] + 1e-12 >= objective
+            and result["reserve"] + 1e-12 >= reserve_minimum
+            else "Fail"
+        )
+        chart_rows.append(
+            {
+                "Portfolio": name,
+                "Volatility": result["volatility"],
+                "Expected return": result["return"],
+                "Mandate": mandate,
+            }
+        )
+
+    st.markdown(
+        '<div class="section-label"><span>3</span> Inspect trade-offs</div>',
+        unsafe_allow_html=True,
+    )
+    st.subheader("Risk / return map")
+    if chart_rows:
+        chart_data = pd.DataFrame(chart_rows)
+        points = alt.Chart(chart_data).mark_circle(size=190).encode(
+            x=alt.X("Volatility:Q", axis=alt.Axis(format="%", title="Annual volatility")),
+            y=alt.Y("Expected return:Q", axis=alt.Axis(format="%", title="Estimated annual return")),
+            color=alt.Color(
+                "Mandate:N",
+                scale=alt.Scale(domain=["Pass", "Fail"], range=["#16794b", "#b42318"]),
+            ),
+            tooltip=[
+                "Portfolio:N",
+                alt.Tooltip("Expected return:Q", format=".2%"),
+                alt.Tooltip("Volatility:Q", format=".2%"),
+                "Mandate:N",
+            ],
+        )
+        labels = alt.Chart(chart_data).mark_text(
+            align="left", dx=9, dy=-8, color="#10243e"
+        ).encode(x="Volatility:Q", y="Expected return:Q", text="Portfolio:N")
+        return_rule = alt.Chart(pd.DataFrame({"target": [objective]})).mark_rule(
+            color="#b7791f", strokeDash=[5, 5]
+        ).encode(y="target:Q")
+        st.altair_chart(
+            (return_rule + points + labels).properties(height=330),
+            width="stretch",
+        )
+        st.caption("Gold dashed line: current return objective. Green points pass the return and reserve rules.")
+
+    st.subheader("Current scenario vs. frozen baseline")
+    st.caption("The frozen baseline always uses all saved months, a 6.50% objective, a 3% reserve minimum, and the saved return estimates.")
+    if active_mix is not None and saved_mix is not None:
+        baseline_result = portfolio_metrics(
+            saved_mix, baseline_sleeves, baseline_correlations, baseline_reserve
+        )
+        active_result = portfolio_metrics(
+            active_mix, active_sleeves, active_correlations, selected_reserve
+        )
+        scenario_rows = [
+            {
+                "Measure": "Allocation",
+                "Frozen baseline": " / ".join(f"{asset} {weight:.0%}" for asset, weight in saved_mix.items()),
+                "Current scenario": " / ".join(f"{asset} {weight:.0%}" for asset, weight in active_mix.items()),
+            },
+            {
+                "Measure": "Expected return",
+                "Frozen baseline": f"{baseline_result['return']:.2%}",
+                "Current scenario": f"{active_result['return']:.2%}",
+            },
+            {
+                "Measure": "Volatility",
+                "Frozen baseline": f"{baseline_result['volatility']:.2%}",
+                "Current scenario": f"{active_result['volatility']:.2%}",
+            },
+            {
+                "Measure": "Reserve weight",
+                "Frozen baseline": f"{baseline_result['reserve']:.0%}",
+                "Current scenario": f"{active_result['reserve']:.0%}",
+            },
+        ]
+        st.dataframe(pd.DataFrame(scenario_rows), hide_index=True, width="stretch")
+
         changes = {
-            asset: abs(active_mix[asset] - loaded_mix[asset])
+            asset: abs(active_mix[asset] - saved_mix[asset])
             for asset in active_mix
         }
         largest_asset = max(changes, key=changes.get)
+        largest_change = changes[largest_asset]
         st.markdown(
-            '<div class="section-label"><span>3</span> Read the verdict</div>',
+            '<div class="section-label"><span>4</span> Read the verdict</div>',
             unsafe_allow_html=True,
         )
         st.subheader("Decision checks")
         verdict_columns = st.columns(3)
         with verdict_columns[0]:
             st.success(
-                "**Mandate: PASS**\n\nThe displayed mix reaches the return objective "
-                "and reserve minimum."
+                "**Mandate: PASS**\n\nThe proposed mix reaches the current return "
+                "objective and reserve minimum."
             )
-        stability_passes = changes[largest_asset] <= STABILITY_LIMIT
-        verdict = "PASS" if stability_passes else "FAIL"
+        stability_passes = largest_change <= stability_limit + 1e-12
+        selected_verdict = "PASS" if stability_passes else "FAIL"
         with verdict_columns[1]:
+            message = (
+                f"**Selected test: {selected_verdict}**\n\nLargest move: "
+                f"**{largest_change * 100:.0f} points** ({largest_asset}), "
+                f"{'within' if stability_passes else 'above'} the "
+                f"{stability_limit * 100:.0f}-point limit."
+            )
             if stability_passes:
-                st.info(
-                    f"**Selected test: {verdict}**\n\nLargest move: "
-                    f"**{changes[largest_asset] * 100:.0f} points** ({largest_asset}), "
-                    "within the 10-point limit."
-                )
+                st.info(message)
             else:
-                st.error(
-                    f"**Selected test: {verdict}**\n\nLargest move: "
-                    f"**{changes[largest_asset] * 100:.0f} points** ({largest_asset}), "
-                    "above the 10-point limit."
-                )
+                st.error(message)
         with verdict_columns[2]:
             st.warning(
                 "**Committee: PAPER PILOT ONLY**\n\nNo client allocation. The saved "
-                "window test moves SGOV and VT by 20 points."
+                "all-month versus 36-month test moves SGOV and VT by 20 points."
             )
         st.caption(
-            "Overall adoption remains blocked even when a different single-control test passes."
+            "The selected scenario can pass while adoption remains blocked by the saved window-instability evidence."
         )
     else:
         st.error(
-            "Mandate verdict: **FAIL** - no mix on the 5-point grid meets the "
+            "**Mandate: FAIL** — no mix on the 5-point grid reaches both the "
             "current return objective and reserve minimum."
         )
+        st.warning(
+            "**Committee: DO NOT PILOT THIS SCENARIO** — review the mandate or "
+            "input assumptions before proposing an allocation."
+        )
 except ValueError as exc:
-    st.error(str(exc))
+    st.error(f"Input error: {exc}")
