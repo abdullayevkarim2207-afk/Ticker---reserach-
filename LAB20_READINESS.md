@@ -26,15 +26,17 @@ This is an AI-assisted local audit, not the required partner cold run.
 | Largest window change | 20 percentage points, above the 10-point limit |
 | Narrow stress result | VT return estimate -1.00 point produces 60% / 0% / 0% / 40%; five-point move |
 | Focused tests | 11 passed with `python3 -m unittest tests.test_portfolio tests.test_project2_run -v` |
-| Full suite | 22 passed in an isolated environment after `python3 -m pip install -r requirements.txt` |
+| Full suite | 24 passed in an isolated environment after `python3 -m pip install -r requirements.txt`, including two app-verdict tests |
 | Bare local Python note | Without optional dependencies, discovery stops at `tests/test_asof_app.py`; the one-command Project 2 path still succeeds because it uses only the standard library |
 | Copied-snapshot rerun | Clean copied-folder run succeeded in 0.11 seconds with the same decision output; this is still not a peer clone of a pushed commit |
 
 The first documentation failure found by this audit was that the memo was at
 `decision_memo.md` instead of the required `docs/decision-memo.md`. The
 canonical memo has been added at the required path and the README and manifest
-now point to it. This fix does not substitute for the partner's first-failure
-record.
+now point to it. A second audit finding was that the app defaulted to older
+training inputs and did not state a verdict; it now opens on `prices.csv` and
+prints mandate, stability, and committee verdicts after a control is moved.
+These fixes do not substitute for the partner's first-failure record.
 
 ## Partner cold-run record - required human evidence
 

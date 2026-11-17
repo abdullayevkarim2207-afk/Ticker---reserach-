@@ -2,14 +2,12 @@
 
 from copy import deepcopy
 from io import BytesIO
+from pathlib import Path
 
 import streamlit as st
 
 from portfolio import (
-    CORRELATIONS,
     OBJECTIVE_RETURN,
-    RESERVE_ELIGIBLE,
-    SLEEVES,
     build_covariance_matrix,
     estimate_from_price_csv,
     expected_return,
@@ -22,6 +20,9 @@ from portfolio import (
 st.set_page_config(page_title="Portfolio Stability Decision", layout="wide")
 st.title("Portfolio Stability Decision")
 st.caption("Built with AI help, a learning demonstration, not investment advice.")
+
+PRICE_FILE = Path(__file__).with_name("prices.csv")
+STABILITY_LIMIT = 0.10
 
 st.sidebar.header("Mandate and data")
 objective_percent = st.sidebar.number_input(
@@ -43,14 +44,20 @@ last_36 = st.sidebar.toggle("Use only the last 36 monthly returns", value=False)
 
 try:
     if uploaded_file is None:
-        loaded_sleeves = deepcopy(SLEEVES)
-        loaded_correlations = deepcopy(CORRELATIONS)
-        active_sleeves = deepcopy(SLEEVES)
-        active_correlations = deepcopy(CORRELATIONS)
-        source_label = "Meridian training inputs"
-        horizon_label = "course-authored annual training estimates"
-        default_reserve = RESERVE_ELIGIBLE
-        widget_source = "meridian"
+        loaded_sleeves, loaded_correlations = estimate_from_price_csv(
+            PRICE_FILE, last_36_months=False
+        )
+        active_sleeves, active_correlations = estimate_from_price_csv(
+            PRICE_FILE, last_36_months=last_36
+        )
+        source_label = "saved prices.csv"
+        horizon_label = (
+            "historical estimate from the last 36 monthly returns"
+            if last_36
+            else "historical estimate from all monthly returns"
+        )
+        default_reserve = {"SGOV", "VGIT"}
+        widget_source = f"saved-{'36' if last_36 else 'all'}"
     else:
         uploaded_bytes = uploaded_file.getvalue()
         loaded_sleeves, loaded_correlations = estimate_from_price_csv(
@@ -160,11 +167,27 @@ try:
             for asset in active_mix
         }
         largest_asset = max(changes, key=changes.get)
+        st.success(
+            "Mandate verdict: **PASS** - the displayed mix reaches the return "
+            "objective and reserve minimum."
+        )
+        stability_passes = changes[largest_asset] <= STABILITY_LIMIT
+        verdict = "PASS" if stability_passes else "FAIL"
         st.info(
             f"Largest weight change: **{changes[largest_asset] * 100:.0f} points** "
-            f"({largest_asset})."
+            f"({largest_asset}). Stability verdict for the selected control: "
+            f"**{verdict}** against the 10-point limit."
+        )
+        st.warning(
+            "Committee verdict: **PAPER PILOT ONLY; NO CLIENT ALLOCATION.** "
+            "The saved all-month versus last-36-month comparison moves SGOV and "
+            "VT by 20 points, so the overall adoption test fails even when a "
+            "different single-control test passes."
         )
     else:
-        st.info("Largest weight change is unavailable because one answer is infeasible.")
+        st.error(
+            "Mandate verdict: **FAIL** - no mix on the 5-point grid meets the "
+            "current return objective and reserve minimum."
+        )
 except ValueError as exc:
     st.error(str(exc))

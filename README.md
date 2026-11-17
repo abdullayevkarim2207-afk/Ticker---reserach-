@@ -38,6 +38,10 @@ python3 -m streamlit run app.py
 python3 -m unittest tests.test_portfolio tests.test_project2_run -v
 ```
 
+The app opens on the saved `prices.csv` inputs. Move the expected-return,
+objective, reserve, or historical-window control and read the mandate,
+stability, and committee verdicts below the two result panels.
+
 ## Mandate and method
 
 - Universe: SGOV, VGIT, BND, and VT.
