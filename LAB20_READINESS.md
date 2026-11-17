@@ -57,26 +57,50 @@ information.
 
 ## Changed input - required AI-closed student record
 
-The student must complete the prediction before running the change and must
-commit and push that prediction. The existing Lab 15 VT stress is preserved as
-prior evidence, but it must not be misrepresented as today's AI-closed action.
+The prediction below was written before changing the input. The existing Lab
+15 VT stress is preserved as prior evidence but is not used as today's changed
+input.
 
-**Prediction commit:** pending student AI-closed work
+**Prediction commit:** this commit; replace with its short hash after the push
 
-| Required item | Student record before the run |
-|---|---|
-| Load-bearing input | Pending |
-| Old value with units | Pending |
-| New value with units | Pending |
-| Expected direction of decision numbers | Pending |
-| Expected effect on the decision | Pending |
+**Load-bearing input:** Objective expected return
 
-**Before output:** pending
+**Old value:** 6.50% annually
 
-**After output:** pending
+**New value:** 6.80% annually
 
-**What happened, whether the decision changed, and why the result did or did
-not match the prediction:** pending student explanation.
+**Prediction:** I think the VT allocation will increase from 35% to around 40%
+because the portfolio needs more stocks to reach the higher return target.
+
+**Expected decision effect:** I expect the recommendation to stay as a paper
+pilot because the original stability issue still exists.
+
+**Prediction written before running the changed input:** Yes
+
+### Before
+
+- **Input value:** 6.50%
+- **Allocation:** SGOV 65%, VGIT 0%, BND 0%, VT 35%
+- **Expected return:** 6.58%
+- **Volatility:** 5.29%
+- **Mandate verdict:** PASS
+- **Selected test:** Pending student observation before changing the control
+- **Committee decision:** PAPER PILOT ONLY
+
+### After
+
+- **Input value:** 6.80%
+- **Allocation:** Pending student run
+- **Expected return:** Pending student run
+- **Volatility:** Pending student run
+- **Mandate verdict:** Pending student run
+- **Selected test:** Pending student run
+- **Committee decision:** Pending student run
+
+### Outcome
+
+Pending student explanation after the changed-input run. The original
+prediction above must remain unchanged even if the observed result differs.
 
 ## Code explanation record - required partner exchange
 
