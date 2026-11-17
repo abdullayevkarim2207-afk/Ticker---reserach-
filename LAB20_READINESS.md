@@ -90,17 +90,20 @@ pilot because the original stability issue still exists.
 ### After
 
 - **Input value:** 6.80%
-- **Allocation:** Pending student run
-- **Expected return:** Pending student run
-- **Volatility:** Pending student run
-- **Mandate verdict:** Pending student run
-- **Selected test:** Pending student run
-- **Committee decision:** Pending student run
+- **Allocation:** SGOV 60%, VGIT 0%, BND 0%, VT 40%
+- **Expected return:** 6.99%
+- **Volatility:** 6.03%
+- **Mandate verdict:** PASS
+- **Selected test:** PASS; largest displayed move 0 points, within the
+  10-point limit
+- **Committee decision:** PAPER PILOT ONLY
 
 ### Outcome
 
-Pending student explanation after the changed-input run. The original
-prediction above must remain unchanged even if the observed result differs.
+Pending student's AI-closed explanation of whether the decision changed, why
+the observed result did or did not match the prediction, and whether the
+original decision survived the higher return target. The original prediction
+above remains unchanged.
 
 ## Code explanation record - required partner exchange
 
