@@ -61,7 +61,7 @@ The prediction below was written before changing the input. The existing Lab
 15 VT stress is preserved as prior evidence but is not used as today's changed
 input.
 
-**Prediction commit:** this commit; replace with its short hash after the push
+**Prediction commit:** `9ec9d32`
 
 **Load-bearing input:** Objective expected return
 
