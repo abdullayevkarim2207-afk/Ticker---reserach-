@@ -46,14 +46,16 @@ information.
 
 | Field | Partner record |
 |---|---|
-| Repository URL | Pending partner |
-| Commit tested | Pending partner |
-| Command copied from README | `python3 project2_run.py` |
-| First failure, exactly as observed | Pending partner |
-| Elapsed time to result | Pending partner |
-| Result location | Pending partner |
-| Observed decision | Pending partner |
-| Rerun after fix | Pending partner, or record clean first run/no fix needed |
+| Repository URL | `https://github.com/abdullayevkarim2207-afk/Ticker---reserach-` |
+| Commit tested | Main branch; exact pre-fix hash not reported by partner |
+| Command copied from README | `git clone ...`; `cd Ticker---reserach-`; `python3 project2_run.py` |
+| First failure, exactly as observed | `fatal: destination path 'Ticker---reserach-' already exists and is not an empty directory.` |
+| Second failure | Windows reported that Python was not found when `python3` was used |
+| Elapsed time to result | No result yet; failures were reported immediately |
+| Result location | No result produced before the README fix |
+| Observed decision | Not reached before the README fix |
+| Fix pushed | README now uses a fresh clone destination and Windows `py` command |
+| Rerun after fix | Pending partner rerun of the corrected README |
 
 ## Changed input - required AI-closed student record
 

@@ -18,12 +18,30 @@ model is a classroom decision system, not a return forecast.
 
 ## One-command reproduction
 
-Python 3.11 or newer is recommended. Clone the repository, enter its folder,
-and run:
+Python 3.11 or newer is recommended. Use a fresh destination name so this cold
+run does not collide with an earlier clone.
+
+On Windows PowerShell or Command Prompt:
+
+```powershell
+git clone https://github.com/abdullayevkarim2207-afk/Ticker---reserach-.git Ticker-research-cold-run
+cd Ticker-research-cold-run
+py project2_run.py
+```
+
+On macOS or Linux:
 
 ```bash
+git clone https://github.com/abdullayevkarim2207-afk/Ticker---reserach-.git Ticker-research-cold-run
+cd Ticker-research-cold-run
 python3 project2_run.py
 ```
+
+If Windows reports that `py` is not recognized, install Python 3.11 or newer
+from [python.org](https://www.python.org/downloads/) with **Add Python to PATH**
+enabled, reopen the terminal, and rerun `py project2_run.py`. Do not delete an
+existing project folder merely to make the clone command work; use the fresh
+destination name shown above.
 
 The command uses only Python's standard library. It reads `prices.csv` and
 prints the all-month result, the last-36-month result, the one-point VT stress,
