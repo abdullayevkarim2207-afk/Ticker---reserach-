@@ -1,82 +1,83 @@
-# Ford Project 1 - Recording Screenboard
+# Project 2 — Recording Screenboard
 
-Use this file as the clean visual anchor while recording. The detailed evidence
-remains in the linked project files.
+> Open each recording by stating: “This work used disclosed AI assistance. It
+> is for education and is not investment advice.”
 
-## Video 1 - Research Evolution
+These are rehearsal prompts, not final transcripts. Correct transcripts must
+match the videos actually recorded.
 
-### Decision question
+## Video 1 — How the research changed (maximum 3:00)
 
-- Target: Ford Motor Company (`F`)
-- User: buy-side committee with no current position
-- Horizon: three-year decision; five-year forecast
-- Action: **WATCH/DEFER**
+**Question answered:** What changed since the first mandate, and which AI output
+did I check?
 
-### How the work changed
+1. Show the unchanged Edition A and state its initial recommendation in your
+   own words.
+2. Show `Research-Evolution.md` and identify the most consequential change:
+   reproducible mandate compliance did not establish allocation stability.
+3. Show the all-month 65/0/0/35 result and last-36-month 85/0/0/15 result.
+4. Explain that AI helped implement the engine, but the deterministic rerun on
+   `prices.csv` checked its numbers.
+5. Disposition: accept the calculated numbers, reject the implied claim that a
+   historical return threshold proves prospective performance, and change the
+   action to a paper-only pilot.
 
-| Stage | Initial evidence | Challenge | Final treatment |
-|---|---|---|---|
-| Preliminary DCF | $15.01 base | $3.5B cash flow was a non-GAAP proxy | Rejected as final valuation evidence |
-| Ford Credit | Consolidated debt looked very high | Finance debt funds matched receivables and leases | Professor-approved SOTP perimeter |
-| FCFE diagnostic | $10.41/share | Negative FY2026 FCFE was omitted | Corrected to about $10.00/share |
-| Reported P/E | Positive peer multiples | Ford FY2025 EPS was negative | Refused as unusable |
-| EV multiple | No enterprise-value cross-check | Captive-finance definitions had to match | GM implies about $13.78/share |
+Do not turn this video into a code walkthrough.
 
-### Final evidence
+## Video 2 — Technical walkthrough (maximum 5:00)
 
-| Low | Base | High | Market price | Action |
-|---:|---:|---:|---:|---|
-| $12.80 | $20.47 | $33.35 | $12.86 | **WATCH/DEFER** |
+**Question answered:** How does the code turn data into the result, and which
+test passed or failed?
 
-Decision rule: at least 15% base upside and no low-case downside.
-
-## Video 2 - Code and Validation
-
-### Commands
+Run:
 
 ```bash
-python3 project1_app.py
-python3 lab10_ford_proforma.py
-python3 lab10_ford_proforma.py --break-check
-python3 lab12_signed_fcfe_check.py
-python3 -m unittest discover -s tests -v
+python3 project2_run.py
+python3 -m unittest tests.test_portfolio tests.test_project2_run -v
 ```
 
-### Evidence to show
+Trace `prices.csv` → `estimate_from_price_csv` → covariance matrix → exhaustive
+5-point `search_lowest_risk_mix` → mandate filters → lowest-volatility feasible
+mix. Show that `app.py` imports the same engine.
 
-| Test | Required screen result |
-|---|---|
-| Base-year reconciliation | FY2025 assets and liabilities plus equity each equal $289.160B |
-| Statement articulation | Five annual balance-sheet gaps equal zero |
-| Cash tie | Cash recomputes from the cash-flow roll-forward |
-| Loud failure | `ValueError: FY2028E balance-sheet gap: 100.0` |
-| Signed cash flow | $10.41 original FCFE diagnostic becomes about $10.00 |
-| Automated validation | Seven tests pass; final status `OK` |
+Highest-risk test: compare all 60 returns with the last 36. The test fails the
+decision threshold because SGOV and VT each move 20 points, above the 10-point
+limit. Also mention one loud technical refusal: correlations outside −1 to +1
+or an asymmetric table raise an error.
 
-The deliberate error is expected. Explain it immediately when it appears.
+Do not spend this video defending the committee recommendation.
 
-## Video 3 - Committee Defense
+## Video 3 — Committee decision (maximum 5:00)
 
-### Valuation and method disagreement
+**Question answered:** What should the committee do, under what conditions, and
+what reverses the decision?
 
-| Evidence | Result | Interpretation |
-|---|---:|---|
-| Low SOTP | $12.80 | Below market; downside fails protection rule |
-| Base SOTP | $20.47 | 59.2% upside, but assumption-sensitive |
-| High SOTP | $33.35 | Requires stronger sustained margin recovery |
-| GM industrial multiple | $13.78 | More conservative current-earnings cross-check |
-| Reverse DCF margin path | 1.46%-2.96% | Market-implied industrial EBIT margins |
-| Base terminal value / EV | 79.0% | Long-duration assumption risk |
+Opening answer: “Authorize a three-cycle, paper-only pilot of a notional
+$100,000 portfolio. Do not allocate client capital.”
 
-### Committee decision
+Defend with four points:
 
-**WATCH/DEFER** because the base clears the 15% hurdle but the low case is
-below the $12.86 market price.
+- The all-month mix is 65% SGOV / 35% VT, with 6.58% estimated return and
+  5.29% estimated volatility.
+- The last-36-month mix is 85% SGOV / 15% VT, with 6.81% estimated return and
+  1.79% estimated volatility.
+- Both pass the encoded mandate, but the 20-point weight change rejects current
+  adoption.
+- A one-point VT return stress moves weights by five points; that narrow pass
+  does not cure the failed window test.
 
-### Reversal and monitoring triggers
+Monitoring owner: portfolio analyst, reporting monthly to the CIO. Kill the
+pilot if a lineage or mandate check fails or any predeclared stress/window
+update moves a weight by more than 10 points. Reconsider a live pilot only
+after three prospective cycles pass every rule.
 
-- Initiate if supported evidence lifts the low value above market while the
-  base continues to clear the 15% rule.
-- Do not initiate if the base falls below market or margin recovery fails.
-- Monitor Ford Pro profitability, Model e losses, warranty costs, signed cash
-  flow, and Ford Credit funding and credit quality.
+### Sceptical question rehearsal
+
+**Question:** “If both portfolios clear 6.5%, why not allocate now?”
+
+**Answer:** “Because 6.5% is an in-sample historical estimate, not a promised
+after-cost return. A reasonable window change moves 20% of the portfolio, so
+the system has not established a stable action. My system cannot establish
+prospective performance from this sample.”
+
+End with the committee ask; do not explain the code architecture again.

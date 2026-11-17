@@ -1,13 +1,13 @@
 item,required,location_or_url,title,duration_or_as_of,timestamp_index,access_checked,frozen_or_commit_id,notes
-Research-Evolution.pdf,yes,,,,,,,Missing; unchanged Edition A and Edition B must be assembled
-Repository,yes,https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/,Ford Project 1 working repository,2026-10-07,,public access verified logged out 2026-10-07 ET,415a9ed80968ca5f7b72c3a814a0a5755d598122,Week 7 readiness packet commit; confirm again when final files are frozen
-Visible executed output,yes,visible_output.md,Ford Project 1 Readiness Output,2026-10-07,,checked locally,working tree 2026-10-07,Must be committed and frozen before final submission
-Decision memo or deck,yes,,,,,,,Missing final decision memo or deck
-Validation-and-AI-Use.pdf,yes,docs/validation-and-ai-use.md,Validation and AI Use,2026-10-07,,checked locally,working tree 2026-10-07,Working Markdown exists; frozen PDF still required
-Video 1,yes,,,,,,,Missing
-Transcript Video 1,yes,,,,,,,Missing
-Video 2,yes,,,,,,,Missing
-Transcript Video 2,yes,,,,,,,Missing
-Video 3,yes,,,,,,,Missing
-Transcript Video 3,yes,,,,,,,Missing
-Optional deployed output,no,,,,,,,Not currently planned
+Research-Evolution.pdf,yes,UNRESOLVED,Project 2 Research Evolution,UNRESOLVED,,UNRESOLVED,UNRESOLVED,Working Markdown exists; insert unchanged Edition A and export PDF; final location must be a GitHub link
+Repository,yes,https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/,Project 2 Portfolio Stability Decision,2026-11-10,,RECHECK AFTER PUSH,UNRESOLVED FINAL COMMIT,Public repository; confirm instructional-team access after final freeze
+Visible executed output,yes,https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/visible_output.md,Project 2 Visible Executed Output,prices through 2026-09-01,,RECHECK AFTER PUSH,UNRESOLVED FINAL COMMIT,Working artifact prepared; verify link after push
+Decision memo or deck,yes,https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/output/pdf/project-2-decision-memo.pdf,Project 2 Investment-Committee Memo,prices through 2026-09-01,,RECHECK AFTER PUSH,UNRESOLVED FINAL COMMIT,Rendered PDF prepared; canonical Markdown is docs/decision-memo.md
+Validation-and-AI-Use.pdf,yes,https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/output/pdf/project-2-validation-and-ai-use.pdf,Project 2 Validation and AI Use,prices through 2026-09-01,,RECHECK AFTER PUSH,UNRESOLVED FINAL COMMIT,Rendered PDF prepared; verify link after push
+Video 1,yes,UNRESOLVED,Project 2 — How the Research Changed,UNRESOLVED,UNRESOLVED,UNRESOLVED,UNRESOLVED,Record; videos are the exception to the GitHub-link rule
+Transcript Video 1,yes,UNRESOLVED,Corrected Transcript — Video 1,UNRESOLVED,,UNRESOLVED,UNRESOLVED,Create after recording; final location must be a GitHub link
+Video 2,yes,UNRESOLVED,Project 2 — Technical Walkthrough,UNRESOLVED,UNRESOLVED,UNRESOLVED,UNRESOLVED,Record; videos are the exception to the GitHub-link rule
+Transcript Video 2,yes,UNRESOLVED,Corrected Transcript — Video 2,UNRESOLVED,,UNRESOLVED,UNRESOLVED,Create after recording; final location must be a GitHub link
+Video 3,yes,UNRESOLVED,Project 2 — Committee Decision,UNRESOLVED,UNRESOLVED,UNRESOLVED,UNRESOLVED,Record; videos are the exception to the GitHub-link rule
+Transcript Video 3,yes,UNRESOLVED,Corrected Transcript — Video 3,UNRESOLVED,,UNRESOLVED,UNRESOLVED,Create after recording; final location must be a GitHub link
+Optional deployed output,no,https://karim-portfolio-stability.streamlit.app/,Portfolio Stability Decision,live app,,RECHECK BEFORE SUBMISSION,UNRESOLVED FINAL COMMIT,Optional; verify deployment matches frozen code

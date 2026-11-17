@@ -1,70 +1,28 @@
-# Ford Project 1 — Readiness Output
+# Project 2 — Visible Executed Output
 
-**Status:** provisional and not the final Project 1 valuation  
-**Current action:** watch/defer  
-**Intended user:** buy-side committee with no current Ford position  
-**Saved comparison price:** $12.86 per share at 9:55 a.m. EDT on September 24, 2026  
-**Historical filing boundary:** Ford FY2025 Form 10-K, supplemented by Q2 2026 Form 10-Q  
-**Units:** USD millions except per-share amounts
+> Prepared with disclosed AI assistance. Education, not investment advice.
 
-## Preliminary FCFF-proxy DCF
+**Decision:** tightly bounded paper pilot; no client allocation yet
 
-| Material input/output | Value |
-|---|---:|
-| Starting Company adjusted free-cash-flow proxy | $3,500.0 |
-| Five-year growth | 5%, 4%, 3%, 3%, 3% |
-| WACC | 10.0% |
-| Terminal growth | 3.0% |
-| Non-operating cash | $28,684.0 |
-| Company debt | $21,919.0 |
-| Diluted shares | 3,979.0 |
-| Enterprise value | $52,977.3 |
-| Equity value | $59,742.3 |
-| Base value per share | **$15.01** |
-| WACC/growth sensitivity range | **$12.39–$19.71** |
-| Terminal value / enterprise value | 72.0% |
+**User:** Meridian Foundation Reserve investment committee
 
-This model uses Ford's disclosed Company-excluding-Ford-Credit adjusted free
-cash flow as a proxy. It is not a complete GAAP FCFF reconciliation, so the
-range is not yet sufficient for the final committee decision.
+**Data:** 61 monthly adjusted-close observations, 2021-09-01 to 2026-09-01
 
-## Linked pro-forma diagnostic
+**Objective:** estimated return at least 6.5%; SGOV + VGIT at least 3%
 
-The consolidated five-year pro-forma balances in every year and forecasts
-FY2026E FCFE of **–$1,796.3** and FY2030E FCFE of **$3,987.5**. The original
-Lab 10 valuation excluded negative FY2026 FCFE and printed $10.41 per share.
-The signed-FCFE audit preserves that outflow and produces a corrected base
-diagnostic value of **$10.00 per share**.
+| Run | SGOV / VGIT / BND / VT | Estimated return | Estimated volatility | Reserve |
+|---|---:|---:|---:|---:|
+| All 60 monthly returns | 65 / 0 / 0 / 35 | 6.58% | 5.29% | 65% |
+| Last 36 monthly returns | 85 / 0 / 0 / 15 | 6.81% | 1.79% | 85% |
+| VT return estimate −1.00 point | 60 / 0 / 0 / 40 | 6.59% | 6.03% | 60% |
 
-| Signed-FCFE sensitivity | Lower | Base | Higher |
-|---|---:|---:|---:|
-| Revenue-growth cases | $8.47 | $10.00 | $11.66 |
-| Gross-margin cases | $6.41 | $10.00 | $12.11 |
+The all-month and last-36-month runs differ by 20 percentage points in SGOV
+and VT. That exceeds the 10-point stability limit and rejects immediate
+adoption. The one-point VT stress moves the mix by five points, so it passes
+that narrow test but does not overturn the failed window test.
 
-The linked FCFE diagnostic and preliminary FCFF proxy use different cash-flow
-definitions, discount rates, and valuation perimeters. They are deliberately
-not averaged.
+Reproduce this output with:
 
-## Current decision interpretation
-
-The conflicting results support **watch/defer while the valuation perimeter is
-repaired**, not an initiate decision. Before the final recommendation, the
-analysis must produce a five-year FCFF forecast, consistent treatment of Ford
-Credit, a complete enterprise-to-equity bridge, and a date-matched low/base/high
-valuation range.
-
-## Highest-risk claim and test
-
-**Claim:** normalized margins and a consistent Ford Credit treatment can support
-a defensible Ford valuation range.
-
-**Existing changed-input evidence:** gross margin produces the larger value
-span over the tested ranges. This establishes impact, not probability.
-
-**Failed validation finding:** excluding negative FY2026 FCFE overstated the
-linked-model value by approximately $0.41 per share. The corrected signed result
-is retained, and the old result remains visible for auditability.
-
-**Must-fix threshold:** do not finalize the committee action until the FCFF
-perimeter and enterprise-to-equity bridge reconcile and the entire validated
-range can be compared with the same-date market price.
+```bash
+python3 project2_run.py
+```

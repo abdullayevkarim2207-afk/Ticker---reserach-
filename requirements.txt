@@ -1,3 +1,4 @@
-# The finance application uses only the Python standard library.
-# Streamlit powers the tutorial app in app.py.
+# Streamlit and pandas power the Lab 15 and Lab 17 apps.
 streamlit==1.66.0
+pandas>=2.2,<3
+altair>=5,<6

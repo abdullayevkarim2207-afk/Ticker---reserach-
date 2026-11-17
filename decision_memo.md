@@ -1,103 +1,74 @@
-# Ford Motor Company — Decision Memo
+# Project 2 — Investment-Committee Memo
 
-**Decision:** Watch/defer; do not initiate a position yet.  
-**Audience:** Buy-side investment committee with no current Ford position.  
-**Valuation comparison:** $12.86 per share at 9:55 a.m. EDT on September 24,
-2026.  
-**Status:** Decision-ready working memo; final recommendation remains subject to
-the stated monitoring and reversal rules.
+> Prepared with disclosed AI assistance. Education, not investment advice.
+
+**To:** Meridian Foundation Reserve Investment Committee
+
+**From:** Portfolio analyst
+
+**Decision:** authorize a paper-only pilot; do not adopt or allocate client capital
+
+**Evidence date:** saved prices through 2026-09-01, downloaded 2026-10-22
 
 ## Recommendation
 
-Ford should remain on the watch list. The explicit Company-excluding-Ford-Credit
-FCFF plus a separate Ford Credit equity value produces a range of $12.80-$33.35
-per share and a $20.47 base case. The base case offers 59.2% upside to the saved
-$12.86 price, but the low case is 0.5% below market. Under the rule requiring at
-least 15% base-case upside and no low-case downside, the evidence supports
-watch/defer rather than initiate.
+Run the strategy as a tightly bounded paper pilot because it can enforce the
+stated mandate but cannot yet support a live allocation. The all-month search
+selects 65% SGOV and 35% VT, with 6.58% estimated return and 5.29% estimated
+volatility. The last-36-month search selects 85% SGOV and 15% VT, with 6.81%
+estimated return and 1.79% estimated volatility. Both satisfy the encoded
+6.5% return threshold and 3% reserve rule, but the 20-point allocation change
+exceeds the 10-point stability limit.
 
-## What the model says
+## Evidence and strongest supported claim
 
-The industrial FCFF forecast starts from $173.996 billion of FY2025
-Company-excluding-Ford-Credit revenue. It forecasts revenue, EBIT, cash taxes,
-depreciation, capital spending, and operating working capital for 2026–2030.
-The base EBIT margin rises from 3.0% to 4.5%, between the calculated adjusted
-industrial margins of approximately 2.4% in 2025 and 5.0% in 2024.
+The evidence supports only this claim: the code reproducibly finds a feasible
+lowest-volatility portfolio on its 5-point grid under the supplied historical
+inputs. Known-answer tests reproduce the baseline portfolios, invalid
+correlations fail loudly, and the app and command use the same engine.
 
-Ford Credit is valued separately at 0.8x–1.2x FY2025 book equity. Its financing
-debt is not subtracted again from the industrial enterprise value. This avoids
-both omitting Ford Credit's equity value and double-counting its debt.
+It does not establish that 6.5% will be earned after costs, that the selected
+mix is stable, or that historical volatility measures prospective loss risk.
+A one-point reduction in VT's estimated return changes the all-month mix to
+60% SGOV and 40% VT, a five-point move. That passes the narrow stress limit but
+does not cure the larger historical-window failure.
 
-The complete common-equity bridge adds $28.684 billion of Company cash,
-subtracts $21.919 billion of Company debt and $28 million of noncontrolling
-interest, and adds Ford Credit equity. No incremental pension deduction is
-made because Ford reports its funded pension plans as fully funded in aggregate
-and the forecast retains pension/OPEB obligations in operating liabilities and
-cash flows; this convention is a monitored limitation rather than a hidden zero.
+The three claims the evidence cannot support are: (1) the strategy will earn
+6.5% after costs, (2) the selected weights are stable, and (3) historical
+volatility captures the client's prospective loss risk.
 
-The five-year linked statements balance in every forecast year. They forecast
-FCFE of negative $1.80 billion in 2026 and positive $3.99 billion in 2030. The
-signed-FCFE correction reduced the original value from $10.41 to $10.00 per
-share because the original calculation omitted the negative 2026 cash flow.
+## AI-generated cases for student disposition
 
-Gross margin is the strongest tested driver. Across the selected one-at-a-time
-ranges, gross-margin cases move value from $6.41 to $12.11, while revenue-growth
-cases move it from $8.47 to $11.66. These are sensitivity tests, not scenario
-probabilities.
+| Case | Tagged case |
+|---|---|
+| Reject | **Output:** reject live use because the window test fails. **Source:** the 65/35 and 85/15 saved runs. **Assumption:** a move above 10 points is decision-material. **Speculation:** instability will persist in future samples. |
+| Redesign | **Output:** predeclare inputs and evaluate prospective decisions. **Source:** the current test is in-sample and window-sensitive. **Assumption:** three monthly cycles can reveal operational failure. **Speculation:** a redesigned estimator may reduce turnover. |
+| Pilot | **Output:** use a paper-only pilot with the kill rule below. **Source:** the code passes reproducibility and constraint checks. **Assumption:** a notional pilot has educational value without client-capital risk. **Speculation:** it may produce evidence strong enough for a later live-pilot decision. |
 
-## Cross-check and method disagreement
+These are AI-generated cases, not the student's final judgment. The student
+must independently accept, qualify, or reject them before submission.
 
-Applying GM's 7.88x industrial EV/adjusted-EBIT multiple to Ford's $4.223
-billion adjusted industrial EBIT, then completing the same cash, debt, and Ford
-Credit bridge, implies approximately $13.78 per share. Ford's reported P/E is
-not meaningful because FY2025 reported diluted EPS is negative. The peer result
-is not averaged with the $20.47 DCF base: the peer method capitalizes a depressed
-current earnings denominator, while the DCF assumes margin recovery and carries
-79% of base industrial enterprise value in the terminal value.
+## Pilot terms
 
-At the saved price, the reverse DCF implies a 2026-2030 industrial EBIT-margin
-path of approximately 1.46%, 1.96%, 2.46%, 2.76%, and 2.96%, holding the 10%
-WACC, 3% terminal growth, and Ford Credit at 1.0x book value.
+- **Size:** $0 client capital; shadow a notional $100,000 portfolio.
+- **Duration:** three monthly decision cycles.
+- **Monitoring owner:** portfolio analyst, reporting each cycle to the CIO.
+- **Monitor:** mandate compliance, missing or changed data, estimated inputs,
+  turnover, weight changes, and the result under both saved windows.
+- **Kill rule:** stop and recommend rejection if any mandate rule or lineage
+  check fails, or if a one-point input stress or window update moves any weight
+  by more than 10 points. The current 20-point window result already prevents
+  adoption; the pilot is for evaluating a redesign, not for validating the
+  current allocation after the fact.
 
-No precedent-transaction multiple is used. Available vehicle transactions do
-not provide a sufficiently defensible match on control premium, expected
-synergies, business mix, and timing; forcing them into the range would add
-apparent precision without comparable valuation evidence.
+## Committee ask and reversal condition
 
-## Principal risk
+Approve the three-cycle paper pilot and require a redesigned prospective test
+that fixes inputs before each decision. Reconsider a live pilot only if all
+three cycles preserve every mandate rule, complete point-in-time data, and a
+maximum weight change of 10 points or less under the predeclared stresses.
+Reject the strategy if it continues to breach that limit.
 
-Ford Credit prevents a mechanical consolidated FCFF treatment. Its $139.119
-billion of finance receivables and operating-lease assets are funded largely by
-$141.417 billion of Ford Credit debt at December 31, 2025. Subtracting that debt
-without valuing the matched financial assets and earnings would understate
-equity value. Treating growth in finance receivables as ordinary automotive
-working-capital investment would also distort FCFF.
-
-The final working architecture is sum of parts: value the Company excluding Ford
-Credit with FCFF and a Company-only bridge, then value Ford Credit directly as
-an equity business. The remaining risk is assumption quality rather than an
-unresolved mechanical bridge.
-
-## Decision rule
-
-Initiate only when all of the following are true:
-
-- the Ford Credit perimeter remains accepted and documented;
-- the five-year FCFF forecast and complete bridge continue to reconcile;
-- low, base, and high values use one valuation date and share convention; and
-- the base case offers an explicit, student-selected margin of safety.
-
-The current base case clears the margin-of-safety threshold, but the named
-margin-stall downside case does not remain above market. A lower market price,
-stronger supported margin floor, or reduced downside risk could trigger
-initiation. If the base case falls below market, change the recommendation to
-do not initiate.
-
-## Monitoring and reversal triggers
-
-Monitor consolidated gross margin, Ford Pro profitability, Model e losses,
-warranty costs, signed cash flow, and the Ford Credit asset/debt relationship.
-A failure of normalized margins to emerge, persistent negative signed cash
-flow, or a deterioration in Ford Credit funding should weaken the valuation.
-
-This document is FIN43900 course work and not investment advice.
+AI use and material checks are recorded in
+`docs/validation-and-ai-use.md`. The student must independently verify the
+final memo, video statements, and manifest before submission.

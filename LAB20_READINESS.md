@@ -1,0 +1,114 @@
+# Lab 20 - Project 2 Readiness
+
+> Prepared with disclosed AI assistance. Education, not investment advice.
+
+## Readiness question
+
+Could a committee member who has never met me reach my decision from this
+repository, and does the decision survive one changed input?
+
+**Current answer:** the repository path is reproducible locally, but the final
+Lab 20 floor remains incomplete until a partner records a README-only cold run
+of a pushed commit and the student completes the AI-closed changed-input step.
+
+## Repository-only local audit
+
+This is an AI-assisted local audit, not the required partner cold run.
+
+| Field | Local audit result |
+|---|---|
+| Command copied from README | `python3 project2_run.py` |
+| First failure | None in the one-command Project 2 path |
+| Elapsed time | 0.51 seconds on the local machine |
+| Result location | Terminal; preserved in `visible_output.md` |
+| Baseline result | 65% SGOV / 0% VGIT / 0% BND / 35% VT; 6.58% return; 5.29% volatility |
+| Changed window result | 85% / 0% / 0% / 15%; 6.81% return; 1.79% volatility |
+| Largest window change | 20 percentage points, above the 10-point limit |
+| Narrow stress result | VT return estimate -1.00 point produces 60% / 0% / 0% / 40%; five-point move |
+| Focused tests | 11 passed with `python3 -m unittest tests.test_portfolio tests.test_project2_run -v` |
+| Full suite | 22 passed in an isolated environment after `python3 -m pip install -r requirements.txt` |
+| Bare local Python note | Without optional dependencies, discovery stops at `tests/test_asof_app.py`; the one-command Project 2 path still succeeds because it uses only the standard library |
+| Copied-snapshot rerun | Clean copied-folder run succeeded in 0.11 seconds with the same decision output; this is still not a peer clone of a pushed commit |
+
+The first documentation failure found by this audit was that the memo was at
+`decision_memo.md` instead of the required `docs/decision-memo.md`. The
+canonical memo has been added at the required path and the README and manifest
+now point to it. This fix does not substitute for the partner's first-failure
+record.
+
+## Partner cold-run record - required human evidence
+
+The partner must clone the pushed commit, use only the README, and complete the
+following without coaching. Do not commit the partner's name or other personal
+information.
+
+| Field | Partner record |
+|---|---|
+| Repository URL | Pending partner |
+| Commit tested | Pending partner |
+| Command copied from README | `python3 project2_run.py` |
+| First failure, exactly as observed | Pending partner |
+| Elapsed time to result | Pending partner |
+| Result location | Pending partner |
+| Observed decision | Pending partner |
+| Rerun after fix | Pending partner, or record clean first run/no fix needed |
+
+## Changed input - required AI-closed student record
+
+The student must complete the prediction before running the change and must
+commit and push that prediction. The existing Lab 15 VT stress is preserved as
+prior evidence, but it must not be misrepresented as today's AI-closed action.
+
+**Prediction commit:** pending student AI-closed work
+
+| Required item | Student record before the run |
+|---|---|
+| Load-bearing input | Pending |
+| Old value with units | Pending |
+| New value with units | Pending |
+| Expected direction of decision numbers | Pending |
+| Expected effect on the decision | Pending |
+
+**Before output:** pending
+
+**After output:** pending
+
+**What happened, whether the decision changed, and why the result did or did
+not match the prediction:** pending student explanation.
+
+## Code explanation record - required partner exchange
+
+The decision block is `main()` in `project2_run.py`. It calculates the
+all-month case, the last-36-month case, and the one-point VT stress; calculates
+the largest absolute weight difference between the two windows; then prints the
+pilot decision and its reversal rule.
+
+**Partner question and answer from the code:** pending partner exchange.
+
+## Decision line
+
+**Pilot a notional $100,000 portfolio for three monthly decision cycles with no
+client capital; reject it if a mandate or data-lineage check fails or any
+predeclared stress or window update moves a weight by more than 10 percentage
+points.**
+
+## Reflection
+
+1. **What the local cold path found that I could not see:** the calculations
+   were aligned, but the decision memo was not located at the exact Lab 20 path.
+   The partner's independent observation remains pending.
+2. **What I will not touch before the deadline:** after the final prediction,
+   partner rerun, and evidence freeze, I will not change `prices.csv`, the
+   mandate thresholds, the 5-point grid, or the decision rule.
+
+## Checkout links
+
+- [Lab 20 record](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/LAB20_READINESS.md)
+- [README](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/README.md)
+- [Decision command](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/project2_run.py)
+- [Visible output](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/visible_output.md)
+- [Decision memo](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/docs/decision-memo.md)
+- [Validation and AI-use record](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/docs/validation-and-ai-use.md)
+- [Decision memo PDF](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/output/pdf/project-2-decision-memo.pdf)
+- [Validation and AI-use PDF](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/output/pdf/project-2-validation-and-ai-use.pdf)
+- [Partner cold-run template](https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/COLD_RUN_RECORD.md)
