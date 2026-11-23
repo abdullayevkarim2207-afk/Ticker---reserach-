@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -172,6 +173,16 @@ def audit_manifest() -> tuple[list[str], list[str]]:
             blockers.append(
                 f"{row.get('item', '<unknown>')}: unresolved {', '.join(unresolved_fields)}"
             )
+        limits = {"Video 1": 180, "Video 2": 300, "Video 3": 300}
+        item = row.get("item", "")
+        duration = row.get("duration_or_as_of", "")
+        match = re.fullmatch(r"(\d+):(\d{2})", duration)
+        if item in limits and match:
+            seconds = int(match.group(1)) * 60 + int(match.group(2))
+            if seconds > limits[item]:
+                blockers.append(
+                    f"{item}: duration {duration} exceeds {limits[item] // 60}:00 maximum"
+                )
     return errors, blockers
 
 

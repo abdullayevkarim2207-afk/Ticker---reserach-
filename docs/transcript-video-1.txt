@@ -1,0 +1,77 @@
+PROJECT: Project 2 - Portfolio Stability Decision
+VIDEO: 1 - Research Evolution and AI Output Check
+YOUTUBE URL: https://youtu.be/QImEXlkVXJ4
+TITLE: Project 2 Video 1
+YOUTUBE DURATION: 03:45
+STATUS: DRAFT RECORDING - exceeds the course maximum of 03:00 and must be
+replaced or edited before final submission.
+
+CORRECTED TRANSCRIPT AND TIMESTAMP INDEX
+
+The wording below was corrected from YouTube's auto-generated captions for
+ticker names, finance terminology, numbers, and obvious transcription errors.
+Filler words were omitted where they did not change meaning.
+
+0:05 - AI use, ownership, education disclaimer, and Edition A limitation
+
+[The student introduces himself.]
+
+OpenAI Codex was used for code, testing, debugging, and documentation
+organization. The analysis and decision are mine. This is for education, not
+investment advice.
+
+I did not have a Project 2 Edition A PDF or receipt, so I did not recreate or
+backdate the baseline.
+
+0:33 - Current Edition B decision boundary
+
+That missing baseline means I cannot prove a reliable before-and-after change.
+What I can defend is my current Edition B decision. The intended user is the
+Meridian Foundation Reserve investment committee. The process searches a
+long-only five-point allocation grid for the lowest historical volatility
+while requiring at least a 6.5% estimated return and 3% in SGOV or VGIT.
+
+1:15 - Saved allocation evidence and stability failure
+
+Using all 60 saved monthly returns, the process selects 65% SGOV and 35% VT,
+with a 6.58% historical return estimate and 5.29% volatility. Using only the
+last 36 returns, it selects 85% SGOV and 15% VT. The largest allocation change
+is 20 percentage points, which exceeds my 10-point stability limit. Both
+portfolios pass the encoded return and reserve rules, but that does not make
+the process stable enough for live adoption.
+
+2:06 - AI-assisted output checked
+
+One material AI-assisted output I checked was the allocation engine. I did not
+accept its result because AI agreed with itself. I reran the deterministic
+decision command using the frozen price file, reproduced the allocation, and
+used known-answer and invalid-input tests. The final suite passes 31 tests.
+
+I accepted the reproduced allocation calculations. I rejected the stronger
+claim that reaching the historical 6.5% estimate proves a future after-cost
+return. The window test is the most important challenge, and it fails the
+decision limit.
+
+2:51 - Recommendation, owner, monitoring, and kill rule
+
+My final recommendation is a tightly bounded paper pilot, not an allocation.
+Run a notional $100,000 portfolio for three monthly decision cycles and invest
+zero client capital. The portfolio analyst monitors data lineage, mandate
+compliance, costs, both estimation windows, and weight changes.
+
+Stop the pilot if the lineage or mandate check fails, no feasible portfolio
+exists, or any predeclared estimate, cost, or window stress moves a weight by
+more than 10 points. Live use should be reconsidered only after all three
+prospective cycles pass every rule.
+
+3:35 - Spoken presentation ends
+
+FINAL TRANSCRIPT CHECK
+
+- Tickers corrected to SGOV, VGIT, and VT.
+- Values checked against the submitted output: 65/35, 85/15, 6.58%, 5.29%,
+  20-point change, 10-point limit, 31 tests, $100,000 notional, $0 client
+  capital, and three monthly cycles.
+- This transcript is evidence for the current 03:45 draft upload only. If the
+  video is edited or replaced, regenerate and recheck the transcript and
+  timestamps against the final recording.

@@ -3,17 +3,18 @@ PROJECT 2 - YOUTUBE AND TRANSCRIPT LINK FORM
 Fill this in only after the videos are uploaded and checked while logged out.
 
 VIDEO 1 - HOW THE SYSTEM AND THINKING CHANGED
-YouTube URL: UNRESOLVED
-Visibility: UNRESOLVED - must be Public or Unlisted
-Exact duration: UNRESOLVED - maximum 3:00
-Captions enabled and corrected: UNRESOLVED
+YouTube URL: https://youtu.be/QImEXlkVXJ4
+Visibility: Public metadata and captions accessed 2026-11-23
+Exact duration: 03:45 - OVER THE 03:00 MAXIMUM; REPLACE BEFORE SUBMISSION
+Captions enabled and corrected: Draft captions corrected in docs/transcript-video-1.txt
 Timestamp index:
   0:00 AI and ownership disclosure
-  UNRESOLVED Edition A missing-baseline disclosure
-  UNRESOLVED A-to-B change
-  UNRESOLVED AI output checked
-  UNRESOLVED final decision
-Transcript GitHub URL: UNRESOLVED
+  0:05 Edition A missing-baseline disclosure
+  0:33 current Edition B decision
+  1:15 allocation evidence and stability failure
+  2:06 AI output checked
+  2:51 final decision and kill rule
+Transcript GitHub URL: https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/docs/transcript-video-1.txt
 
 VIDEO 2 - TECHNICAL WALKTHROUGH
 YouTube URL: UNRESOLVED
@@ -42,6 +43,6 @@ Timestamp index:
 Transcript GitHub URL: UNRESOLVED
 
 LOGGED-OUT ACCESS CHECK
-Video 1 checked by/date: UNRESOLVED
+Video 1 checked by/date: public metadata and captions accessed 2026-11-23; duration noncompliant
 Video 2 checked by/date: UNRESOLVED
 Video 3 checked by/date: UNRESOLVED
