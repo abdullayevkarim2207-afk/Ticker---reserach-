@@ -41,6 +41,7 @@ REQUIRED_FILES = (
     "submission/VIDEO-1-GUIDE.txt",
     "submission/VIDEO-1-RECORDING-SCRIPT.txt",
     "submission/VIDEO-2-GUIDE.txt",
+    "submission/VIDEO-2-RECORDING-SCRIPT.txt",
     "submission/VIDEO-3-GUIDE.txt",
     "submission/YOUTUBE-AND-TRANSCRIPT-LINKS.txt",
     "submission/FINAL-SUBMISSION-STATEMENT.txt",

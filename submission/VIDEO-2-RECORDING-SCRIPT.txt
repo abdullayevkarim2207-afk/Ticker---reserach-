@@ -1,0 +1,179 @@
+PROJECT 2 - VIDEO 2 RECORDING SCRIPT
+TECHNICAL OWNERSHIP WALKTHROUGH
+
+TARGET LENGTH: 4:20 to 4:40
+HARD MAXIMUM: 5:00
+CAMERA: Keep your face visible in a small webcam window unless you have an
+approved accommodation.
+
+QUESTION ANSWERED
+How does the submitted code turn frozen data into the committee decision, and
+which important technical and decision tests passed or failed?
+
+BEFORE RECORDING
+1. Start the local app from the repository:
+   python3 -m streamlit run app.py
+2. Open the app at http://localhost:8501 and leave the default controls loaded.
+3. Open these GitHub tabs in order:
+   a. prices.csv
+   b. docs/data-card.md
+   c. portfolio.py at estimate_from_price_csv, line 256
+   d. portfolio.py at build_covariance_matrix, line 92
+   e. portfolio.py at search_lowest_risk_mix, line 196
+   f. project2_run.py at main, line 162
+   g. visible_output.md
+   h. README.md at Limitations and monitoring
+4. In a separate terminal inside the repository, run:
+   python3 project2_run.py
+   python3 -m unittest discover -s tests -v
+5. Leave the terminal at the final "Ran 31 tests" and "OK" lines.
+6. Start recording with the live Streamlit app visible.
+
+==========================================================================
+0:00-0:18 - SHOW: live Streamlit app, top of page
+==========================================================================
+
+SAY:
+
+OpenAI Codex was used for code, testing, debugging, and documentation
+organization. The analysis and decision are mine; this is for education, not
+investment advice.
+
+This is the live Project 2 portfolio-stability application.
+
+ACTION: Keep the app visibly running. Do not begin on GitHub or a screenshot.
+
+==========================================================================
+0:18-0:50 - SHOW: app controls and four portfolio cards
+==========================================================================
+
+SAY:
+
+The user can change the return objective, reserve minimum, annual cost,
+stability limit, estimation window, return estimates, and reserve eligibility.
+The app compares equal weight, inverse volatility, the sixty-forty benchmark,
+and the constrained portfolio. Each card names whether the encoded return and
+reserve rules pass or which rule fails. The app compares every edited scenario
+with the frozen baseline instead of comparing the edited input with itself.
+
+ACTION: Briefly scroll through the sidebar controls and portfolio cards. Do not
+spend time changing every control.
+
+==========================================================================
+0:50-1:18 - SHOW: GitHub prices.csv, then docs/data-card.md
+==========================================================================
+
+SAY:
+
+The calculation begins with sixty-one frozen monthly adjusted-close
+observations for SGOV, VGIT, BND, and VT from September 2021 through September
+2026. They were downloaded on October twenty-second, 2026. The incomplete
+October month was excluded. The data card records the sources, dates, units,
+transformations, exclusions, revision boundary, licensing limitation, and
+decision use. No silent imputation is performed.
+
+ACTION: Show the first and last rows of prices.csv, then switch to the data card.
+
+==========================================================================
+1:18-1:52 - SHOW: portfolio.py at estimate_from_price_csv, line 256
+==========================================================================
+
+SAY:
+
+The estimate function validates dates and positive price fields, calculates
+simple monthly returns, and supports either all sixty returns or the most
+recent thirty-six. It annualizes the arithmetic monthly mean by multiplying by
+twelve and annualizes sample volatility and covariance consistently. These are
+historical estimates, not forecasts.
+
+ACTION: Point to the input validation, monthly-return calculation, window
+selection, and annualization statements.
+
+==========================================================================
+1:52-2:30 - SHOW: portfolio.py at covariance, then search_lowest_risk_mix
+==========================================================================
+
+SAY:
+
+The covariance function first refuses missing, asymmetric, or out-of-range
+correlations. It converts correlation to covariance using both asset
+volatilities. The portfolio calculation evaluates the complete covariance
+quadratic form, including cross-asset terms.
+
+The search then enumerates every fully invested, long-only combination in
+five-percentage-point increments. It rejects portfolios below the return or
+reserve requirements and keeps the feasible portfolio with the lowest
+volatility. If none is feasible, it returns no result instead of silently
+relaxing the mandate.
+
+ACTION: Switch from line 92 to line 196 and point to validation, feasibility,
+and lowest-volatility selection.
+
+==========================================================================
+2:30-3:08 - SHOW: project2_run.py main, then its terminal output
+==========================================================================
+
+SAY:
+
+The standard-library runner connects the same saved data and engine to the
+visible committee result. Equal weight and inverse volatility fail the return
+rule. The sixty-forty benchmark fails the reserve rule. The constrained mix
+passes the encoded subset at sixty-five percent SGOV and thirty-five percent
+VT, with a six-point-five-eight percent historical return estimate and
+five-point-two-nine percent volatility.
+
+ACTION: Show main in project2_run.py, then the corresponding terminal results.
+
+==========================================================================
+3:08-3:45 - SHOW: visible_output.md stress table or terminal stress output
+==========================================================================
+
+SAY:
+
+The stress package changes four risk surfaces. Reducing VT's estimate by one
+percentage point and applying a twenty-five-basis-point annual cost each move
+the allocation by five points. Changing the window to the last thirty-six
+returns moves SGOV and VT by twenty points, failing the ten-point stability
+limit. Raising the reserve minimum to seventy percent produces no feasible
+portfolio and triggers the explicit stop condition.
+
+ACTION: Point to each stress row and the no-feasible-portfolio statement.
+
+==========================================================================
+3:45-4:18 - SHOW: terminal final test result
+==========================================================================
+
+SAY:
+
+The technical validation passes thirty-one automated tests covering known
+answers, malformed inputs, baseline verdicts, saved scenarios, app controls,
+the point-in-time signal, and stop behavior. The important distinction is that
+the software test passes because it correctly detects the failure, while the
+investment decision test fails: the twenty-point window change exceeds the
+allowed limit.
+
+ACTION: Show "Ran 31 tests" and "OK." Then show the terminal or visible output
+where the 20-point stability failure appears.
+
+==========================================================================
+4:18-4:42 - SHOW: README.md, Limitations and monitoring
+==========================================================================
+
+SAY:
+
+The app does not establish future return, issuer concentration, five-day
+liquidity, turnover, or the undefined calendar-loss promise. Those limitations
+block live use. The defensible technical conclusion is that the system is
+reproducible and useful for a monitored paper pilot, but it is not validated
+for a client-capital allocation.
+
+ACTION: Point to the limitations and monitoring bullets, then stop recording.
+
+AFTER RECORDING
+1. Confirm the video is no longer than 5:00.
+2. Upload it to YouTube as Unlisted or Public, never Private.
+3. Enable captions.
+4. Export and correct the actual transcript.
+5. Save it as docs/transcript-video-2.txt.
+6. Do not submit this script as the transcript unless it exactly matches the
+   recorded words after comparison.

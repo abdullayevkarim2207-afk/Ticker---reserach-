@@ -1,6 +1,6 @@
 VIDEO 2 - TECHNICAL WALKTHROUGH
 MAXIMUM LENGTH: 5:00
-FULL WORD-FOR-WORD DRAFT: docs/draft-video-2-script.txt
+FINAL RECORDING SCRIPT: submission/VIDEO-2-RECORDING-SCRIPT.txt
 CAMERA: Keep your face visible in a small webcam view unless you have an
 approved accommodation.
 
