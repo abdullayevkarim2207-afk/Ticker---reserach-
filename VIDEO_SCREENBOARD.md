@@ -1,7 +1,8 @@
 # Project 2 — Recording Screenboard
 
-> Open each recording by stating: “This work used disclosed AI assistance. It
-> is for education and is not investment advice.”
+> Open each recording with both statements: “I used OpenAI Codex for code,
+> testing, debugging, and documentation organization.” “The analysis and
+> decision are mine; this is for education, not investment advice.”
 
 These are rehearsal prompts, not final transcripts. Correct transcripts must
 match the videos actually recorded.
@@ -29,7 +30,7 @@ Do not turn this video into a code walkthrough.
 **Question answered:** How does the code turn data into the result, and which
 test passed or failed?
 
-Run:
+Open `app.py` running live, then run:
 
 ```bash
 python3 project2_run.py
@@ -43,7 +44,8 @@ mix. Show that `app.py` imports the same engine.
 Highest-risk test: compare all 60 returns with the last 36. The test fails the
 decision threshold because SGOV and VT each move 20 points, above the 10-point
 limit. Also mention one loud technical refusal: correlations outside −1 to +1
-or an asymmetric table raise an error.
+or an asymmetric table raise an error. Show the 25-basis-point cost control and
+the 70% reserve stress that returns no feasible mix and stops the process.
 
 Do not spend this video defending the committee recommendation.
 
@@ -65,6 +67,10 @@ Defend with four points:
   adoption.
 - A one-point VT return stress moves weights by five points; that narrow pass
   does not cure the failed window test.
+- A 25-basis-point annual cost drag also moves weights by five points, while a
+  70% reserve minimum makes the search infeasible and stops the process.
+- The point-in-time DGS10 watch is 5.26%, above the student-defined 5.00%
+  review threshold; it triggers a stress rerun, not an automatic trade.
 
 Monitoring owner: portfolio analyst, reporting monthly to the CIO. Kill the
 pilot if a lineage or mandate check fails or any predeclared stress/window

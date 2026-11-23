@@ -1,0 +1,53 @@
+PROJECT 2 - REPOSITORY FREEZE CHECKLIST
+
+REPOSITORY
+https://github.com/abdullayevkarim2207-afk/Ticker---reserach-
+
+DO NOT RECORD THE VIDEOS UNTIL EVERY PRE-RECORDING BOX IS COMPLETE.
+
+PRE-RECORDING
+[ ] Confirm the missing-Edition-A disclosure in Research-Evolution.md is true.
+[ ] Do not recreate or backdate an Edition A baseline.
+[ ] Read the memo and validation record yourself.
+[ ] Confirm in your own words: paper-only pilot; no client capital.
+[ ] Replace the PENDING student-approval line in docs/student-final-steps.md.
+[ ] Run: python3 project2_run.py
+[ ] Confirm the all-month allocation is 65% SGOV / 35% VT.
+[ ] Confirm the last-36-month allocation is 85% SGOV / 15% VT.
+[ ] Confirm the largest window change is 20 percentage points.
+[ ] Run the full tests and record the final passing count.
+[ ] Run: python3 scripts/final_readiness.py --strict
+[ ] Build the PDFs with:
+    python3 scripts/create_project_pdfs.py --require-research-evolution
+[ ] Open and visually inspect all three PDFs.
+[ ] Commit every file that will appear in a video.
+[ ] Push the commit to GitHub.
+[ ] Tag that pushed commit before recording.
+[ ] Clone the exact pushed commit into a new folder and follow only the README.
+[ ] Record the commit, first failure, elapsed time, and result location.
+
+AFTER RECORDING
+[ ] Add the three corrected transcripts to docs/.
+[ ] Confirm your face is visible in all three videos unless an accommodation
+    permits otherwise.
+[ ] Add video URLs, durations, timestamps, and transcript links to the manifest.
+[ ] Commit and push the transcripts and completed manifest.
+[ ] Replace every UNRESOLVED manifest value.
+[ ] Check every GitHub and YouTube link while logged out.
+[ ] Confirm README, visible output, memo, validation, and transcripts all use
+    the same decision, dates, allocations, and reversal trigger.
+[ ] Attach the three PDFs, three corrected transcript files, and required
+    Markdown files in Brightspace.
+
+ONE-COMMAND DECISION PATH
+Windows: py project2_run.py
+macOS/Linux: python3 project2_run.py
+
+APP COMMAND
+python3 -m streamlit run app.py
+
+FINAL DECISION LINE
+Pilot a notional $100,000 portfolio for three monthly decision cycles with no
+client capital; stop if lineage or mandate checks fail, no feasible mix exists,
+or a predeclared estimate, cost, or window stress moves a weight by more than
+10 percentage points.

@@ -1,0 +1,61 @@
+PROJECT 2 - REQUIREMENT-BY-REQUIREMENT COMPLETENESS AUDIT
+Checked: 2026-11-23
+
+AUTHORITATIVE STANDARD
+This audit follows the current Project 2 page, the uniform major-project
+submission architecture, the Week 12 handout, and the student checklist. A
+classmate's repository is only a completeness example and is not authority for
+omitting a required course artifact.
+
+EIGHT BASE REQUIREMENTS
+[READY] 1. Python web app: app.py; README launch command and standard-library
+          one-command decision runner are documented.
+[READY] 2. Mandate: objective, universe, 60/40 benchmark, seven-year horizon,
+          annual rebalancing, risk measure, encoded limits, and uncoded IPS
+          boundaries are explicit.
+[READY] 3. Two baselines plus proposed portfolio: equal weight,
+          inverse-volatility, 60/40 benchmark, and constrained portfolio each
+          display their mandate verdict and failed rule.
+[READY] 4. Point-in-time signal: frozen DGS10 5.26% signal and full data card.
+[READY] 5. Stress run: estimate, historical window, 25-bp cost, and constraint
+          failure; 70% reserve minimum stops with no feasible portfolio.
+[READY] 6. Locked Changed-Input Record: committed prediction, before/after
+          result, decision effect, and commit evidence are in
+          docs/validation-and-ai-use.md.
+[READY] 7. Recommendation: three-cycle $100,000 notional paper pilot, $0 client
+          capital, monitoring owner, allocation evidence, and reversal/kill
+          triggers.
+[READY] 8. Required opening statements: README, memo, validation record,
+          Research Evolution, and all three video scripts.
+
+SUBMISSION ARTIFACTS
+[READY] GitHub repository structure, code, frozen data, tests, README, visible
+        output, decision memo, validation record, data card, manifest, and
+        video scripts.
+[READY] docs/decision-memo.md and docs/decision-memo.pdf.
+[READY] docs/validation-and-ai-use.md and
+        docs/validation-and-ai-use.pdf.
+[READY] Canonical 12-row project-submission-manifest.csv template.
+[READY] Three separate timed video guides and word-for-word draft scripts.
+[READY] 31 automated tests pass; mechanical readiness audit reports 0 errors.
+[DISCLOSED LIMITATION] Edition A is unavailable and was not recreated. The
+                       Research Evolution PDF preserves this limitation and
+                       presents the current Edition B evidence.
+[WAITING ON STUDENT] Own three video recordings, with face visible, within
+                     3:00 / 5:00 / 5:00 and uploaded Public or Unlisted.
+[WAITING ON STUDENT] Corrected transcripts created from those actual videos.
+[WAITING ON STUDENT] Final video/transcript URLs, durations, timestamp indexes,
+                     logged-out access checks, final commit ID, and tag.
+[WAITING ON STUDENT] Brightspace upload of the final PDFs, transcript files,
+                     required Markdown files, manifest, repository URL, and
+                     three YouTube URLs.
+
+FINAL DECISION LINE
+Pilot a notional $100,000 portfolio for three monthly decision cycles with no
+client capital; stop if lineage or mandate checks fail, no feasible mix exists,
+or a predeclared estimate, cost, or window stress moves a weight by more than
+10 percentage points.
+
+DO NOT COPY A CLASSMATE'S VIDEO LINKS, TRANSCRIPTS, ANALYSIS, COMMIT ID, OR
+MANIFEST VALUES. All final evidence must identify this repository and the
+student's own recordings.

@@ -1,6 +1,7 @@
 # Project 2 - Investment-Committee Memo
 
-> Prepared with disclosed AI assistance. Education, not investment advice.
+> OpenAI Codex was used for code, testing, debugging, and documentation organization.
+> The analysis and decision are mine; this is for education, not investment advice.
 
 **To:** Meridian Foundation Reserve Investment Committee
 
@@ -13,12 +14,14 @@
 ## Recommendation
 
 Run the strategy as a tightly bounded paper pilot because it can enforce the
-stated mandate but cannot yet support a live allocation. The all-month search
+encoded mandate subset but cannot yet support a live allocation. The all-month search
 selects 65% SGOV and 35% VT, with 6.58% estimated return and 5.29% estimated
 volatility. The last-36-month search selects 85% SGOV and 15% VT, with 6.81%
 estimated return and 1.79% estimated volatility. Both satisfy the encoded
 6.5% return threshold and 3% reserve rule, but the 20-point allocation change
-exceeds the 10-point stability limit.
+exceeds the 10-point stability limit. The app does not establish the broader
+IPS issuer, five-day-liquidity, turnover, or undefined calendar-loss rules, so
+an encoded pass is not permission to allocate.
 
 ## Evidence and strongest supported claim
 
@@ -31,7 +34,10 @@ It does not establish that 6.5% will be earned after costs, that the selected
 mix is stable, or that historical volatility measures prospective loss risk.
 A one-point reduction in VT's estimated return changes the all-month mix to
 60% SGOV and 40% VT, a five-point move. That passes the narrow stress limit but
-does not cure the larger historical-window failure.
+does not cure the larger historical-window failure. A 25-basis-point annual
+cost drag also produces 60% SGOV / 40% VT and a 6.74% net estimate. Raising the
+reserve minimum from 3% to 70% makes the grid infeasible, so the process stops
+instead of relaxing the constraint.
 
 The three claims the evidence cannot support are: (1) the strategy will earn
 6.5% after costs, (2) the selected weights are stable, and (3) historical
@@ -48,13 +54,16 @@ volatility captures the client's prospective loss risk.
 These are AI-generated cases, not the student's final judgment. The student
 must independently accept, qualify, or reject them before submission.
 
+<!-- pagebreak -->
+
 ## Pilot terms
 
 - **Size:** $0 client capital; shadow a notional $100,000 portfolio.
 - **Duration:** three monthly decision cycles.
 - **Monitoring owner:** portfolio analyst, reporting each cycle to the CIO.
 - **Monitor:** mandate compliance, missing or changed data, estimated inputs,
-  turnover, weight changes, and the result under both saved windows.
+  modeled costs, turnover, weight changes, the result under both saved windows,
+  and the frozen DGS10 point-in-time high-rate watch.
 - **Kill rule:** stop and recommend rejection if any mandate rule or lineage
   check fails, or if a one-point input stress or window update moves any weight
   by more than 10 points. The current 20-point window result already prevents
@@ -70,5 +79,6 @@ maximum weight change of 10 points or less under the predeclared stresses.
 Reject the strategy if it continues to breach that limit.
 
 AI use and material checks are recorded in
-`docs/validation-and-ai-use.md`. The student must independently verify the
-final memo, video statements, and manifest before submission.
+`docs/validation-and-ai-use.md`; the authoritative driver map is
+`data/input-ledger.csv`. The student must independently verify the final memo,
+video statements, and manifest before submission.

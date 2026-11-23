@@ -1,0 +1,16 @@
+DRAFT RECORDING SCRIPT - VIDEO 1: HOW THE SYSTEM AND THINKING CHANGED
+Target: under 3:00. If you speak this verbatim, compare the transcript with the recording before submission.
+
+OpenAI Codex was used for code, testing, debugging, and documentation organization. The analysis and decision are mine; this is for education, not investment advice.
+
+[Show the Edition A status section in Research-Evolution.md.] I do not have a preserved Project 2 Edition A PDF or receipt. I searched the repository and its history and did not find one, so I did not recreate or backdate a baseline. This means I cannot establish a reliable before-and-after change. I can show the current Edition B decision, the evidence supporting it, and one AI-assisted output I checked.
+
+[Continue showing Research-Evolution.md.] My intended user is the Meridian Foundation Reserve investment committee. The mandate has a seven-year horizon, a 6.5% classroom return threshold, a 60% global-equity and 40% bond benchmark, and reserve, liquidity, concentration, and turnover constraints. The final system searches a long-only 5-point grid for the lowest historical volatility while requiring at least 6.5% estimated return and 3% in SGOV or VGIT.
+
+[Show visible_output.md.] On all 60 monthly returns, the model selects 65% SGOV and 35% VT. On the last 36 returns, it selects 85% SGOV and 15% VT. Both clear the encoded return and reserve rules, but the 20-percentage-point change exceeds my 10-point stability limit. That evidence changed my action to a paper-only pilot with no client capital.
+
+One AI-assisted output I checked was the allocation engine. I did not accept the numbers because AI agreed with itself. I reran the deterministic command on the frozen prices file, compared the output with known-answer tests, and checked invalid correlation inputs. I accepted the reproduced allocation numbers. I rejected the stronger implication that a historical 6.5% estimate proves a prospective after-cost return.
+
+The final process also exposes a 25-basis-point cost stress, a stricter reserve constraint that stops with no feasible portfolio, and a point-in-time DGS10 monitoring signal. My conclusion is narrower and more defensible: pilot the workflow on paper for three monthly cycles, but do not allocate capital unless the prospective evidence passes every predeclared rule.
+
+[Before recording, read this aloud and confirm that the missing-Edition-A statement is accurate.]

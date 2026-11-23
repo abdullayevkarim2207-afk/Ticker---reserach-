@@ -1,0 +1,47 @@
+PROJECT 2 - YOUTUBE AND TRANSCRIPT LINK FORM
+
+Fill this in only after the videos are uploaded and checked while logged out.
+
+VIDEO 1 - HOW THE SYSTEM AND THINKING CHANGED
+YouTube URL: UNRESOLVED
+Visibility: UNRESOLVED - must be Public or Unlisted
+Exact duration: UNRESOLVED - maximum 3:00
+Captions enabled and corrected: UNRESOLVED
+Timestamp index:
+  0:00 AI and ownership disclosure
+  UNRESOLVED Edition A missing-baseline disclosure
+  UNRESOLVED A-to-B change
+  UNRESOLVED AI output checked
+  UNRESOLVED final decision
+Transcript GitHub URL: UNRESOLVED
+
+VIDEO 2 - TECHNICAL WALKTHROUGH
+YouTube URL: UNRESOLVED
+Visibility: UNRESOLVED - must be Public or Unlisted
+Exact duration: UNRESOLVED - maximum 5:00
+Captions enabled and corrected: UNRESOLVED
+Timestamp index:
+  0:00 AI and ownership disclosure
+  UNRESOLVED app controls and portfolios
+  UNRESOLVED data to engine flow
+  UNRESOLVED stress and stop tests
+  UNRESOLVED final test result
+Transcript GitHub URL: UNRESOLVED
+
+VIDEO 3 - COMMITTEE PRESENTATION
+YouTube URL: UNRESOLVED
+Visibility: UNRESOLVED - must be Public or Unlisted
+Exact duration: UNRESOLVED - maximum 5:00
+Captions enabled and corrected: UNRESOLVED
+Timestamp index:
+  0:00 live app plus AI and ownership disclosure
+  UNRESOLVED committee recommendation
+  UNRESOLVED allocation evidence
+  UNRESOLVED monitoring and kill rule
+  UNRESOLVED committee ask
+Transcript GitHub URL: UNRESOLVED
+
+LOGGED-OUT ACCESS CHECK
+Video 1 checked by/date: UNRESOLVED
+Video 2 checked by/date: UNRESOLVED
+Video 3 checked by/date: UNRESOLVED

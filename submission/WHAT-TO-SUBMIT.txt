@@ -1,0 +1,63 @@
+PROJECT 2 - EXACT SUBMISSION PACKAGE
+
+Submit these items. Do not submit the draft video scripts as transcripts.
+
+[ ] 1. GITHUB REPOSITORY LINK
+    https://github.com/abdullayevkarim2207-afk/Ticker---reserach-
+    The final pushed commit must contain the app, data, tests, visible output,
+    memo, validation record, corrected transcripts, manifest, and PDFs.
+
+[ ] 2. RESEARCH-EVOLUTION.PDF
+    Canonical location: docs/research-evolution.pdf
+    Build copy: output/pdf/Research-Evolution.pdf
+    Because the original Edition A is unavailable, it begins with an honest
+    missing-baseline disclosure and then presents Edition B. It must not claim
+    or recreate an earlier recommendation.
+
+[ ] 3. DECISION MEMO
+    Markdown: docs/decision-memo.md
+    PDF: docs/decision-memo.pdf
+    The PDF is limited to two pages and is already prepared.
+
+[ ] 4. VALIDATION AND AI-USE RECORD
+    Markdown: docs/validation-and-ai-use.md
+    PDF: docs/validation-and-ai-use.pdf
+    It contains the complete Locked Changed-Input Record.
+
+[ ] 5. THREE YOUTUBE LINKS
+    Video 1: how the system and thinking changed - maximum 3:00.
+    Video 2: technical walkthrough - maximum 5:00.
+    Video 3: committee presentation - maximum 5:00; open with the app live.
+    Each video must be Public or Unlisted, never Private, with captions enabled.
+    Keep your webcam/face visible in a small view in all three videos unless you
+    have an approved accommodation.
+
+[ ] 6. THREE CORRECTED TRANSCRIPTS
+    docs/transcript-video-1.txt
+    docs/transcript-video-2.txt
+    docs/transcript-video-3.txt
+    These must match the videos actually recorded.
+
+[ ] 7. COMPLETED MANIFEST
+    project-submission-manifest.csv
+    Every required row needs a working link, duration/as-of date, access check,
+    and final commit ID. Videos are the only rows that may use YouTube links
+    instead of GitHub links.
+
+[ ] 8. BRIGHTSPACE ATTACHMENTS
+    Attach Research-Evolution.pdf, Decision-Memo.pdf,
+    Validation-and-AI-Use.pdf, and the three corrected transcript .txt files.
+    Also attach docs/decision-memo.md and docs/validation-and-ai-use.md when the
+    assignment asks for the same Markdown files. Use the exact Brightspace file
+    fields if their labels are more specific.
+
+OPTIONAL
+    The deployed Streamlit app is optional. It currently redirects logged-out
+    users to a login page, so do not claim it is publicly accessible unless it
+    is repaired and rechecked.
+
+THE "TWO OTHER FILES" YOU WERE REMEMBERING
+    The core two written submission records are:
+    1. Decision Memo
+    2. Validation and AI-Use Record
+    The separate checklist also requires Research-Evolution.pdf and the manifest.

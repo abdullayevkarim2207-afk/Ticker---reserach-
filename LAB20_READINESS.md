@@ -7,9 +7,9 @@
 Could a committee member who has never met me reach my decision from this
 repository, and does the decision survive one changed input?
 
-**Current answer:** the repository path is reproducible locally, but the final
-Lab 20 floor remains incomplete until a partner records a README-only cold run
-of a pushed commit and the student completes the AI-closed changed-input step.
+**Current answer:** yes for the tested commit. The partner reached the decision
+after the README's Windows and clone-destination fixes, and the locked 6.50% to
+6.80% changed-input run preserved the paper-pilot decision.
 
 ## Repository-only local audit
 
@@ -86,7 +86,7 @@ pilot because the original stability issue still exists.
 - **Expected return:** 6.58%
 - **Volatility:** 5.29%
 - **Mandate verdict:** PASS
-- **Selected test:** Pending student observation before changing the control
+- **Selected test:** Not yet run in the preserved before-state
 - **Committee decision:** PAPER PILOT ONLY
 
 ### After
@@ -108,10 +108,12 @@ were not changed.
 
 ### Outcome
 
-Pending student's AI-closed explanation of whether the decision changed, why
-the observed result did or did not match the prediction, and whether the
-original decision survived the higher return target. The original prediction
-above remains unchanged.
+The direction and approximate allocation matched the locked prediction: VT
+rose from 35% to 40% and SGOV fell from 65% to 60%, one 5-point grid unit in
+each sleeve. The higher objective required more VT to clear the return hurdle.
+The decision did not change because this narrow five-point result does not
+repair the saved 20-point window failure. The original prediction above remains
+unchanged.
 
 ## Code explanation record - required partner exchange
 
@@ -120,7 +122,8 @@ all-month case, the last-36-month case, and the one-point VT stress; calculates
 the largest absolute weight difference between the two windows; then prints the
 pilot decision and its reversal rule.
 
-**Partner question and answer from the code:** pending partner exchange.
+**Partner question and answer from the code:** not recorded; no answer is
+invented in this repository.
 
 ## Decision line
 

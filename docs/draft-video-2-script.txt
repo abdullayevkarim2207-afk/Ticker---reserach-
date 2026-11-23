@@ -1,0 +1,22 @@
+DRAFT RECORDING SCRIPT - VIDEO 2: TECHNICAL WALKTHROUGH
+Target: under 5:00. If you speak this verbatim, compare the transcript with the recording before submission.
+
+OpenAI Codex was used for code, testing, debugging, and documentation organization. The analysis and decision are mine; this is for education, not investment advice.
+
+[Open the running Streamlit app.] This is the Project 2 decision app. A user can change the objective, reserve minimum, annual implementation cost, maximum acceptable allocation move, estimation window, expected-return inputs, and reserve eligibility. The app shows two transparent baselines, the 60/40 benchmark, and the proposed constrained portfolio. Each card identifies whether the encoded return and reserve rules pass or fail.
+
+[Open prices.csv.] The allocation path starts with 61 saved monthly adjusted-close observations for SGOV, VGIT, BND, and VT from September 2021 through September 2026. The incomplete October month was excluded. The source, download date, definitions, and transformation are documented in the data card and Lab 15 record.
+
+[Open portfolio.py at estimate_from_price_csv.] This function validates the date and price fields, calculates simple monthly returns, annualizes the arithmetic mean by multiplying by 12, annualizes sample volatility by multiplying by the square root of 12, and estimates correlations from the same window. The inputs are historical estimates, not forecasts.
+
+[Open build_covariance_matrix and portfolio_volatility.] Correlation times the two asset volatilities produces covariance. The engine then evaluates w-prime-Cov-w, including every cross-asset term, and takes the square root for portfolio volatility.
+
+[Open search_lowest_risk_mix.] The search enumerates every fully invested long-only combination on a 5-point grid. It discards any mix below the selected return objective or reserve minimum, then retains the feasible mix with the lowest volatility. If no mix is feasible, it returns no result and the process stops instead of relaxing the mandate.
+
+[Open project2_run.py and run python3 project2_run.py.] The same standard-library engine produces the visible decision output. Equal weight and inverse volatility fail the return rule. The 60/40 benchmark fails the reserve rule. The constrained mix passes the encoded rules at 65% SGOV and 35% VT.
+
+The highest-risk validation changes the estimation window from all 60 returns to the last 36. The allocation changes to 85% SGOV and 15% VT, a 20-point move that fails the 10-point stability limit. A one-point VT estimate stress and a 25-basis-point annual cost drag each move the allocation by five points. Raising the reserve minimum to 70% creates no feasible grid portfolio and triggers the stop condition.
+
+[Run the test command.] The tests cover known answers, baseline verdicts, malformed inputs, asymmetric and out-of-range correlations, the locked scenarios, the cost control, the point-in-time signal, and the app verdicts. State the final passing test count shown in your terminal.
+
+The key limitation is that an encoded pass does not prove the entire IPS. Issuer concentration, five-day liquidity, turnover, and the undefined calendar-loss promise need additional holdings and governance data before any live allocation.

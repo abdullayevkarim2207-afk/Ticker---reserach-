@@ -1,0 +1,45 @@
+VIDEO 1 - HOW THE SYSTEM AND THINKING CHANGED
+MAXIMUM LENGTH: 3:00
+FINAL RECORDING SCRIPT: submission/VIDEO-1-RECORDING-SCRIPT.txt
+CAMERA: Keep your face visible in a small webcam view unless you have an
+approved accommodation.
+
+QUESTION THIS VIDEO ANSWERS
+What changed from Edition A to Edition B, and which AI output did I check?
+
+SCREEN AND TIME PLAN
+0:00-0:15  SCREEN: Edition A status in Research-Evolution.md.
+            SAY both required AI/ownership statements.
+
+0:15-0:45  SCREEN: Edition A status disclosure.
+            SAY the original checkpoint is unavailable, was not recreated,
+            and therefore cannot support a before/after claim.
+
+0:45-1:15  SCREEN: Research-Evolution.md A-to-B table.
+            SAY the main change: reproducible mandate compliance did not prove
+            that the allocation was stable enough to adopt.
+
+1:15-1:55  SCREEN: visible_output.md.
+            SHOW 65% SGOV / 35% VT using all returns and 85% SGOV / 15% VT
+            using the last 36 returns. Point to the 20-point failed limit.
+
+1:55-2:35  SCREEN: tests/test_project2_run.py or terminal test result.
+            SAY AI helped with the engine, but you checked it using the frozen
+            price file, deterministic reruns, known answers, and invalid-input
+            tests. Accept the reproduced numbers; reject the claim that a
+            historical 6.5% estimate proves future after-cost performance.
+
+2:35-3:00  SCREEN: decision line in the memo.
+            SAY the final action: three-cycle paper pilot, zero client capital,
+            with the 10-point kill rule.
+
+DO NOT DO IN VIDEO 1
+- Do not give a long code walkthrough.
+- Do not claim the draft script is the transcript before recording.
+- Do not recreate Edition A or claim an original recommendation that cannot be
+  supported. Show the honest missing-baseline disclosure.
+
+OPENING WORDS
+OpenAI Codex was used for code, testing, debugging, and documentation
+organization. The analysis and decision are mine; this is for education, not
+investment advice.

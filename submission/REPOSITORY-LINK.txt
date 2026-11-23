@@ -1,0 +1,22 @@
+PROJECT 2 REPOSITORY
+
+GitHub repository:
+https://github.com/abdullayevkarim2207-afk/Ticker---reserach-
+
+Branch: main
+Final frozen commit: UNRESOLVED
+Final tag: UNRESOLVED
+Logged-out access check: public HTTP 200 on 2026-11-23; recheck after final push
+
+README cold-run command on Windows:
+git clone https://github.com/abdullayevkarim2207-afk/Ticker---reserach-.git Ticker-research-cold-run
+cd Ticker-research-cold-run
+py project2_run.py
+
+README cold-run command on macOS/Linux:
+git clone https://github.com/abdullayevkarim2207-afk/Ticker---reserach-.git Ticker-research-cold-run
+cd Ticker-research-cold-run
+python3 project2_run.py
+
+Expected committee result:
+Tightly bounded paper pilot; do not adopt or allocate client capital yet.

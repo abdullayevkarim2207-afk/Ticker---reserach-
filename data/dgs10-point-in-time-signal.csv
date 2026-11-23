@@ -1,0 +1,2 @@
+series_id,measurement_date,value_percent,vintage_date,signal_threshold_percent,signal,decision_use,source_url,download_date,release_rule
+DGS10,2026-09-29,5.26,2026-09-30,5.00,HIGH-RATE WATCH,"Monitoring flag only; rerun the stress package, not an automatic trade",https://fred.stlouisfed.org/series/DGS10,2026-10-29,"Use only after the applicable H.15 release; an earlier decision uses the prior available observation"

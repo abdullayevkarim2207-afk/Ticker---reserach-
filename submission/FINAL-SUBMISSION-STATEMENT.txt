@@ -1,0 +1,25 @@
+PROJECT 2 - FINAL SUBMISSION CONFIRMATION
+
+Do not say or submit the completed statement until every box is true.
+
+[ ] I submitted the complete Project 2 GitHub repository at the final frozen
+    commit.
+[ ] I submitted Research-Evolution.pdf truthfully disclosing that Edition A is
+    unavailable and not recreated, followed by the completed Edition B.
+[ ] I submitted the Decision Memo and Validation-and-AI-Use record.
+[ ] I submitted all three Public or Unlisted YouTube video links.
+[ ] I submitted links to all three corrected transcripts.
+[ ] I submitted the completed 12-row manifest with working links, durations,
+    timestamps, access checks, and final commit ID.
+[ ] I attached the three required PDFs, three corrected transcript files, and
+    required Markdown files in Brightspace.
+[ ] I checked that the repository and every video work while logged out.
+
+COMPLETED STATEMENT - USE ONLY AFTER EVERY BOX IS CHECKED
+
+I submitted the complete Project 2 repository, Research-Evolution.pdf, the
+Decision Memo, the Validation-and-AI-Use record, three YouTube video links,
+three corrected transcript links, and the completed submission manifest. I
+also attached the required PDFs, corrected transcript files, and Markdown
+files in Brightspace and verified repository and video access while logged
+out.

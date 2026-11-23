@@ -1,9 +1,13 @@
-"""Create the Project 2 memo and validation PDFs from their Markdown sources."""
+"""Create and merge the Project 2 submission PDFs from Markdown sources."""
 
 from __future__ import annotations
 
+import argparse
 import re
+import shutil
 from pathlib import Path
+
+from pypdf import PdfReader, PdfWriter
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter, landscape
@@ -12,6 +16,7 @@ from reportlab.lib.units import inch
 from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
+    PageBreak,
     PageTemplate,
     Paragraph,
     Spacer,
@@ -22,6 +27,7 @@ from reportlab.platypus import (
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "output" / "pdf"
+TEMP_DIR = ROOT / "tmp" / "pdfs"
 
 
 def ascii_text(text: str) -> str:
@@ -121,6 +127,10 @@ def parse_markdown(path: Path, page_width: float, table_columns: int | None = No
         if not line:
             index += 1
             continue
+        if line == "<!-- pagebreak -->":
+            story.append(PageBreak())
+            index += 1
+            continue
         if line.startswith("# "):
             story.append(Paragraph(inline_markup(line[2:]), style["TitleCustom"]))
             index += 1
@@ -147,7 +157,9 @@ def parse_markdown(path: Path, page_width: float, table_columns: int | None = No
                 rows.append(
                     [Paragraph(inline_markup(cell), cell_style) for cell in cells]
                 )
-            count = table_columns or len(rows[0])
+            # Documents may contain tables with different column counts. Size
+            # each table from its own header instead of forcing one global count.
+            count = len(rows[0])
             if count == 2:
                 widths = [page_width * 0.18, page_width * 0.82]
             else:
@@ -217,20 +229,101 @@ def build_pdf(source: Path, destination: Path, pagesize, table_columns: int | No
     document.build(parse_markdown(source, frame_width, table_columns))
 
 
+def research_evolution_blockers() -> list[str]:
+    """Return unresolved placeholders that block the research PDF."""
+    blockers = []
+    source = (ROOT / "Research-Evolution.md").read_text(encoding="utf-8")
+    for marker in (
+        "Insert the unchanged Edition A",
+        "Student must copy the unchanged baseline",
+        "The student must finish this paragraph",
+    ):
+        if marker in source:
+            blockers.append(f"unresolved Research-Evolution.md marker: {marker}")
+    return blockers
+
+
+def build_research_evolution() -> Path:
+    """Build research evolution, merging Edition A only when it exists."""
+    blockers = research_evolution_blockers()
+    if blockers:
+        raise ValueError("; ".join(blockers))
+
+    edition_a_path = ROOT / "docs" / "edition-a.pdf"
+    edition_b_path = TEMP_DIR / "research-evolution-edition-b.pdf"
+    destination = OUTPUT_DIR / "Research-Evolution.pdf"
+    TEMP_DIR.mkdir(parents=True, exist_ok=True)
+    build_pdf(
+        ROOT / "Research-Evolution.md",
+        edition_b_path,
+        landscape(letter),
+    )
+
+    edition_b = PdfReader(edition_b_path)
+    writer = PdfWriter()
+    edition_a_pages = 0
+    if edition_a_path.is_file():
+        edition_a = PdfReader(edition_a_path)
+        edition_a_pages = len(edition_a.pages)
+        for page in edition_a.pages:
+            writer.add_page(page)
+    for page in edition_b.pages:
+        writer.add_page(page)
+    writer.add_metadata(
+        {
+            "/Title": "Project 2 Research Evolution",
+            "/Author": "FIN 43900 student",
+            "/Subject": (
+                "Unchanged Edition A followed by Edition B evidence"
+                if edition_a_pages
+                else "Edition A unavailable disclosure and current Edition B evidence"
+            ),
+        }
+    )
+    with destination.open("wb") as handle:
+        writer.write(handle)
+
+    merged = PdfReader(destination)
+    if len(merged.pages) != edition_a_pages + len(edition_b.pages):
+        raise RuntimeError("Research-Evolution.pdf page-count verification failed.")
+    shutil.copyfile(destination, ROOT / "docs" / "research-evolution.pdf")
+    return destination
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--require-research-evolution",
+        action="store_true",
+        help="fail when Edition A or the completed A-to-B record is missing",
+    )
+    args = parser.parse_args()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    memo_pdf = OUTPUT_DIR / "project-2-decision-memo.pdf"
     build_pdf(
         ROOT / "docs" / "decision-memo.md",
-        OUTPUT_DIR / "project-2-decision-memo.pdf",
+        memo_pdf,
         letter,
         table_columns=2,
     )
+    shutil.copyfile(memo_pdf, ROOT / "docs" / "decision-memo.pdf")
+
+    validation_pdf = OUTPUT_DIR / "project-2-validation-and-ai-use.pdf"
     build_pdf(
         ROOT / "docs" / "validation-and-ai-use.md",
-        OUTPUT_DIR / "project-2-validation-and-ai-use.pdf",
+        validation_pdf,
         landscape(letter),
         table_columns=5,
     )
+    shutil.copyfile(validation_pdf, ROOT / "docs" / "validation-and-ai-use.pdf")
+    blockers = research_evolution_blockers()
+    if blockers:
+        message = "Research-Evolution.pdf not built: " + "; ".join(blockers)
+        if args.require_research_evolution:
+            raise SystemExit(message)
+        print(message)
+    else:
+        print(f"Built {build_research_evolution().relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

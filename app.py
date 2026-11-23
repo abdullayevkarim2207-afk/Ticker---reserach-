@@ -317,6 +317,7 @@ st.markdown(
 )
 
 PRICE_FILE = Path(__file__).with_name("prices.csv")
+SIGNAL_FILE = Path(__file__).with_name("data") / "dgs10-point-in-time-signal.csv"
 DEFAULT_RESERVE_MINIMUM = 0.03
 DEFAULT_STABILITY_LIMIT = 0.10
 ASSET_COLORS = {
@@ -343,6 +344,30 @@ def data_card(source: Path | bytes) -> tuple[str, str, int]:
     if date_field is None:
         raise ValueError("The first CSV column must be Date.")
     return rows[0][date_field], rows[-1][date_field], len(rows)
+
+
+def load_point_in_time_signal(source: Path = SIGNAL_FILE) -> dict[str, str]:
+    """Load the frozen, audited DGS10 monitoring signal."""
+    with source.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    if len(rows) != 1:
+        raise ValueError("The point-in-time signal file must contain exactly one row.")
+    required = {
+        "series_id",
+        "measurement_date",
+        "value_percent",
+        "vintage_date",
+        "signal_threshold_percent",
+        "signal",
+        "decision_use",
+        "source_url",
+        "download_date",
+        "release_rule",
+    }
+    missing = required - set(rows[0])
+    if missing:
+        raise ValueError(f"The point-in-time signal is missing fields: {sorted(missing)}")
+    return rows[0]
 
 
 def show_allocation_bar(mix: dict[str, float]) -> None:
@@ -455,6 +480,13 @@ stability_limit_percent = st.sidebar.number_input(
     value=DEFAULT_STABILITY_LIMIT * 100.0,
     step=1.0,
 )
+annual_cost_bps = st.sidebar.number_input(
+    "Annual implementation cost (basis points)",
+    min_value=0.0,
+    max_value=500.0,
+    value=0.0,
+    step=5.0,
+)
 uploaded_file = st.sidebar.file_uploader("Upload monthly prices.csv", type="csv")
 last_36 = st.sidebar.toggle("Use only the last 36 monthly returns", value=False)
 
@@ -482,6 +514,7 @@ try:
         widget_source = f"csv-{uploaded_file.name}-{'36' if last_36 else 'all'}"
 
     first_date, last_date, price_rows = data_card(source_input)
+    point_signal = load_point_in_time_signal()
     default_reserve = {"BIL", "IEF", "SGOV", "VGIT"} & set(active_sleeves)
     baseline_reserve = {"BIL", "IEF", "SGOV", "VGIT"} & set(loaded_sleeves)
     baseline_sleeves = deepcopy(loaded_sleeves)
@@ -505,6 +538,10 @@ try:
         """,
         unsafe_allow_html=True,
     )
+    st.caption(
+        "OpenAI Codex assisted with code, testing, and documentation. The analysis "
+        "and decision are the student's; education, not investment advice."
+    )
 
     data_columns = st.columns(4)
     data_columns[0].metric("Input mode", "Uploaded CSV" if uploaded_file else "Saved CSV")
@@ -523,16 +560,41 @@ try:
         )
         st.caption("Historical estimates are inputs to a classroom decision system, not forecasts.")
 
+    with st.container(border=True):
+        signal_columns = st.columns([1, 1, 2])
+        signal_columns[0].metric(
+            f"{point_signal['series_id']} point-in-time value",
+            f"{float(point_signal['value_percent']):.2f}%",
+        )
+        signal_columns[1].metric("Monitoring signal", point_signal["signal"])
+        signal_columns[2].markdown(
+            f"**Rule:** value at or above {float(point_signal['signal_threshold_percent']):.2f}% "
+            f"turns on a rate watch. {point_signal['decision_use']}."
+        )
+        with st.expander("Point-in-time signal data card"):
+            st.markdown(
+                f"**Series:** {point_signal['series_id']} - 10-year Treasury constant maturity rate  \n"
+                f"**Measurement date:** {point_signal['measurement_date']}  \n"
+                f"**Vintage/as-known date:** {point_signal['vintage_date']}  \n"
+                f"**Value and units:** {float(point_signal['value_percent']):.2f}% per year  \n"
+                f"**Source:** [Federal Reserve Bank of St. Louis / FRED]({point_signal['source_url']})  \n"
+                f"**Download date:** {point_signal['download_date']}  \n"
+                f"**Release rule:** {point_signal['release_rule']}  \n"
+                "**Transformation:** compare the frozen value with the student-defined 5.00% "
+                "monitoring threshold; no optimization weight is changed automatically."
+            )
+
     st.markdown(
         '<div class="section-label"><span>1</span> Adjust assumptions</div>',
         unsafe_allow_html=True,
     )
-    st.subheader("Expected-return inputs")
+    st.subheader("Gross expected-return inputs")
     horizon_label = "last 36 monthly returns" if last_36 else "all saved monthly returns"
     st.markdown(
         f'<div class="source-note"><strong>Source:</strong> {source_label}. '
-        f"The displayed estimates use {horizon_label}. Change one field at a "
-        "time so the scenario remains explainable.</div>",
+        f"The displayed estimates use {horizon_label}. The selected cost drag is "
+        f"deducted after these inputs. Change one field at a time so the scenario "
+        "remains explainable.</div>",
         unsafe_allow_html=True,
     )
     return_columns = st.columns(len(active_sleeves))
@@ -565,17 +627,21 @@ try:
     objective = objective_percent / 100.0
     reserve_minimum = reserve_percent / 100.0
     stability_limit = stability_limit_percent / 100.0
+    annual_cost = annual_cost_bps / 10_000.0
+    scenario_sleeves = deepcopy(active_sleeves)
+    for inputs in scenario_sleeves.values():
+        inputs["expected_return"] -= annual_cost
     active_mix = search_lowest_risk_mix(
-        active_sleeves,
+        scenario_sleeves,
         active_correlations,
         objective,
         selected_reserve,
         reserve_minimum,
     )
     comparison_portfolios = {
-        "Equal weight": equal_weights(active_sleeves),
-        "Inverse volatility": inverse_volatility_weights(active_sleeves),
-        "60/40 benchmark": benchmark_mix(active_sleeves),
+        "Equal weight": equal_weights(scenario_sleeves),
+        "Inverse volatility": inverse_volatility_weights(scenario_sleeves),
+        "60/40 benchmark": benchmark_mix(scenario_sleeves),
         "Constrained mix": active_mix,
     }
 
@@ -584,21 +650,26 @@ try:
         unsafe_allow_html=True,
     )
     st.subheader("Four transparent portfolio choices")
-    st.caption("The first three are reference portfolios. The fourth is the engine's lowest-volatility feasible mix.")
+    st.caption(
+        "The first three are reference portfolios. The fourth is the engine's "
+        "lowest-volatility feasible mix. Verdicts cover the encoded return, "
+        "reserve, long-only, and fully-invested rules; issuer, five-day liquidity, "
+        "turnover, and the undefined calendar-loss promise are not established."
+    )
     portfolio_results: dict[str, dict[str, float] | None] = {}
     first_row = st.columns(2)
     with first_row[0]:
         portfolio_results["Equal weight"] = show_portfolio(
             "Baseline 1 · Equal weight",
             "A simple 25% allocation to each saved sleeve.",
-            comparison_portfolios["Equal weight"], active_sleeves, active_correlations,
+            comparison_portfolios["Equal weight"], scenario_sleeves, active_correlations,
             selected_reserve, objective, reserve_minimum,
         )
     with first_row[1]:
         portfolio_results["Inverse volatility"] = show_portfolio(
             "Baseline 2 · Inverse volatility",
             "A transparent risk-scaling rule with no return optimization.",
-            comparison_portfolios["Inverse volatility"], active_sleeves, active_correlations,
+            comparison_portfolios["Inverse volatility"], scenario_sleeves, active_correlations,
             selected_reserve, objective, reserve_minimum,
         )
     second_row = st.columns(2)
@@ -606,14 +677,14 @@ try:
         portfolio_results["60/40 benchmark"] = show_portfolio(
             "Benchmark · 60% VT / 40% BND",
             "The documented equity/bond reference allocation.",
-            comparison_portfolios["60/40 benchmark"], active_sleeves, active_correlations,
+            comparison_portfolios["60/40 benchmark"], scenario_sleeves, active_correlations,
             selected_reserve, objective, reserve_minimum,
         )
     with second_row[1]:
         portfolio_results["Constrained mix"] = show_portfolio(
             "Proposed · Constrained lowest risk",
             "Searches the 5-point grid for the lowest-volatility feasible mix.",
-            comparison_portfolios["Constrained mix"], active_sleeves, active_correlations,
+            comparison_portfolios["Constrained mix"], scenario_sleeves, active_correlations,
             selected_reserve, objective, reserve_minimum,
         )
 
@@ -676,13 +747,18 @@ try:
             saved_mix, baseline_sleeves, baseline_correlations, baseline_reserve
         )
         active_result = portfolio_metrics(
-            active_mix, active_sleeves, active_correlations, selected_reserve
+            active_mix, scenario_sleeves, active_correlations, selected_reserve
         )
         scenario_rows = [
             {
                 "Measure": "Allocation",
                 "Frozen baseline": " / ".join(f"{asset} {weight:.0%}" for asset, weight in saved_mix.items()),
                 "Current scenario": " / ".join(f"{asset} {weight:.0%}" for asset, weight in active_mix.items()),
+            },
+            {
+                "Measure": "Annual cost drag",
+                "Frozen baseline": "0 basis points",
+                "Current scenario": f"{annual_cost_bps:.0f} basis points",
             },
             {
                 "Measure": "Expected return",
@@ -716,8 +792,8 @@ try:
         verdict_columns = st.columns(3)
         with verdict_columns[0]:
             st.success(
-                "**Mandate: PASS**\n\nThe proposed mix reaches the current return "
-                "objective and reserve minimum."
+                "**Encoded mandate: PASS**\n\nThe proposed mix reaches the current return "
+                "objective and reserve minimum; uncoded IPS rules remain open."
             )
         stability_passes = largest_change <= stability_limit + 1e-12
         selected_verdict = "PASS" if stability_passes else "FAIL"

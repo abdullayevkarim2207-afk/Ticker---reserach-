@@ -1,0 +1,57 @@
+VIDEO 3 - COMMITTEE PRESENTATION
+MAXIMUM LENGTH: 5:00
+FULL WORD-FOR-WORD DRAFT: docs/draft-video-3-script.txt
+CAMERA: Keep your face visible in a small webcam view unless you have an
+approved accommodation.
+
+QUESTION THIS VIDEO ANSWERS
+What should the committee do, under what conditions, and what reverses it?
+
+MANDATORY OPENING SCREEN
+The Streamlit app must already be running and visibly showing the decision.
+
+SCREEN AND TIME PLAN
+0:00-0:15  SCREEN: live app decision panel.
+            SAY both required AI/ownership statements.
+
+0:15-0:35  SCREEN: live app decision panel.
+            SAY the recommendation immediately: authorize a three-cycle paper
+            pilot of a notional $100,000 portfolio; invest $0 client capital.
+
+0:35-1:20  SCREEN: portfolio comparison cards.
+            SHOW the proposed 65% SGOV / 35% VT result, 6.58% historical return,
+            and 5.29% volatility. Briefly show why the baselines fail.
+
+1:20-2:10  SCREEN: turn on last-36-month window.
+            SHOW 85% SGOV / 15% VT and the 20-point instability failure. Mention
+            the one-point VT and 25-basis-point cost stresses each move 5 points.
+
+2:10-2:45  SCREEN: 70% reserve stress and DGS10 signal card.
+            SHOW the no-feasible-mix stop. Show DGS10 5.26% above the 5.00%
+            review threshold; say it triggers review, not an automatic trade.
+
+2:45-3:40  SCREEN: memo pilot terms.
+            SAY owner, duration, monitoring items, and kill rule. Owner is the
+            portfolio analyst reporting monthly to the CIO.
+
+3:40-4:25  SCREEN: limitations in the memo or app.
+            SAY what the system cannot establish: future 6.5% after costs,
+            stable weights, prospective loss risk, and uncoded IPS rules.
+
+4:25-5:00  SCREEN: return to the live app decision panel.
+            END with the committee ask and reversal condition. Reconsider a
+            live pilot only after all three prospective cycles pass every rule;
+            reject if instability continues.
+
+SCEPTICAL QUESTION TO PREPARE FOR
+If both portfolios clear 6.5%, why not allocate now?
+
+ANSWER
+Because 6.5% is an in-sample historical estimate, not a promised after-cost
+return. A reasonable window change moves 20% of the portfolio, so the system
+has not established a stable action.
+
+OPENING WORDS
+OpenAI Codex was used for code, testing, debugging, and documentation
+organization. The analysis and decision are mine; this is for education, not
+investment advice.

@@ -1,0 +1,20 @@
+DRAFT RECORDING SCRIPT - VIDEO 3: COMMITTEE PRESENTATION
+Target: under 5:00. Open with the app visibly running. If you speak this verbatim, compare the transcript with the recording before submission.
+
+[Begin with the Streamlit app running live.] OpenAI Codex was used for code, testing, debugging, and documentation organization. The analysis and decision are mine; this is for education, not investment advice.
+
+Committee recommendation: authorize a three-cycle paper pilot of a notional $100,000 portfolio, with zero client capital. Do not adopt this allocation process or allocate funds today.
+
+The process searches for the lowest historical volatility on a 5-point grid while requiring at least a 6.5% estimated annual return and 3% in SGOV or VGIT. On all 60 saved monthly returns, it selects 65% SGOV and 35% VT, with a 6.58% historical estimate and 5.29% volatility. On the last 36 returns, it selects 85% SGOV and 15% VT, with a 6.81% estimate and 1.79% volatility.
+
+Both allocations pass the encoded return and reserve rules. They do not support adoption because the reasonable window change moves SGOV and VT by 20 percentage points. That is twice my 10-point decision limit. A one-point reduction in VT's return estimate moves the mix by five points. A uniform 25-basis-point annual cost drag also moves it by five points. Those narrow passes do not repair the failed window test.
+
+The app also shows why mandate compliance must be honest. Equal weight and inverse volatility fail the return rule. The committee's 60/40 benchmark clears the estimated return threshold but fails the 3% reserve rule. Raising the reserve minimum to 70% leaves no feasible mix, so the process stops rather than inventing an allocation.
+
+The point-in-time monitoring signal is DGS10 at 5.26% for the September 29 measurement in the September 30 as-known vintage. It is above my student-defined 5.00% high-rate-watch threshold. This does not cause an automatic trade. It requires the analyst to rerun the predeclared stress package and document the result.
+
+The portfolio analyst owns monitoring and reports to the CIO after each monthly cycle. Monitor data lineage, every encoded mandate rule, both estimation windows, estimated inputs, modeled costs, turnover, weight changes, and the DGS10 watch. Kill the pilot if a lineage or mandate check fails, if no feasible portfolio exists, or if any predeclared estimate, cost, or window stress moves a weight by more than 10 points.
+
+This system cannot establish that the strategy will earn 6.5% after costs, that the chosen weights are stable, or that historical volatility captures prospective loss risk. It also cannot establish the broader issuer, liquidity, turnover, and calendar-loss rules from sleeve weights alone.
+
+My committee ask is to approve the paper pilot and the prospective evidence plan. Reconsider a live pilot only after all three cycles preserve complete point-in-time data, every mandate check, and a maximum weight move of 10 points or less. Reject the strategy if instability continues.

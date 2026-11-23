@@ -1,0 +1,55 @@
+VIDEO 2 - TECHNICAL WALKTHROUGH
+MAXIMUM LENGTH: 5:00
+FULL WORD-FOR-WORD DRAFT: docs/draft-video-2-script.txt
+CAMERA: Keep your face visible in a small webcam view unless you have an
+approved accommodation.
+
+QUESTION THIS VIDEO ANSWERS
+How does the code turn frozen data into the decision, and which important test
+passed or failed?
+
+SCREEN AND TIME PLAN
+0:00-0:15  SCREEN: running Streamlit app.
+            SAY both required AI/ownership statements.
+
+0:15-0:45  SCREEN: app controls and four portfolio cards.
+            SHOW objective, reserve, cost, stability limit, window toggle,
+            equal weight, inverse volatility, 60/40 benchmark, and constrained
+            mix. Mention that each card shows the failed encoded rule.
+
+0:45-1:15  SCREEN: prices.csv and data/input-ledger.csv.
+            SAY there are 61 frozen monthly adjusted closes through 2026-09-01,
+            downloaded 2026-10-22; incomplete October was excluded.
+
+1:15-2:15  SCREEN: portfolio.py.
+            SHOW estimate_from_price_csv, build_covariance_matrix, and
+            search_lowest_risk_mix. Explain monthly returns, annualization,
+            covariance, exhaustive 5-point search, and feasibility filters.
+
+2:15-3:00  SCREEN: project2_run.py and its terminal output.
+            SHOW equal weight and inverse volatility fail return; 60/40 fails
+            reserve; constrained mix passes the encoded rules.
+
+3:00-3:55  SCREEN: stress output and app controls.
+            SHOW VT minus 1 point, 25-basis-point cost, last-36-month window,
+            and 70% reserve minimum. Explain that the 70% constraint produces
+            no feasible mix and stops the process.
+
+3:55-4:35  SCREEN: full test command and result.
+            RUN the final suite from the frozen commit. State the actual passing
+            count shown on screen. The currently prepared suite passes 31 tests;
+            rerun it before recording. Identify the failed decision test: the
+            20-point window change exceeds the 10-point limit.
+
+4:35-5:00  SCREEN: README limitations or app verdict.
+            SAY the app does not establish issuer concentration, five-day
+            liquidity, turnover, the undefined loss promise, or future return.
+
+COMMANDS TO SHOW
+python3 project2_run.py
+python3 -m unittest discover -s tests -v
+
+OPENING WORDS
+OpenAI Codex was used for code, testing, debugging, and documentation
+organization. The analysis and decision are mine; this is for education, not
+investment advice.

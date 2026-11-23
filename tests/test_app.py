@@ -13,7 +13,7 @@ class Project2AppTests(unittest.TestCase):
     def test_saved_inputs_show_clear_verdicts(self) -> None:
         app = AppTest.from_file(APP_FILE, default_timeout=10).run()
         self.assertFalse(app.exception)
-        self.assertIn("**Mandate: PASS**", app.success[0].value)
+        self.assertIn("**Encoded mandate: PASS**", app.success[0].value)
         self.assertIn("Largest move: **0 points**", app.info[0].value)
         self.assertIn("PAPER PILOT ONLY", app.warning[0].value)
 
@@ -36,6 +36,25 @@ class Project2AppTests(unittest.TestCase):
         self.assertFalse(app.exception)
         self.assertIn("**Selected test: PASS**", app.info[0].value)
         self.assertIn("Largest move: **5 points**", app.info[0].value)
+
+    def test_cost_stress_is_operable_and_compares_to_baseline(self) -> None:
+        app = AppTest.from_file(APP_FILE, default_timeout=10).run()
+        cost_control = next(
+            control
+            for control in app.number_input
+            if control.label == "Annual implementation cost (basis points)"
+        )
+        cost_control.set_value(25.0).run()
+        self.assertFalse(app.exception)
+        self.assertIn("**Selected test: PASS**", app.info[0].value)
+        self.assertIn("Largest move: **5 points**", app.info[0].value)
+
+    def test_point_in_time_signal_and_data_card_are_visible(self) -> None:
+        app = AppTest.from_file(APP_FILE, default_timeout=10).run()
+        self.assertFalse(app.exception)
+        metric_values = {(metric.label, metric.value) for metric in app.metric}
+        self.assertIn(("DGS10 point-in-time value", "5.26%"), metric_values)
+        self.assertIn(("Monitoring signal", "HIGH-RATE WATCH"), metric_values)
 
 
 if __name__ == "__main__":

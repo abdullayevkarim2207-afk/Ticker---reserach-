@@ -2,8 +2,9 @@
 
 > Prepared with disclosed AI assistance. Education, not investment advice.
 
-This template is intentionally unresolved. A peer—not AI—must complete it from
-the final GitHub commit without coaching.
+This record preserves the peer's README-only cold run and the successful rerun
+after the README repair. Repeat it only if the final one-command path changes
+materially; do not add the peer's name or other personal information.
 
 | Field | Peer record |
 |---|---|
