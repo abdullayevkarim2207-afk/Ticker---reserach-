@@ -17,32 +17,38 @@ Timestamp index:
 Transcript GitHub URL: https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/docs/transcript-video-1.txt
 
 VIDEO 2 - TECHNICAL WALKTHROUGH
-YouTube URL: UNRESOLVED
-Visibility: UNRESOLVED - must be Public or Unlisted
-Exact duration: UNRESOLVED - maximum 5:00
-Captions enabled and corrected: UNRESOLVED
+YouTube URL: https://youtu.be/Xxak0uDpdu0
+Visibility: Unlisted metadata and captions accessed 2026-11-23
+Exact duration: 04:51 - WITHIN THE 05:00 MAXIMUM
+Captions enabled and corrected: Yes; docs/transcript-video-2.txt
 Timestamp index:
-  0:00 AI and ownership disclosure
-  UNRESOLVED app controls and portfolios
-  UNRESOLVED data to engine flow
-  UNRESOLVED stress and stop tests
-  UNRESOLVED final test result
-Transcript GitHub URL: UNRESOLVED
+  0:02 AI and ownership disclosure
+  0:20 app controls and portfolios
+  0:59 frozen data and data card
+  1:28 estimates and annualization
+  1:55 covariance and exhaustive search
+  2:41 runner and mandate verdicts
+  3:20 stress and stop tests
+  3:50 31-test result and decision-test failure
+  4:16 limitations and technical conclusion
+Transcript GitHub URL: https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/docs/transcript-video-2.txt
 
 VIDEO 3 - COMMITTEE PRESENTATION
-YouTube URL: UNRESOLVED
-Visibility: UNRESOLVED - must be Public or Unlisted
-Exact duration: UNRESOLVED - maximum 5:00
-Captions enabled and corrected: UNRESOLVED
+YouTube URL: https://youtu.be/aneotPrX4m4
+Visibility: Unlisted metadata accessed 2026-11-23
+Exact duration: 05:04 - OVER THE 05:00 MAXIMUM; TRIM OR REPLACE
+Captions enabled and corrected: Current recording corrected in docs/transcript-video-3.txt
 Timestamp index:
-  0:00 live app plus AI and ownership disclosure
-  UNRESOLVED committee recommendation
-  UNRESOLVED allocation evidence
-  UNRESOLVED monitoring and kill rule
-  UNRESOLVED committee ask
-Transcript GitHub URL: UNRESOLVED
+  0:02 AI disclosure and committee recommendation
+  0:26 process and all-month result
+  1:28 window failure and stresses
+  2:17 reserve stop and DGS10 signal
+  3:08 owner, monitoring, and kill rule
+  3:54 limitations blocking live use
+  4:36 committee ask and reversal condition
+Transcript GitHub URL: https://github.com/abdullayevkarim2207-afk/Ticker---reserach-/blob/main/docs/transcript-video-3.txt
 
 LOGGED-OUT ACCESS CHECK
 Video 1 checked by/date: public metadata and captions accessed 2026-11-23; duration noncompliant
-Video 2 checked by/date: UNRESOLVED
-Video 3 checked by/date: UNRESOLVED
+Video 2 checked by/date: unlisted metadata and captions accessed 2026-11-23; duration compliant
+Video 3 checked by/date: unlisted metadata accessed 2026-11-23; duration noncompliant by four seconds
