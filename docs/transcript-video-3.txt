@@ -1,0 +1,111 @@
+PROJECT: Project 2 - Portfolio Stability Decision
+VIDEO: 3 - Committee Decision Presentation
+YOUTUBE URL: https://youtu.be/aneotPrX4m4
+TITLE: Video 3 Project 2
+YOUTUBE DURATION: 05:04
+STATUS: CORRECTED TRANSCRIPT FOR THE CURRENT UPLOAD. The current upload exceeds
+the course maximum of 05:00 and should be trimmed or replaced before final
+submission. Recheck this transcript if any spoken content changes.
+
+CORRECTED TRANSCRIPT AND TIMESTAMP INDEX
+
+The wording below was corrected from speech recognition for ticker names,
+finance terminology, numbers, and obvious transcription errors. Filler words
+were omitted where they did not change meaning.
+
+0:02 - AI use, ownership, disclaimer, and committee recommendation
+
+[The student introduces himself.]
+
+OpenAI Codex was used for the code and testing, debugging, and documentation
+organization. The analysis and the decision are mine. This is for education,
+not investment advice.
+
+My committee recommendation is to authorize a three-cycle, paper-only pilot of
+a notional $100,000 portfolio. Do not allocate client capital and do not adopt
+this process for live use today.
+
+0:26 - Portfolio process and all-month result
+
+The process searches a fully invested, long-only, five-percentage-point grid
+for the lowest historical volatility while requiring at least a 6.5% estimated
+annual return and 3% in reserve-eligible SGOV or VGIT.
+
+Using all 60 saved monthly returns, the constrained portfolio is 65% SGOV and
+35% VT. Its historical return estimate is 6.58%, and its estimated volatility
+is 5.29%.
+
+The comparison cards make the mandate boundary visible. Equal weight and
+inverse volatility fail the return rule. The 60/40 benchmark clears the
+historical return threshold but fails the reserve rule.
+
+1:28 - Last-36-month window and stability failure
+
+The most important decision test changes the estimation window to the most
+recent 36 returns. The allocation changes to 85% SGOV and 15% VT, with a 6.81%
+historical return estimate and 1.79% volatility.
+
+Both portfolios pass the encoded return and reserve rules, but SGOV and VT each
+move 20 percentage points. That is twice my 10-point stability limit, so the
+investment decision test fails and current adoption is rejected.
+
+A one-point reduction in VT's return estimate and a 25-basis-point annual cost
+drag each move the allocation by five points. Those narrow passes do not repair
+the failed window test.
+
+2:17 - Reserve stress and DGS10 monitoring signal
+
+Changing this to 70: when the reserve minimum is raised to 70%, no feasible
+portfolio exists on the five-point grid. The system stops instead of silently
+weakening the mandate.
+
+The point-in-time DGS10 monitoring value is 5.26%, above my student-defined 5%
+high-rate-watch threshold. That flag requires the analyst to rerun and document
+the stress package. It is not an automatic trade signal.
+
+3:08 - Pilot ownership, monitoring, and kill rule
+
+The portfolio analyst owns the pilot and reports monthly to the CIO. The pilot
+runs for three monthly decision cycles with a notional $100,000 portfolio and
+zero client capital.
+
+Each cycle must monitor data lineage, every encoded mandate rule, both
+estimation windows, return estimates, modeled costs, turnover, allocation
+changes, and the DGS10 watch.
+
+Kill the pilot if a lineage or mandate check fails, if no feasible portfolio
+exists, or if any predeclared estimate, cost, or window stress moves a weight
+by more than 10 percentage points.
+
+3:54 - Limitations blocking live use
+
+This system cannot establish that the strategy will earn 6.5% after costs, that
+the selected weights are stable, or that historical volatility captures
+prospective loss risk. Sleeve-level weights also cannot establish issuer
+concentration, five-day liquidity, turnover, or the undefined calendar-loss
+promise. Those limitations block live use.
+
+The fact that both constrained portfolios clear the historical return threshold
+is not enough. 6.5% is an in-sample estimate, not a promised after-cost return,
+and the reasonable window change produces an unstable 20-point allocation move.
+
+4:36 - Committee ask and reversal condition
+
+My committee ask is to approve the paper pilot and prospective evidence plan,
+not a live allocation. Reconsider a live pilot only after all three cycles
+preserve complete point-in-time data, pass every mandate and lineage rule, and
+keep every predeclared allocation move at 10 points or less. Reject the strategy
+if the instability continues. Thank you.
+
+5:04 - Presentation ends
+
+FINAL TRANSCRIPT CHECK
+
+- Tickers and indicators corrected to SGOV, VGIT, VT, and DGS10.
+- Values checked against the submitted evidence: $100,000 notional, zero client
+  capital, three cycles, 65/35, 85/15, 6.58%, 5.29%, 6.81%, 1.79%, five-point
+  stress moves, 20-point window move, 10-point limit, 70% reserve stress, DGS10
+  at 5.26%, and the 5% watch threshold.
+- The current upload runs approximately 05:04 and exceeds the 05:00 maximum.
+  Trim at least four seconds without removing spoken content, then verify the
+  final duration and transcript before submission.
