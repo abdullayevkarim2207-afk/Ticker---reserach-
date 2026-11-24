@@ -1,0 +1,108 @@
+PROJECT: Project 2 - Portfolio Stability Decision
+VIDEO: 2 - Technical Ownership Walkthrough
+YOUTUBE URL: https://youtu.be/q5pOueeDJ40
+TITLE: Video 2 Project 2
+YOUTUBE DURATION: 05:11
+STATUS: CORRECTED TRANSCRIPT FOR THE CURRENT UPLOAD. The current upload exceeds
+the course maximum of 05:00. Trim the opening and ending silence or replace the
+upload before final submission, then confirm that this transcript still matches.
+
+CORRECTED TRANSCRIPT AND TIMESTAMP INDEX
+
+The wording below was corrected from speech recognition for ticker names,
+finance terminology, numbers, and obvious transcription errors. Filler words
+were omitted where they did not change meaning.
+
+0:02 - AI use, ownership, education disclaimer, and live application
+
+[The student introduces himself.]
+
+OpenAI Codex was used for the code, testing, debugging, documentation
+organization, and analysis. The analysis and decision are mine. This is for
+education, not investment advice.
+
+This is the live Project 2 portfolio-stability application.
+
+0:18 - Controls, comparison portfolios, and frozen baseline
+
+The user can change the return objective, reserve minimum, annual cost,
+stability limit, estimation window, return estimates, and reserve eligibility.
+The app compares equal weight, inverse volatility, the 60/40 benchmark, and the
+constrained portfolio. Each card names whether the encoded return and reserve
+rules pass or which rule fails. The app compares every edited scenario with the
+frozen baseline instead of comparing the edited input with itself.
+
+0:55 - Frozen price data and data card
+
+The calculation begins with 61 frozen monthly adjusted-close observations for
+SGOV, VGIT, BND, and VT from September 2021 through September 2026. They were
+downloaded on October 22, 2026. The incomplete October month was excluded. The
+data card records the sources, dates, units, transformations, exclusions,
+revision boundary, licensing limitation, and decision use. No silent imputation
+is performed.
+
+1:39 - Return estimates and annualization
+
+The estimate function validates dates and positive price fields, calculates
+simple monthly returns, and supports either all 60 returns or the most recent
+36. It annualizes the arithmetic monthly mean by multiplying by 12 and
+annualizes sample volatility and covariance consistently. These are historical
+estimates, not forecasts.
+
+2:00 - Covariance validation and portfolio search
+
+The covariance function first refuses missing, asymmetric, or out-of-range
+correlations. It converts correlation to covariance using both asset
+volatilities. The portfolio calculation evaluates the complete covariance
+quadratic form, including cross-asset terms.
+
+The search then enumerates every fully invested, long-only combination in
+five-percentage-point increments. It rejects portfolios below the return or
+reserve requirements and keeps the feasible portfolio with the lowest
+volatility. If none is feasible, it returns no result instead of silently
+relaxing the mandate.
+
+3:03 - Standard-library runner and baseline verdicts
+
+The standard-library runner connects the same saved data and engine to the
+visible committee result. Equal weight and inverse volatility fail the return
+rule. The 60/40 benchmark fails the reserve rule. The constrained mix passes
+the encoded subset at 65% SGOV and 35% VT, with a 6.58% historical return
+estimate and 5.29% volatility.
+
+3:39 - Stress package and explicit stop condition
+
+The stress package changes four risk surfaces. Reducing VT's estimate by one
+percentage point and applying a 25-basis-point annual cost each move the
+allocation by five points. Changing the window to the last 36 returns moves
+SGOV and VT by 20 points, failing the 10-point stability limit. Raising the
+reserve minimum to 70% produces no feasible portfolio and triggers the explicit
+stop condition.
+
+4:09 - Automated tests and decision-test failure
+
+These are the terminal results. The technical validation passes 31 automated
+tests covering known answers, malformed inputs, baseline verdicts, saved
+scenarios, and app controls. The software test passes because it correctly
+detects the failure, while the investment decision test fails: the 20-point
+window change exceeds the allowed limit.
+
+4:27 - Limitations and technical conclusion
+
+The app does not establish future return, issuer concentration, five-day
+liquidity, turnover, or the undefined calendar-loss promise. Those limitations
+block live use. The defensible technical conclusion is that the system is
+reproducible and useful for a monitored paper pilot, but it is not validated
+for a client-capital allocation.
+
+5:01 - Spoken presentation ends; remaining footage is silent
+
+FINAL TRANSCRIPT CHECK
+
+- Tickers corrected to SGOV, VGIT, BND, and VT.
+- Values checked against the submitted output: 61 observations, 60 and 36
+  returns, 65/35, 6.58%, 5.29%, 25 basis points, five-point stress moves,
+  20-point window move, 10-point limit, 70% reserve stress, and 31 tests.
+- The current upload runs approximately 05:11 and exceeds the 05:00 maximum.
+  Trimming the opening silence and silent ending should preserve the spoken
+  transcript while bringing the video below the limit; verify the final upload.
